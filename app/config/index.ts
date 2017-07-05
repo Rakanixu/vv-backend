@@ -9,6 +9,7 @@ interface Config {
     apiPathPrefix: string;
     sessionSecret: string;
     sessionTokenDuration: number;
+    sessionCookieName: string;
 }
 
 export let config: Config = {
@@ -30,6 +31,7 @@ export let config: Config = {
 
   // secret used for generating secure tokens
   sessionSecret: 'sda4tgghsc&32fg!!fdd',
-  sessionTokenDuration: 60 * 60 * 5
+  sessionTokenDuration: 60 * 60 * 5,
+  sessionCookieName: 'jwt_token'
 };
 

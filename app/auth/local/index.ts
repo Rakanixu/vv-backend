@@ -10,21 +10,24 @@ import * as PassportJwt from 'passport-jwt';
 const ExtractJwt = PassportJwt.ExtractJwt;
 const JwtStrategy = PassportJwt.Strategy;
 
-
 function jwtCookieExtractor(req: ICustomRequest) {
     let token = null;
     if (req && req.cookies) {
-        token = req.cookies['jwt_token'];
+        token = req.cookies[config.sessionCookieName];
     }
     return token;
 }
 
 export function configure() {
+    const extractors: PassportJwt.JwtFromRequestFunction[] = [ExtractJwt.fromAuthHeader()];
+    // if a name for security token was provided, add an extractor for it
+    if (config.sessionCookieName && config.sessionCookieName.length > 0) {
+        extractors.push(jwtCookieExtractor);
+    }
     const jwtOptions: PassportJwt.StrategyOptions = {
-        jwtFromRequest: ExtractJwt.fromExtractors([ExtractJwt.fromAuthHeader(), jwtCookieExtractor]),
+        jwtFromRequest: ExtractJwt.fromExtractors(extractors),
         secretOrKey: config.sessionSecret
     };
-
     const strategy = new JwtStrategy(jwtOptions, (payload: any, done: PassportJwt.VerifiedCallback) => {
         let user: UserAccount;
         try {
@@ -55,7 +58,6 @@ export function login(req: ICustomRequest, res: express.Response, next: express.
         res.status(401).json({ message: 'user not provided: ' + JSON.stringify(req.body) });
         return;
     }
-
     let user: UserAccount;
     try {
         // to be done
@@ -111,6 +113,8 @@ export function setTokenCookie(req: ICustomRequest, res: express.Response): void
         return;
     }
     const token = signToken(`${req.user.id}`);
-    res.cookie('jwt_token', token);
+    if (config.sessionCookieName && config.sessionCookieName.length > 0) {
+        res.cookie(config.sessionCookieName, token);
+    }
     res.json({token: token});
 }
