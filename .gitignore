@@ -2,4 +2,3 @@ node_modules
 dist/
 .dockerignore
 npm-debug.log
-Dockerfile
