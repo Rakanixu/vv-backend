@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import * as cookieParser from 'cookie-parser';
 import * as morgan from 'morgan';
 import errorHandler = require('errorhandler');
 import methodOverride = require('method-override');
@@ -27,6 +28,7 @@ export class Server {
     private applyConfig() {
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(bodyParser.json({ limit: '10mb' }));
+        this.app.use(cookieParser());
         this.app.use(methodOverride());
         this.app.use(express.static(__dirname + '/static'));
         this.app.use((req: ICustomRequest, res: express.Response, next: Function) => {

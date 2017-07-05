@@ -16,7 +16,6 @@ function jwtCookieExtractor(req: ICustomRequest) {
     if (req && req.cookies) {
         token = req.cookies['jwt_token'];
     }
-    console.log('Token extracted:' + token);
     return token;
 }
 
