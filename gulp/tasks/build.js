@@ -31,8 +31,7 @@ gulp.task('build', [], function () {
     return tsResult.js.pipe(sourcemaps.write('.', {
         includeContent: false,
         sourceRoot: (file) => {
-            var sourceFile = path.join(file.cwd, file.sourceMap.file);
-            return path.relative(path.dirname(sourceFile), file.base);
+            return '../';
         }
     }))
     .pipe(gulp.dest(config.general.dist));

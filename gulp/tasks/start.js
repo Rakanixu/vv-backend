@@ -17,14 +17,6 @@ gulp.task('restart', ['build'], function () {
     server.restart();
 });
 
-gulp.task('start-unsecure', ['build'], function () {
-    global.isWatching = true;
-    gulp.watch(config.backend.sourceTsFiles, ['restart']);
-    server.listen({ path: config.general.dist + '/app/app.js', args: ['--unsecure'] }, function (error) {
-        console.log(error);
-    });
-});
-
 gulp.task('start-test', ['build'], function () {
     global.isWatching = true;
     gulp.watch(config.backend.sourceTsFiles, ['restart']);
