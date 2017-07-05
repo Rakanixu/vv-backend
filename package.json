@@ -1,0 +1,52 @@
+{
+  "name": "alantujs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/passport-http": "^0.3.2",
+    "body-parser": "^1.17.2",
+    "errorhandler": "^1.5.0",
+    "express": "^4.15.3",
+    "jsonwebtoken": "^7.4.1",
+    "knex": "^0.13.0",
+    "method-override": "^2.3.9",
+    "morgan": "^1.8.2",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.2.1"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.16.4",
+    "@types/errorhandler": "0.0.30",
+    "@types/express": "^4.0.36",
+    "@types/express-jwt": "0.0.35",
+    "@types/gulp": "^4.0.4",
+    "@types/jasmine": "^2.5.53",
+    "@types/jsonwebtoken": "^7.2.1",
+    "@types/knex": "0.0.56",
+    "@types/method-override": "0.0.29",
+    "@types/morgan": "^1.7.32",
+    "@types/node": "^8.0.7",
+    "@types/passport": "^0.3.3",
+    "@types/passport-jwt": "^2.0.21",
+    "gulp": "^3.9.1",
+    "gulp-changed": "^3.1.0",
+    "gulp-develop-server": "^0.5.2",
+    "gulp-jasmine": "^2.4.2",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-tslint": "^8.1.1",
+    "gulp-typescript": "^3.1.7",
+    "gulp-wait": "0.0.2",
+    "jasmine": "^2.6.0",
+    "require-dir": "^0.3.2",
+    "rimraf": "^2.6.1",
+    "ts-lint": "^4.5.1",
+    "tslint": "^5.4.3",
+    "typescript": "^2.4.1"
+  }
+}
