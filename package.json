@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/passport-http": "^0.3.2",
+    "@types/pg": "^6.1.41",
     "body-parser": "^1.17.2",
     "cookie-parser": "^1.4.3",
     "errorhandler": "^1.5.0",
@@ -19,7 +20,8 @@
     "method-override": "^2.3.9",
     "morgan": "^1.8.2",
     "passport": "^0.3.2",
-    "passport-jwt": "^2.2.1"
+    "passport-jwt": "^2.2.1",
+    "pg": "^6.4.0"
   },
   "devDependencies": {
     "@types/body-parser": "^1.16.4",
