@@ -2,3 +2,4 @@ node_modules
 dist/
 .dockerignore
 npm-debug.log
+db_dev.yml
