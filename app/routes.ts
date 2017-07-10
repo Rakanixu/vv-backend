@@ -8,6 +8,7 @@ import * as event from './api/event';
 import * as participant from './api/participant';
 import * as auction from './api/auction';
 import * as quiz from './api/quiz';
+import * as poll from './api/poll';
 import { config } from './config';
 
 export function setupRoutes(app: express.Express) {
@@ -22,6 +23,7 @@ export function setupRoutes(app: express.Express) {
     router.use('/event/:eventId/participant', participant.routes);
     router.use('/event/:eventId/auction', auction.routes);
     router.use('/event/:eventId/quiz', quiz.routes);
+    router.use('/event/:eventId/poll', poll.routes);
     router.use('/payment', payment.routes);
 
     app.use(config.apiPathPrefix, router);
