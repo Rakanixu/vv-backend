@@ -4,7 +4,11 @@ import * as eventLocation from './api/event-location';
 import * as userAccount from './api/user-account';
 import * as principal from './api/principal';
 import * as event from './api/event';
+<<<<<<< HEAD
 import * as auction from './api/auction';
+=======
+import * as quiz from './api/quiz';
+>>>>>>> origin/dev
 import { config } from './config';
 
 export function setupRoutes(app: express.Express) {
@@ -15,7 +19,11 @@ export function setupRoutes(app: express.Express) {
     router.use('/user', userAccount.routes);
     router.use('/principal', principal.routes);
     router.use('/event', event.routes);
+<<<<<<< HEAD
     router.use('/event/:eventId/auction', auction.routes);
+=======
+    router.use('/event/:eventId/quiz', quiz.routes);
+>>>>>>> origin/dev
 
     app.use(config.apiPathPrefix, router);
 
