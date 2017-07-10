@@ -6,6 +6,7 @@ import * as principal from './api/principal';
 import * as payment from './api/payment';
 import * as event from './api/event';
 import * as quiz from './api/quiz';
+import * as poll from './api/poll';
 import { config } from './config';
 
 export function setupRoutes(app: express.Express) {
@@ -17,6 +18,7 @@ export function setupRoutes(app: express.Express) {
     router.use('/payment', payment.routes);
     router.use('/event', event.routes);
     router.use('/event/:eventId/quiz', quiz.routes);
+    router.use('/event/:eventId/poll', poll.routes);
 
     app.use(config.apiPathPrefix, router);
 
