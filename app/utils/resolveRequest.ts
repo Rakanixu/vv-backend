@@ -29,11 +29,14 @@ function sendError(res: express.Response, errorMessage?: any, statusCode?: numbe
 
 function handleResponse(req: ICustomRequest, res: express.Response, output?: any) {
   let statusCode = 200;
+  let splittedpath;
 
   switch (req.method) {
     case 'GET':
-      // single entity /:id
-      if (!(Object.keys(req.params).length === 0 && req.params.constructor === Object)) {
+      splittedpath = req.originalUrl.split('/');
+
+      // single entity if originalUrl ends with an integer /:id, array otherwise
+      if (!isNaN(parseInt(splittedpath[splittedpath.length - 1], 10))) {
         if (output.length <= 0) {
           statusCode = 404;
         }
