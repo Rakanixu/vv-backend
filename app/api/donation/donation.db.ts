@@ -1,0 +1,59 @@
+import * as Knex from 'knex';
+import { dbClient } from '../../database/index';
+import { Donation } from './donation.model';
+
+const DONATION = 'donation';
+const COLUMNS = [
+  'id',
+  'payment_id',
+  'principal_id',
+  'firstname',
+  'lastname',
+  'street',
+  'city',
+  'state',
+  'zip',
+  'country',
+  'phone',
+  'email',
+  'job_state',
+  'employer',
+  'occupation',
+  'birthday',
+  'recurring',
+  'recurring_end',
+  'source'
+];
+
+export class DonationDB {
+  private knex: Knex;
+
+  constructor() {
+    this.knex = dbClient;
+  }
+
+  public async getDonations() {
+    return this.knex(DONATION).select(COLUMNS);
+  }
+
+  public async createDonation(donation: Donation) {
+    return this.knex(DONATION).insert(donation).returning(COLUMNS);
+  }
+
+  public async getDonation(donationId: number) {
+    return this.knex(DONATION).select(COLUMNS).where('id', donationId);
+  }
+
+  public async getDonationsByPayment(paymentId: number) {
+    return this.knex(DONATION).select(COLUMNS).where('payment_id', paymentId);
+  }
+
+  public async createDonationByPayment(paymentId: number, donation: Donation) {
+    donation.payment_id = paymentId;
+    return this.knex(DONATION).insert(donation).returning(COLUMNS);
+  }
+
+  public async getDonationByPayment(paymentId: number, donationId: number) {
+    return this.knex(DONATION).select(COLUMNS).where('payment_id', paymentId).where('id', donationId);
+  }
+}
