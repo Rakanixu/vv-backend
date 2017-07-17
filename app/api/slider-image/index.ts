@@ -1,11 +1,19 @@
 import * as express from 'express';
+import * as multer from 'multer';
 import * as SliderImageController from './slider-image.controller';
 import { ICustomRequest } from '../../utils/custom.types';
 import { resolve } from '../../utils/resolveRequest';
+import { manageFiles } from '../../utils/upload.helpers';
+import { storage } from '../../utils/upload.helpers';
+import { config } from '../../config/index';
 
-export const routes = express.Router({
-  mergeParams: true
-});
+const uploader = multer({ storage: storage });
+const images = [
+  { name: 'img', maxCount: 1 }
+];
+
+export const routes = express.Router({ mergeParams: true });
+export const upload = uploader.fields(images);
 
 routes.get('/', getSliderImages);
 routes.post('/', createSliderImage);
@@ -18,6 +26,8 @@ function getSliderImages(req: ICustomRequest, res: express.Response, next: expre
 }
 
 function createSliderImage(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  req.body = manageFiles(req, ['img']);
+
   resolve(req, res, SliderImageController.createSliderImage(req.params.eventId, req.body));
 }
 

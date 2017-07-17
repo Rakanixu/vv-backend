@@ -1,11 +1,19 @@
 import * as express from 'express';
+import * as multer from 'multer';
 import * as ParticipantController from './participant.controller';
 import { ICustomRequest } from '../../utils/custom.types';
 import { resolve } from '../../utils/resolveRequest';
+import { manageFiles } from '../../utils/upload.helpers';
+import { storage } from '../../utils/upload.helpers';
+import { config } from '../../config/index';
 
-export const routes = express.Router({
-  mergeParams: true
-});
+const uploader = multer({ storage: storage });
+const images = [
+  { name: 'avatar', maxCount: 1 }
+];
+
+export const routes = express.Router({ mergeParams: true });
+export const upload = uploader.fields(images);
 
 routes.get('/', getParticipants);
 routes.post('/', createParticipant);
@@ -18,6 +26,8 @@ function getParticipants(req: ICustomRequest, res: express.Response, next: expre
 }
 
 function createParticipant(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  req.body = manageFiles(req, ['avatar']);
+
   resolve(req, res, ParticipantController.createParticipant(req.params.eventId, req.body));
 }
 

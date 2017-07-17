@@ -1,11 +1,19 @@
 import * as express from 'express';
+import * as multer from 'multer';
 import * as PollEntryController from './poll-entry.controller';
 import { ICustomRequest } from '../../utils/custom.types';
 import { resolve } from '../../utils/resolveRequest';
+import { manageFiles } from '../../utils/upload.helpers';
+import { storage } from '../../utils/upload.helpers';
+import { config } from '../../config/index';
 
-export const routes = express.Router({
-  mergeParams: true
-});
+const uploader = multer({ storage: storage });
+const images = [
+  { name: 'icon', maxCount: 1 }
+];
+
+export const routes = express.Router({ mergeParams: true });
+export const upload = uploader.fields(images);
 
 routes.get('/', getPollEntries);
 routes.post('/', createPollEntry);
@@ -18,6 +26,8 @@ function getPollEntries(req: ICustomRequest, res: express.Response, next: expres
 }
 
 function createPollEntry(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  req.body = manageFiles(req, ['icon']);
+
   resolve(req, res, PollEntryController.createPollEntry(req.params.pollId, req.body));
 }
 

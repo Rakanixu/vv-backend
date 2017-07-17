@@ -6,6 +6,7 @@ interface Config {
     port: string;
     securePort: string;
     ip: string;
+    uploadDestination: string;
     apiPathPrefix: string;
     chatPathEndpoint: string;
     mongoUrl: string;
@@ -27,6 +28,9 @@ export let config: Config = {
 
   // server IP
   ip: process.env.IP || '0.0.0.0',
+
+  // upload destination for files / images
+  uploadDestination: __dirname + './../static',
 
   // api path prefix
   apiPathPrefix: '/api/v1',

@@ -22,35 +22,58 @@ import * as pollEntry from './api/poll-entry';
 import * as sliderImage from './api/slider-image';
 import { config } from './config';
 
+const RESOURCES = {
+    HEALTH: '/health',
+    ROLE: '/role',
+    EVENT_LOCATION: '/event_location',
+    USER: '/user',
+    PRINCIPAL: '/principal',
+    PAYMENT: '/payment',
+    DONATION_BY_PAYMENT: '/payment/:paymentId/donation',
+    DONATION: '/donation',
+    EVENT: '/event',
+    PARTICIPANT: '/event/:eventId/participant',
+    CHAT: '/event/:eventId/chat_message',
+    AUCTION: '/event/:eventId/auction',
+    BID: '/auction/:auctionId/bid',
+    QUIZ: '/event/:eventId/quiz',
+    POLL: '/event/:eventId/poll',
+    POLL_ENTRY: '/poll/:pollId/poll_entry',
+    ADMISSION: '/event/:eventId/admission',
+    QUESTION_TOPIC: '/event/:eventId/question_topic',
+    QUESTION: '/question_topic/:questionTopicId/question',
+    QUIZ_ENTRY: '/quiz/:quizId/quiz_entry',
+    SLIDER_IMAGE: '/event/:eventId/image',
+    NAMED_GUEST: '/event/:eventId/named_guest'
+};
+
 export function setupRoutes(app: express.Express) {
     const router: express.Router = express.Router();
 
-    router.use('/health', health.routes);
-    router.use('/event_location', eventLocation.routes);
-    router.use('/user', userAccount.routes);
-    router.use('/role', role.routes);
-    router.use('/principal', principal.routes);
-    router.use('/payment', payment.routes);
-    router.use('/event', event.routes);
-    router.use('/event/:eventId/participant', participant.routes);
-    router.use('/event/:eventId/named_guest', namedGuest.routes);
-    router.use('/event/:eventId/admission', admission.routes);
-    router.use('/event/:eventId/auction', auction.routes);
-    router.use('/event/:eventId/quiz', quiz.routes);
-    router.use('/event/:eventId/question_topic', questionTopic.routes);
-    router.use('/event/:eventId/poll', poll.routes);
-    router.use('/event/:eventId/chat_message', chat.routes);
-    router.use('/event/:eventId/image', sliderImage.routes);
-    router.use('/payment', payment.routes);
-    router.use('/quiz/:quizId/quiz_entry', quizEntry.routes);
-    router.use('/auction/:auctionId/bid', bid.routes);
-    router.use('/question_topic/:questionTopicId/question', question.routes);
-    router.use('/poll/:pollId/poll_entry', pollEntry.routes);
-    router.use('/payment/:paymentId/donation', donation.routesByPayment);
-    router.use('/donation', donation.routes);
+    router.use(RESOURCES.HEALTH, health.routes);
+    router.use(RESOURCES.ROLE, role.routes);
+    router.use(RESOURCES.EVENT_LOCATION, eventLocation.routes);
+    router.use(RESOURCES.USER, userAccount.upload, userAccount.routes);
+    router.use(RESOURCES.PRINCIPAL, principal.upload, principal.routes);
+    router.use(RESOURCES.ADMISSION, admission.upload, admission.routes);
+    router.use(RESOURCES.SLIDER_IMAGE, sliderImage.upload, sliderImage.routes);
+    router.use(RESOURCES.PAYMENT, payment.routes);
+    router.use(RESOURCES.DONATION_BY_PAYMENT, donation.routesByPayment);
+    router.use(RESOURCES.DONATION, donation.routes);
+    router.use(RESOURCES.PARTICIPANT, participant.upload, participant.routes);
+    router.use(RESOURCES.CHAT, chat.routes);
+    router.use(RESOURCES.EVENT, event.upload, event.routes);
+    router.use(RESOURCES.AUCTION, auction.routes);
+    router.use(RESOURCES.BID, bid.routes);
+    router.use(RESOURCES.QUIZ, quiz.routes);
+    router.use(RESOURCES.POLL, poll.routes);
+    router.use(RESOURCES.POLL_ENTRY, pollEntry.upload, pollEntry.routes);
+    router.use(RESOURCES.QUESTION_TOPIC, questionTopic.routes);
+    router.use(RESOURCES.QUESTION, question.routes);
+    router.use(RESOURCES.QUIZ_ENTRY, quizEntry.routes);
+    router.use(RESOURCES.NAMED_GUEST, namedGuest.routes);
 
     app.use(config.apiPathPrefix, router);
-
     app.use('/', (req, res) => {
         res.statusCode = 404;
         res.send('Unknown url');
@@ -58,6 +81,7 @@ export function setupRoutes(app: express.Express) {
 
     // error handling
     const errorHandler: express.ErrorRequestHandler = (err, req, res, next) => {
+        console.log(err, req.params, req.body);
         res.status(500).json({ error: err });
     };
 

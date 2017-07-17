@@ -1,9 +1,19 @@
 import * as express from 'express';
+import * as multer from 'multer';
 import * as UserAccountController from './user-account.controller';
 import { ICustomRequest } from '../../utils/custom.types';
 import { resolve } from '../../utils/resolveRequest';
+import { manageFiles } from '../../utils/upload.helpers';
+import { storage } from '../../utils/upload.helpers';
+import { config } from '../../config/index';
+
+const uploader = multer({ storage: storage });
+const images = [
+  { name: 'avatar', maxCount: 1 }
+];
 
 export const routes = express.Router();
+export const upload = uploader.fields(images);
 
 routes.get('/', getUsers);
 routes.post('/', createUser);
@@ -16,6 +26,8 @@ function getUsers(req: ICustomRequest, res: express.Response, next: express.Next
 }
 
 function createUser(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  req.body = manageFiles(req, ['avatar']);
+
   resolve(req, res, UserAccountController.createUser(req.params.userId, req.body));
 }
 
