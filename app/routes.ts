@@ -17,6 +17,7 @@ import * as quizEntry from './api/quiz-entry';
 import * as questionTopic from './api/question-topic';
 import * as question from './api/question';
 import * as poll from './api/poll';
+import * as chat from './api/chat';
 import * as pollEntry from './api/poll-entry';
 import * as sliderImage from './api/slider-image';
 import { config } from './config';
@@ -38,6 +39,7 @@ export function setupRoutes(app: express.Express) {
     router.use('/event/:eventId/quiz', quiz.routes);
     router.use('/event/:eventId/question_topic', questionTopic.routes);
     router.use('/event/:eventId/poll', poll.routes);
+    router.use('/event/:eventId/chat_message', chat.routes);
     router.use('/event/:eventId/image', sliderImage.routes);
     router.use('/payment', payment.routes);
     router.use('/quiz/:quizId/quiz_entry', quizEntry.routes);

@@ -7,6 +7,8 @@ interface Config {
     securePort: string;
     ip: string;
     apiPathPrefix: string;
+    chatPathEndpoint: string;
+    mongoUrl: string;
     sessionSecret: string;
     sessionTokenDuration: number;
     sessionCookieName: string;
@@ -28,6 +30,12 @@ export let config: Config = {
 
   // api path prefix
   apiPathPrefix: '/api/v1',
+
+  // chat path endpoint
+  chatPathEndpoint: '/chat',
+
+  // mongo  url
+  mongoUrl: 'mongodb://localhost:27017/alantu',
 
   // secret used for generating secure tokens
   sessionSecret: 'sda4tgghsc&32fg!!fdd',

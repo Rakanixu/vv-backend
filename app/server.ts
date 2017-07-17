@@ -4,13 +4,13 @@ import * as cookieParser from 'cookie-parser';
 import * as morgan from 'morgan';
 import errorHandler = require('errorhandler');
 import methodOverride = require('method-override');
-import { Request } from 'express';
-import {ICustomRequest} from './utils/custom.types';
+import { ICustomRequest } from './utils/custom.types';
 import * as routes from './routes';
 import * as auth from './auth';
 
 export class Server {
     public app: express.Express;
+    public io: any;
 
     public initialize(): Promise<express.Application> {
         // create express instance
