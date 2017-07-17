@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as health from './api/health';
 import * as eventLocation from './api/event-location';
 import * as userAccount from './api/user-account';
+import * as role from './api/role';
 import * as principal from './api/principal';
 import * as payment from './api/payment';
 import * as donation from './api/donation';
@@ -21,6 +22,7 @@ export function setupRoutes(app: express.Express) {
     router.use('/health', health.routes);
     router.use('/event_location', eventLocation.routes);
     router.use('/user', userAccount.routes);
+    router.use('/role', role.routes);
     router.use('/principal', principal.routes);
     router.use('/payment', payment.routes);
     router.use('/event', event.routes);
