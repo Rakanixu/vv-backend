@@ -11,6 +11,7 @@ import * as participant from './api/participant';
 import * as namedGuest from './api/named-guest';
 import * as admission from './api/admission';
 import * as auction from './api/auction';
+import * as bid from './api/bid';
 import * as quiz from './api/quiz';
 import * as questionTopic from './api/question-topic';
 import * as question from './api/question';
@@ -38,6 +39,7 @@ export function setupRoutes(app: express.Express) {
     router.use('/event/:eventId/poll', poll.routes);
     router.use('/event/:eventId/image', sliderImage.routes);
     router.use('/payment', payment.routes);
+    router.use('/auction/:auctionId/bid', bid.routes);
     router.use('/question_topic/:questionTopicId/question', question.routes);
     router.use('/poll/:pollId/poll_entry', pollEntry.routes);
     router.use('/payment/:paymentId/donation', donation.routesByPayment);
