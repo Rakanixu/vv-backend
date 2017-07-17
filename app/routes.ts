@@ -13,6 +13,7 @@ import * as admission from './api/admission';
 import * as auction from './api/auction';
 import * as bid from './api/bid';
 import * as quiz from './api/quiz';
+import * as quizEntry from './api/quiz-entry';
 import * as questionTopic from './api/question-topic';
 import * as question from './api/question';
 import * as poll from './api/poll';
@@ -39,6 +40,7 @@ export function setupRoutes(app: express.Express) {
     router.use('/event/:eventId/poll', poll.routes);
     router.use('/event/:eventId/image', sliderImage.routes);
     router.use('/payment', payment.routes);
+    router.use('/quiz/:quizId/quiz_entry', quizEntry.routes);
     router.use('/auction/:auctionId/bid', bid.routes);
     router.use('/question_topic/:questionTopicId/question', question.routes);
     router.use('/poll/:pollId/poll_entry', pollEntry.routes);
