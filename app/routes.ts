@@ -11,6 +11,7 @@ import * as auction from './api/auction';
 import * as quiz from './api/quiz';
 import * as questionTopic from './api/question-topic';
 import * as poll from './api/poll';
+import * as sliderImage from './api/slider-image';
 import { config } from './config';
 
 export function setupRoutes(app: express.Express) {
@@ -27,6 +28,7 @@ export function setupRoutes(app: express.Express) {
     router.use('/event/:eventId/quiz', quiz.routes);
     router.use('/event/:eventId/question_topic', questionTopic.routes);
     router.use('/event/:eventId/poll', poll.routes);
+    router.use('/event/:eventId/image', sliderImage.routes);
     router.use('/payment', payment.routes);
     router.use('/payment/:paymentId/donation', donation.routesByPayment);
     router.use('/donation', donation.routes);
