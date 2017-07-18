@@ -3,6 +3,7 @@ import * as health from './api/health';
 import * as eventLocation from './api/event-location';
 import * as userAccount from './api/user-account';
 import * as role from './api/role';
+import * as media from './api/media';
 import * as principal from './api/principal';
 import * as payment from './api/payment';
 import * as donation from './api/donation';
@@ -25,6 +26,7 @@ import { config } from './config';
 const RESOURCES = {
     HEALTH: '/health',
     ROLE: '/role',
+    MEDIA: '/media',
     EVENT_LOCATION: '/event_location',
     USER: '/user',
     PRINCIPAL: '/principal',
@@ -52,6 +54,7 @@ export function setupRoutes(app: express.Express) {
 
     router.use(RESOURCES.HEALTH, health.routes);
     router.use(RESOURCES.ROLE, role.routes);
+    router.use(RESOURCES.MEDIA, media.upload, media.routes);
     router.use(RESOURCES.EVENT_LOCATION, eventLocation.routes);
     router.use(RESOURCES.USER, userAccount.upload, userAccount.routes);
     router.use(RESOURCES.PRINCIPAL, principal.upload, principal.routes);
