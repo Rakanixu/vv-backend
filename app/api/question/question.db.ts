@@ -6,7 +6,7 @@ const QUESTION = 'question';
 const COLUMNS = [
   'id',
   'question_topic_id',
-  'mesage'
+  'message'
 ];
 
 export class QuestionDB {
