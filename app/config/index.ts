@@ -3,8 +3,8 @@ const path = require('path');
 interface Config {
     env: string;
     root: string;
-    port: string;
-    securePort: string;
+    port: number;
+    securePort: number;
     ip: string;
     uploadDestination: string;
     apiPathPrefix: string;
@@ -22,9 +22,9 @@ export let config: Config = {
   root: path.normalize(__dirname + '/../..'),
 
   // server port
-  port: process.env.PORT || '9000',
+  port: parseInt(process.env.APP_PORT || '9000', 10),
 
-  securePort: process.env.SECURE_PORT || '9043',
+  securePort: parseInt(process.env.SECURE_PORT || '9043', 10),
 
   // server IP
   ip: process.env.IP || '0.0.0.0',
@@ -39,7 +39,7 @@ export let config: Config = {
   chatPathEndpoint: '/chat',
 
   // mongo  url
-  mongoUrl: 'mongodb://localhost:27017/alantu',
+  mongoUrl: process.env.MONGO_URL || 'mongodb://localhost:27017/alantu',
 
   // secret used for generating secure tokens
   sessionSecret: 'sda4tgghsc&32fg!!fdd',

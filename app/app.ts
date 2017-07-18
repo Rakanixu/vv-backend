@@ -5,8 +5,6 @@ import * as IO from 'socket.io';
 import * as chat from './chat';
 import { config } from './config';
 
-const appPort = parseInt(process.env.APP_PORT || config.port, 10);
-
 // signal handlers
 process.on('SIGINT', function () {
     console.log('Caught interrupt signal');
@@ -17,7 +15,7 @@ process.on('SIGINT', function () {
 const server = new Server();
 server.initialize() /* tslint:disable:no-floating-promises */
 .then(function(app: any) {
-    app.set('port', appPort);
+    app.set('port', config.port);
     const httpServer = http.createServer(app);
 
     // instantiate socket.io
@@ -27,10 +25,10 @@ server.initialize() /* tslint:disable:no-floating-promises */
     chat.setupChat(this.io);
 
     httpServer.on('listening', () => {
-        console.log('Server listening on port %d', appPort);
+        console.log('Server listening on port %d', config.port);
     });
 
-    httpServer.listen(appPort);
+    httpServer.listen(config.port);
 }.bind(server))
 .catch(err => console.log('Error setting up server:', err));
 
