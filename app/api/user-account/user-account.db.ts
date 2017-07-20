@@ -41,6 +41,10 @@ export class UserAccountDB {
     return this.knex(USER_ACCOUNT).where('id', userId).select(COLUMNS);
   }
 
+  public async getUserByEmail(email: string) {
+    return this.knex(USER_ACCOUNT).where('email', email).select(COLUMNS);
+  }
+
   public async updateUser(userId: number, userAccount: UserAccount) {
     return this.knex(USER_ACCOUNT).where('id', userId).update(userAccount).returning(COLUMNS);
   }

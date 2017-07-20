@@ -17,6 +17,7 @@ export const upload = uploader.fields(images);
 
 routes.get('/', getUsers);
 routes.post('/', createUser);
+routes.get('/me', getMe);
 routes.get('/:userId', getUser);
 routes.put('/:userId', updateUser);
 routes.delete('/:userId', deleteUser);
@@ -29,6 +30,10 @@ function createUser(req: ICustomRequest, res: express.Response, next: express.Ne
   req.body = manageFiles(req, ['avatar']);
 
   resolve(req, res, UserAccountController.createUser(req.params.userId, req.body));
+}
+
+function getMe(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  res.status(200).json(req.user);
 }
 
 function getUser(req: ICustomRequest, res: express.Response, next: express.NextFunction) {

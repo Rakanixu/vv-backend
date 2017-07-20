@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as passport from 'passport';
 import { ICustomRequest } from '../../utils/custom.types';
 import { UserAccount } from '../../api/user-account/user-account.model';
+import { UserAccountDB } from '../../api/user-account/user-account.db';
 import { hash } from '../../utils/auth';
 import * as jwt from 'jsonwebtoken';
 import { config } from '../../config';
@@ -9,6 +10,7 @@ import * as PassportJwt from 'passport-jwt';
 
 const ExtractJwt = PassportJwt.ExtractJwt;
 const JwtStrategy = PassportJwt.Strategy;
+const uDB = new UserAccountDB();
 
 function jwtCookieExtractor(req: ICustomRequest) {
     let token = null;
@@ -30,65 +32,46 @@ export function configure() {
     };
     const strategy = new JwtStrategy(jwtOptions, (payload: any, done: PassportJwt.VerifiedCallback) => {
         let user: UserAccount;
-        try {
-            // to be done
-            // get the user from db
-            // user = await db.users.getUserById(payload.id);
-            user = {
-                id: 1,
-                username: 'manager',
-                email: 'manager@vvents.com'
-            };
 
-        } catch (err) {
-            done(null, false);
-        }
-        if (user) {
+        uDB.getUser(payload.id).then(function(data) {
+            user = data[0];
+            delete user.password;
             done(null, user);
-        } else {
+        }).catch(function(err) {
             done(null, false);
-        }
+        });
     });
 
     passport.use(strategy);
 }
 
 export function login(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-    if (!req.body.username || !req.body.password) {
-        res.status(401).json({ message: 'user not provided: ' + JSON.stringify(req.body) });
+    if (!req.body.email || !req.body.password) {
+        res.status(401).json({ message: 'email or password not provided: ' + JSON.stringify(req.body) });
         return;
     }
-    let user: UserAccount;
-    try {
-        // to be done
-        // get the user from db
-        // user = await db.users.getUserByName(username, true);
-        user = {
-            id: 1,
-            username: req.body.username,
-            email: 'manager@vvents.com',
-            password: hash(req.body.password)
-        };
 
-    } catch (err) {
+    uDB.getUserByEmail(req.body.email).then(function(data) {
+        const user: UserAccount = data[0];
+
+        if (!user) {
+            res.status(401).json({ message: 'user not found' });
+            return;
+        }
+
+        // check password
+        const hashedPass = hash(req.body.password);
+         if (hashedPass === user.password) {
+            console.log('User login succeeded!');
+            req.user = user;
+            setTokenCookie(req, res);
+        } else {
+            res.status(401).json({ message: 'user or password incorrect' });
+        }
+    }).catch(function() {
         res.status(401).json({ message: 'user not found.' });
         return;
-    }
-
-    if (!user) {
-        res.status(401).json({ message: 'user not found' });
-        return;
-    }
-
-    // check password
-    const hashedPass = hash(req.body.password);
-    if (hashedPass === user.password) {
-        console.log('User login succeeded!');
-        req.user = user;
-        setTokenCookie(req, res);
-    } else {
-        res.status(401).json({ message: 'user or password incorrect' });
-    }
+    });
 }
 
 /** Implements authentication. */
