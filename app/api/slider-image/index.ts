@@ -36,6 +36,8 @@ function getSliderImage(req: ICustomRequest, res: express.Response, next: expres
 }
 
 function updateSliderImage(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  req.body = manageFiles(req, ['img']);
+
   resolve(req, res, SliderImageController.updateSliderImage(req.params.eventId, req.params.sliderImageId, req.body));
 }
 

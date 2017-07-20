@@ -36,6 +36,8 @@ function getPollEntry(req: ICustomRequest, res: express.Response, next: express.
 }
 
 function updatePollEntry(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  req.body = manageFiles(req, ['icon']);
+
   resolve(req, res, PollEntryController.updatePollEntry(req.params.pollId, req.params.pollEntryId, req.body));
 }
 

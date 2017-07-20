@@ -36,6 +36,8 @@ function getAdmission(req: ICustomRequest, res: express.Response, next: express.
 }
 
 function updateAdmission(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  req.body = manageFiles(req, ['icon']);
+
   resolve(req, res, AdmissionController.updateAdmission(req.params.eventId, req.params.admissionId, req.body));
 }
 

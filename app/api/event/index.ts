@@ -37,6 +37,8 @@ function getEvent(req: ICustomRequest, res: express.Response, next: express.Next
 }
 
 function updateEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  req.body = manageFiles(req, ['preview_img', 'event_background']);
+
   resolve(req, res, EventController.updateEvent(req.params.eventId, req.body));
 }
 

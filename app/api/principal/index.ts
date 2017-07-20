@@ -38,6 +38,8 @@ function getPrincipal(req: ICustomRequest, res: express.Response, next: express.
 }
 
 function updatePrincipal(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  req.body = manageFiles(req, ['logo', 'background']);
+
   resolve(req, res, PrincipalController.updatePrincipal(req.params.principalId, req.body));
 }
 

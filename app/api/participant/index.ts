@@ -36,6 +36,8 @@ function getParticipant(req: ICustomRequest, res: express.Response, next: expres
 }
 
 function updateParticipant(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  req.body = manageFiles(req, ['avatar']);
+
   resolve(req, res, ParticipantController.updateParticipant(req.params.eventId, req.params.participantId, req.body));
 }
 

@@ -41,6 +41,8 @@ function getUser(req: ICustomRequest, res: express.Response, next: express.NextF
 }
 
 function updateUser(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  req.body = manageFiles(req, ['avatar']);
+
   resolve(req, res, UserAccountController.updateUser(req.params.userId, req.body));
 }
 
