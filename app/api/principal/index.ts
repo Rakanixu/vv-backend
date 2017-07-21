@@ -22,6 +22,8 @@ routes.post('/', createPrincipal);
 routes.get('/:principalId', getPrincipal);
 routes.put('/:principalId', updatePrincipal);
 routes.delete('/:principalId', deletePrincipal);
+routes.get('/:principalId/event', getEventsByPrincipal);
+routes.get('/:principalId/user', getUsersByPrincipal);
 
 function getPrincipals(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, PrincipalController.getPrincipals());
@@ -47,3 +49,10 @@ function deletePrincipal(req: ICustomRequest, res: express.Response, next: expre
   resolve(req, res, PrincipalController.deletePrincipal(req.params.principalId));
 }
 
+function getEventsByPrincipal(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  resolve(req, res, PrincipalController.getEventsByPrincipal(req.params.principalId));
+}
+
+function getUsersByPrincipal(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  resolve(req, res, PrincipalController.getUsersByPrincipal(req.params.principalId));
+}

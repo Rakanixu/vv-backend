@@ -61,6 +61,7 @@ export function login(req: ICustomRequest, res: express.Response, next: express.
 
         // check password
         const hashedPass = hash(req.body.password);
+        console.log(hashedPass, user.password);
          if (hashedPass === user.password) {
             console.log('User login succeeded!');
             req.user = user;

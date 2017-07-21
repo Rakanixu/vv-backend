@@ -29,3 +29,13 @@ export async function updatePrincipal(principalId: number, principal: Principal)
 export async function deletePrincipal(principalId: number) {
   return principalDB.deletePrincipal(principalId);
 }
+
+// get all events belonging to a principal
+export async function getEventsByPrincipal(principalId: number) {
+  return principalDB.getEventsByPrincipal(principalId);
+}
+
+// get all users belonging to a principal
+export async function getUsersByPrincipal(principalId: number) {
+  return principalDB.getUsersByPrincipal(principalId);
+}

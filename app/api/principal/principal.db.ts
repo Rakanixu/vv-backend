@@ -14,7 +14,8 @@ const COLUMNS = [
   'secondary_color',
   'primary_color',
   'design_notes',
-  'tags'
+  'tags',
+  'created_at'
 ];
 
 export class PrincipalDB {
@@ -42,5 +43,13 @@ export class PrincipalDB {
 
   public async deletePrincipal(principalId: number) {
     return this.knex.delete().from(PRINCIPAL).where('id', '=', principalId);
+  }
+
+  public async getEventsByPrincipal(principalId: number) {
+    return this.knex('event').count().where('principal_id', '=', principalId);
+  }
+
+  public async getUsersByPrincipal(principalId: number) {
+    return this.knex('user_account').count().where('principal_id', '=', principalId);
   }
 }
