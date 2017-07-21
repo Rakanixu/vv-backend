@@ -6,6 +6,7 @@ const PAYMENT = 'payment';
 const COLUMNS = [
   'id',
   'user_account_id',
+  'event_id',
   'amount',
   'token',
   'description'

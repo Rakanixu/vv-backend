@@ -62,7 +62,6 @@ export function login(req: ICustomRequest, res: express.Response, next: express.
         // check password
         const hashedPass = hash(req.body.password);
          if (hashedPass === user.password) {
-            console.log('User login succeeded!');
             req.user = user;
             setTokenCookie(req, res);
         } else {
