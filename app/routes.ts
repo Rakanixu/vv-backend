@@ -60,6 +60,7 @@ export function setupRoutes(app: express.Express) {
     router.use(RESOURCES.PRINCIPAL, principal.upload, principal.routes);
     router.use(RESOURCES.ADMISSION, admission.upload, admission.routes);
     router.use(RESOURCES.SLIDER_IMAGE, sliderImage.upload, sliderImage.routes);
+    router.use(RESOURCES.NAMED_GUEST, namedGuest.upload, namedGuest.routes);
     router.use(RESOURCES.PAYMENT, payment.routes);
     router.use(RESOURCES.DONATION_BY_PAYMENT, donation.routesByPayment);
     router.use(RESOURCES.DONATION, donation.routes);
@@ -74,7 +75,6 @@ export function setupRoutes(app: express.Express) {
     router.use(RESOURCES.QUESTION_TOPIC, questionTopic.routes);
     router.use(RESOURCES.QUESTION, question.routes);
     router.use(RESOURCES.QUIZ_ENTRY, quizEntry.routes);
-    router.use(RESOURCES.NAMED_GUEST, namedGuest.routes);
 
     app.use(config.apiPathPrefix, router);
     app.use('/', (req, res) => {

@@ -1,11 +1,18 @@
 import * as express from 'express';
+import * as multer from 'multer';
 import * as NamedGuestController from './named-guest.controller';
 import { resolve } from '../../utils/resolveRequest';
 import { ICustomRequest } from '../../utils/custom.types';
+import { storage } from '../../utils/upload.helpers';
+import { manageFiles } from '../../utils/upload.helpers';
 
-export const routes = express.Router({
-  mergeParams: true
-});
+const uploader = multer({ storage: storage });
+const images = [
+  { name: 'main_media', maxCount: 1 }
+];
+
+export const routes = express.Router({ mergeParams: true });
+export const upload = uploader.fields(images);
 
 routes.get('/', getNamedGuests);
 routes.post('/', createNamedGuest);
@@ -18,6 +25,8 @@ function getNamedGuests(req: ICustomRequest, res: express.Response, next: expres
 }
 
 function createNamedGuest(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  req.body = manageFiles(req, ['main_media']);
+
   resolve(req, res, NamedGuestController.createNamedGuests(req.params.eventId, req.body));
 }
 
@@ -26,6 +35,8 @@ function getNamedGuest(req: ICustomRequest, res: express.Response, next: express
 }
 
 function updateNamedGuest(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  req.body = manageFiles(req, ['main_media']);
+
   resolve(req, res, NamedGuestController.updateNamedGuest(req.params.eventId, req.params.namedGuestId, req.body));
 }
 
