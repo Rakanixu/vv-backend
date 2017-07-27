@@ -35,23 +35,25 @@ export class EventDB {
     this.knex = dbClient;
   }
 
-  public async getEvents() {
-    return this.knex(EVENT).select(COLUMNS);
+  public async getEvents(principalId: number) {
+    return this.knex(EVENT).select(COLUMNS).where('principal_id', principalId);
   }
 
-  public async createEvent(event: Event) {
+  public async createEvent(principalId: number, event: Event) {
+    event.principal_id = principalId;
     return this.knex(EVENT).insert(event).returning(COLUMNS);
   }
 
-  public async getEvent(eventId: number) {
-    return this.knex(EVENT).select(COLUMNS).where('id', eventId);
+  public async getEvent(principalId: number, eventId: number) {
+    return this.knex(EVENT).select(COLUMNS).where('principal_id', principalId).where('id', eventId);
   }
 
-  public async updateEvent(eventId: number, event: Event) {
+  public async updateEvent(principalId: number, eventId: number, event: Event) {
+    event.principal_id = principalId;
     return this.knex(EVENT).update(event).where('id', eventId).returning(COLUMNS);
   }
 
-  public async deleteEvent(eventId: number) {
-    return this.knex.delete().from(EVENT).where('id', eventId);
+  public async deleteEvent(principalId: number, eventId: number) {
+    return this.knex.delete().from(EVENT).where('principal_id', principalId).where('id', eventId);
   }
 }

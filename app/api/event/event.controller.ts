@@ -3,22 +3,22 @@ import { Event } from './event.model';
 
 const eventDB = new EventDB();
 
-export async function getEvents() {
-  return eventDB.getEvents();
+export async function getEvents(principalId: number) {
+  return eventDB.getEvents(principalId);
 }
 
-export async function createEvent(event: Event) {
-  return eventDB.createEvent(event);
+export async function createEvent(principalId: number, event: Event) {
+  return eventDB.createEvent(principalId, event);
 }
 
-export async function getEvent(eventId: number) {
-  return eventDB.getEvent(eventId);
+export async function getEvent(principalId: number, eventId: number) {
+  return eventDB.getEvent(principalId, eventId);
 }
 
-export async function updateEvent(eventId: number, event: Event) {
-  return eventDB.updateEvent(eventId, event);
+export async function updateEvent(principalId: number, eventId: number, event: Event) {
+  return eventDB.updateEvent(principalId, eventId, event);
 }
 
-export async function deleteEvent(eventId: number) {
-  return eventDB.deleteEvent(eventId);
+export async function deleteEvent(principalId: number, eventId: number) {
+  return eventDB.deleteEvent(principalId, eventId);
 }

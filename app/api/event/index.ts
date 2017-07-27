@@ -23,26 +23,26 @@ routes.put('/:eventId', updateEvent);
 routes.delete('/:eventId', deleteEvent);
 
 function getEvents(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.getEvents());
+  resolve(req, res, EventController.getEvents(req.user.principal_id));
 }
 
 function createEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   req.body = manageFiles(req, ['preview_img', 'event_background']);
 
-  resolve(req, res, EventController.createEvent(req.body));
+  resolve(req, res, EventController.createEvent(req.user.principal_id, req.body));
 }
 
 function getEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.getEvent(req.params.eventId));
+  resolve(req, res, EventController.getEvent(req.user.principal_id, req.params.eventId));
 }
 
 function updateEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   req.body = manageFiles(req, ['preview_img', 'event_background']);
 
-  resolve(req, res, EventController.updateEvent(req.params.eventId, req.body));
+  resolve(req, res, EventController.updateEvent(req.user.principal_id, req.params.eventId, req.body));
 }
 
 function deleteEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.deleteEvent(req.params.eventId));
+  resolve(req, res, EventController.deleteEvent(req.user.principal_id, req.params.eventId));
 }
 
