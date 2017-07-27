@@ -6,6 +6,7 @@ const QUIZ_ENTRY = 'quiz_entry';
 const COLUMNS = [
   'id',
   'quiz_id',
+  'question',
   'answer_one',
   'answer_two',
   'answer_three',
