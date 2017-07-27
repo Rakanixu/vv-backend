@@ -19,7 +19,12 @@ const COLUMNS = [
   'login_required',
   'latitude',
   'longitude',
-  'date'
+  'date',
+  'chat_highlight',
+  'chat_with_user_image',
+  'pose_question',
+  'chat_shown_status_bar',
+  'stage_moment_webcam'
 ];
 
 

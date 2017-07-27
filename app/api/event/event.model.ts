@@ -15,4 +15,9 @@ export interface Event {
   latitude: number;
   longitude: number;
   date: number;
+  chat_highlight: boolean;
+  chat_with_user_image: boolean;
+  pose_question: boolean;
+  chat_shown_status_bar: boolean;
+  stage_moment_webcam: boolean;
 }
