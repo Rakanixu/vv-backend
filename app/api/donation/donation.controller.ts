@@ -26,3 +26,15 @@ export async function createDonationByPayment(paymentId: number, donation: Donat
 export async function getDonationByPayment(paymentId: number, donationId: number) {
   return donationDB.getDonationByPayment(paymentId, donationId);
 }
+
+export async function getDonationsByPrincipal(principalId: number) {
+  return donationDB.getDonationsByPrincipal(principalId);
+}
+
+export async function createDonationByPrincipal(principalId: number, donation: Donation) {
+  return donationDB.createDonationByPrincipal(principalId, donation);
+}
+
+export async function getDonationByPrincipal(principalId: number, donationId: number) {
+  return donationDB.getDonationByPrincipal(principalId, donationId);
+}

@@ -25,6 +25,10 @@ const COLUMNS = [
   'source'
 ];
 
+  const PAYMENT_JOIN_COLUMNS = COLUMNS;
+  PAYMENT_JOIN_COLUMNS[0] = DONATION + '.id';
+  PAYMENT_JOIN_COLUMNS.push('payment.amount');
+
 export class DonationDB {
   private knex: Knex;
 
@@ -55,5 +59,25 @@ export class DonationDB {
 
   public async getDonationByPayment(paymentId: number, donationId: number) {
     return this.knex(DONATION).select(COLUMNS).where('payment_id', paymentId).where('id', donationId);
+  }
+
+  public async getDonationsByPrincipal(principalId: number) {
+    return this.knex(DONATION)
+      .select(PAYMENT_JOIN_COLUMNS)
+      .innerJoin('payment', DONATION + '.payment_id', 'payment.id')
+      .where(DONATION + '.principal_id', principalId);
+  }
+
+  public async createDonationByPrincipal(principalId: number, donation: Donation) {
+    donation.principal_id = principalId;
+    return this.knex(DONATION).insert(donation).returning(COLUMNS);
+  }
+
+  public async getDonationByPrincipal(principalId: number, donationId: number) {
+    return this.knex(DONATION)
+      .select(PAYMENT_JOIN_COLUMNS)
+      .innerJoin('payment', DONATION + '.payment_id', 'payment.id')
+      .where(DONATION + '.principal_id', principalId)
+      .where(DONATION + '.id', donationId);
   }
 }
