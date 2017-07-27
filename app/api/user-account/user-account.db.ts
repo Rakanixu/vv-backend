@@ -29,27 +29,35 @@ export class UserAccountDB {
     this.knex = dbClient;
   }
 
-  public async getUsers() {
-    return this.knex(USER_ACCOUNT).select(COLUMNS);
+  public async getUsers(principalId: number) {
+    return this.knex(USER_ACCOUNT).where('principal_id', principalId).select(COLUMNS);
   }
 
   public async createUser(userId: number, userAccount: UserAccount) {
     return this.knex(USER_ACCOUNT).insert(userAccount).returning(COLUMNS);
   }
 
-  public async getUser(userId: number) {
-    return this.knex(USER_ACCOUNT).where('id', userId).select(COLUMNS);
+  public async getUser(principalId: number, userId: number) {
+    let query = this.knex(USER_ACCOUNT).where('id', userId).select(COLUMNS);
+    if (principalId !== null) {
+      query = query.where('principal_id', principalId);
+    }
+    return query;
   }
 
   public async getUserByEmail(email: string) {
     return this.knex(USER_ACCOUNT).where('email', email).select(COLUMNS);
   }
 
-  public async updateUser(userId: number, userAccount: UserAccount) {
-    return this.knex(USER_ACCOUNT).where('id', userId).update(userAccount).returning(COLUMNS);
+  public async updateUser(principalId: number, userId: number, userAccount: UserAccount) {
+    return this.knex(USER_ACCOUNT)
+      .where('principal_id', principalId)
+      .where('id', userId)
+      .update(userAccount)
+      .returning(COLUMNS);
   }
 
-  public async deleteUser(userId: number) {
-    return this.knex.delete().from(USER_ACCOUNT).where('id', userId);
+  public async deleteUser(principalId: number, userId: number) {
+    return this.knex.delete().from(USER_ACCOUNT).where('principal_id', principalId).where('id', userId);
   }
 }

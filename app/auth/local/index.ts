@@ -33,7 +33,7 @@ export function configure() {
     const strategy = new JwtStrategy(jwtOptions, (payload: any, done: PassportJwt.VerifiedCallback) => {
         let user: UserAccount;
 
-        uDB.getUser(payload.id).then(function(data) {
+        uDB.getUser(null, payload.id).then(function(data) {
             user = data[0];
             delete user.password;
             done(null, user);
@@ -61,7 +61,6 @@ export function login(req: ICustomRequest, res: express.Response, next: express.
 
         // check password
         const hashedPass = hash(req.body.password);
-        console.log(hashedPass, user.password);
          if (hashedPass === user.password) {
             req.user = user;
             setTokenCookie(req, res);
