@@ -22,25 +22,25 @@ routes.put('/:mediaId', updateMedia);
 routes.delete('/:mediaId', deleteMedia);
 
 function getMedias(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, MediaController.getMedias());
+  resolve(req, res, MediaController.getMedias(req.user.principal_id));
 }
 
 function createMedia(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   req.body = manageFiles(req, ['url']);
 
-  resolve(req, res, MediaController.createMedia(req.body));
+  resolve(req, res, MediaController.createMedia(req.user.principal_id, req.body));
 }
 
 function getMedia(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, MediaController.getMedia(req.params.mediaId));
+  resolve(req, res, MediaController.getMedia(req.user.principal_id, req.params.mediaId));
 }
 
 function updateMedia(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   req.body = manageFiles(req, ['url']);
 
-  resolve(req, res, MediaController.updateMedia(req.params.mediaId, req.body));
+  resolve(req, res, MediaController.updateMedia(req.user.principal_id, req.params.mediaId, req.body));
 }
 
 function deleteMedia(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, MediaController.deleteMedia(req.params.mediaId));
+  resolve(req, res, MediaController.deleteMedia(req.user.principal_id, req.params.mediaId));
 }

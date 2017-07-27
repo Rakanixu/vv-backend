@@ -5,6 +5,7 @@ import { Media } from './media.model';
 const MEDIA = 'media';
 const COLUMNS = [
   'id',
+  'principal_id',
   'url'
 ];
 
@@ -15,23 +16,28 @@ export class MediaDB {
     this.knex = dbClient;
   }
 
-  public async getMedias() {
-    return this.knex(MEDIA).select(COLUMNS);
+  public async getMedias(principalId: number) {
+    return this.knex(MEDIA).select(COLUMNS).where('principal_id', principalId);
   }
 
-  public async createMedia(Media: Media) {
-    return this.knex(MEDIA).insert(Media).returning(COLUMNS);
+  public async createMedia(principalId: number, media: Media) {
+    media.principal_id = principalId;
+    return this.knex(MEDIA).insert(media).returning(COLUMNS);
   }
 
-  public async getMedia(mediaId: number) {
-    return this.knex(MEDIA).select(COLUMNS).where('id', mediaId);
+  public async getMedia(principalId: number, mediaId: number) {
+    return this.knex(MEDIA).select(COLUMNS).where('principal_id', principalId).where('id', mediaId);
   }
 
-  public async updateMedia(mediaId: number, media: Media) {
-    return this.knex(MEDIA).update(media).where('id', mediaId).returning(COLUMNS);
+  public async updateMedia(principalId: number, mediaId: number, media: Media) {
+    return this.knex(MEDIA)
+      .update(media)
+      .where('principal_id', principalId)
+      .where('id', mediaId)
+      .returning(COLUMNS);
   }
 
-  public async deleteMedia(mediaId: number) {
-    return this.knex.delete().from(MEDIA).where('id', mediaId);
+  public async deleteMedia(principalId: number, mediaId: number) {
+    return this.knex.delete().from(MEDIA).where('principal_id', principalId).where('id', mediaId);
   }
 }

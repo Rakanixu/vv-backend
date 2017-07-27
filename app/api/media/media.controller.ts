@@ -3,22 +3,22 @@ import { Media } from './media.model';
 
 const mediaDB = new MediaDB();
 
-export async function getMedias() {
-  return mediaDB.getMedias();
+export async function getMedias(principalId: number) {
+  return mediaDB.getMedias(principalId);
 }
 
-export async function createMedia(media: Media) {
-  return mediaDB.createMedia(media);
+export async function createMedia(principalId: number, media: Media) {
+  return mediaDB.createMedia(principalId, media);
 }
 
-export async function getMedia(mediaId: number) {
-  return mediaDB.getMedia(mediaId);
+export async function getMedia(principalId: number, mediaId: number) {
+  return mediaDB.getMedia(principalId, mediaId);
 }
 
-export async function updateMedia(mediaId: number, media: Media) {
-  return mediaDB.updateMedia(mediaId, media);
+export async function updateMedia(principalId: number, mediaId: number, media: Media) {
+  return mediaDB.updateMedia(principalId, mediaId, media);
 }
 
-export async function deleteMedia(mediaId: number) {
-  return mediaDB.deleteMedia(mediaId);
+export async function deleteMedia(principalId: number, mediaId: number) {
+  return mediaDB.deleteMedia(principalId, mediaId);
 }
