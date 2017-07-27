@@ -49,8 +49,7 @@ export class EventDB {
   }
 
   public async updateEvent(principalId: number, eventId: number, event: Event) {
-    event.principal_id = principalId;
-    return this.knex(EVENT).update(event).where('id', eventId).returning(COLUMNS);
+    return this.knex(EVENT).update(event).where('principal_id', principalId).where('id', eventId).returning(COLUMNS);
   }
 
   public async deleteEvent(principalId: number, eventId: number) {
