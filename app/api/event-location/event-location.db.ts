@@ -21,23 +21,28 @@ export class EventLocationDB {
     this.knex = dbClient;
   }
 
-  public async getEventLocations() {
-    return this.knex(EVENT_LOCATION).select(COLUMNS);
+  public async getEventLocations(principalId: number) {
+    return this.knex(EVENT_LOCATION).where('principal_id', principalId).select(COLUMNS);
   }
 
-  public async createEventLocation(eventLocation: EventLocation) {
+  public async createEventLocation(principalId: number, eventLocation: EventLocation) {
+    eventLocation.principal_id = principalId;
     return this.knex(EVENT_LOCATION).insert(eventLocation).returning(COLUMNS);
   }
 
-  public async getEventLocation(eventLocationId: number) {
-    return this.knex(EVENT_LOCATION).where('id', eventLocationId).select(COLUMNS);
+  public async getEventLocation(principalId: number, eventLocationId: number) {
+    return this.knex(EVENT_LOCATION).where('principal_id', principalId).where('id', eventLocationId).select(COLUMNS);
   }
 
-  public async updateEventLocation(eventLocationId: number, eventLocation: EventLocation) {
-    return this.knex(EVENT_LOCATION).where('id', eventLocationId).update(eventLocation).returning(COLUMNS);
+  public async updateEventLocation(principalId: number, eventLocationId: number, eventLocation: EventLocation) {
+    return this.knex(EVENT_LOCATION)
+      .where('principal_id', principalId)
+      .where('id', eventLocationId)
+      .update(eventLocation)
+      .returning(COLUMNS);
   }
 
-  public async deleteEventLocation(eventLocationId: number) {
-    return this.knex.delete().from(EVENT_LOCATION).where('id', eventLocationId);
+  public async deleteEventLocation(principalId: number, eventLocationId: number) {
+    return this.knex.delete().from(EVENT_LOCATION).where('principal_id', principalId).where('id', eventLocationId);
   }
 }
