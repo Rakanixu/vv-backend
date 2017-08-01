@@ -1,0 +1,130 @@
+swagger: '2.0'
+
+################################################################################
+#                              API Information                                 #
+################################################################################
+info:
+  version: "0.0.0"
+  title: AlantuJS Auth API
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+################################################################################
+#                                   Paths                                      #
+################################################################################
+paths:
+  # Event REST endpoints
+  /login:
+    post:
+      description: |
+        Logins a user
+      parameters:
+        - name: LoginRequest
+          in: body
+          description: Login details
+          schema:
+            $ref: '#/definitions/LoginRequest'
+          required: true
+      responses:
+        200:
+          description: Authentication token.
+          schema:
+            title: event
+            type: object
+            items:
+              $ref: '#/definitions/LoginResponse'
+
+  /activate:
+    post:
+      description: |
+        Activates a user account
+      parameters:
+        - name: ActivateRequest
+          in: body
+          description: Activation details
+          schema:
+            $ref: '#/definitions/ActivationRequest'
+          required: true
+      responses:
+        200:
+          description: User activated.
+          schema:
+            title: event
+            type: object
+            items:
+              $ref: '#/definitions/User'
+
+################################################################################
+#                                 Definitions                                #
+################################################################################
+definitions:
+
+  LoginRequest:
+    type: object
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+
+  LoginResponse:
+    type: object
+    properties:
+      token:
+        type: string
+
+  ActivationRequest:
+    type: object
+    properties:
+      userId:
+        type: integer
+      activationToken:
+        type: string
+
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      role_id:
+        type: integer
+        format: int32
+      principal_id:
+        type: integer
+        format: int32
+      username:
+        type: string
+      email:
+        type: string
+      salt:
+        type: string
+      password:
+        type: string
+      created_at:
+        type: integer
+        format: int64
+      updated_at:
+        type: integer
+        format: int64
+      language:
+        type: string
+      last_login_at:
+        type: integer
+        format: int64
+      last_logout_at:
+        type: integer
+        format: int64
+      last_activity_at:
+        type: integer
+        format: int64
+      deleted_at:
+        type: integer
+        format: int64
+      avatar:
+        type: string
+      timezone:
+        type: string

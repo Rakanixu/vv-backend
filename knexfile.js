@@ -7,8 +7,8 @@ module.exports = {
       host: 'localhost',
       port: 5432,
       database: 'postgres',
-      user:     'postgres',
-      password: 'postgres'
+      user:     'alantujs',
+      password: 'thepassword1234'
     }
   },
 
@@ -27,9 +27,9 @@ module.exports = {
     }
   }
 
-  /* 
+  /*
   production values set via environment variables DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASS
-  
+
   production: {
     client: 'postgresql',
     connection: {
@@ -44,7 +44,7 @@ module.exports = {
       max: 10
     }
   }
-  
+
   */
 
 };

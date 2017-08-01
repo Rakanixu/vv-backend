@@ -13,6 +13,13 @@ interface Config {
     sessionSecret: string;
     sessionTokenDuration: number;
     sessionCookieName: string;
+    sparkpost: {
+      apiKey: string;
+      sandbox: boolean;
+      templates: {
+        userActivation: string;
+      }
+    };
 }
 
 export let config: Config = {
@@ -44,6 +51,13 @@ export let config: Config = {
   // secret used for generating secure tokens
   sessionSecret: 'sda4tgghsc&32fg!!fdd',
   sessionTokenDuration: 60 * 60 * 5,
-  sessionCookieName: 'jwt_token'
+  sessionCookieName: 'jwt_token',
+  sparkpost: {
+    apiKey: process.env.SPARKPOST_API_KEY || 'b99c452431f9bdaf9c16f468875bf82fbc2a3451',
+    sandbox: true,
+    templates: {
+      userActivation: 'my-first-email'
+    }
+  }
 };
 

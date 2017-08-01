@@ -1,0 +1,2186 @@
+swagger: '2.0'
+
+################################################################################
+#                              API Information                                 #
+################################################################################
+info:
+  version: "0.0.0"
+  title: AlantuJS REST API
+
+basePath: /api/v1
+consumes:
+  - application/json
+produces:
+  - application/json
+
+################################################################################
+#                                   Paths                                      #
+################################################################################
+paths:
+  # Event REST endpoints
+  /event:
+    get:
+      description: |
+        List all 'Events'
+      responses:
+        200:
+          description:  List all events
+          schema:
+            title: events
+            type: array
+            items:
+              $ref: '#/definitions/Event'
+    post:
+      description: |
+        Create a 'Event' object.
+      parameters:
+        - name: principal_id
+          in: query
+          type: integer
+          description: Principal which owns event
+          required: true
+        - name: user_id
+          in: query
+          type: integer
+          description: User who owns event
+          required: true
+        - name: event_type_id
+          in: query
+          type: integer
+          description: Event type for event
+          required: true
+        - name: event
+          in: body
+          description: The event JSON you want to post
+          schema:
+            $ref: '#/definitions/Event'
+          required: true
+      responses:
+        200:
+          description: Create an event.
+
+  /event/{eventId}:
+    get:
+      description: |
+        Get `Event` object.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get an events
+          schema:
+            title: event
+            type: object
+            items:
+              $ref: '#/definitions/Event'
+    put:
+      description: |
+        Update `Event` object.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+      responses:
+        200:
+          description:  |
+            Update an existing event.
+          schema:
+            title: event
+            type: object
+            items:
+              $ref: '#/definitions/Event'
+    delete:
+      description: |
+        Delete an 'Event'.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+      responses:
+        200:
+          description: Deletes an event.
+
+  # Admission REST endpoints
+  /event/{eventId}/admission:
+    get:
+      description: |
+        List all 'Admissions' given an event
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+      responses:
+        200:
+          description:  List all admissions from an event
+          schema:
+            title: admissions
+            type: array
+            items:
+              $ref: '#/definitions/Admission'
+    post:
+      description: |
+        Create an 'Admission' object.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: admission
+          in: body
+          description: The admission JSON you want to post
+          schema:
+            $ref: '#/definitions/Admission'
+          required: true
+      responses:
+        200:
+          description: Create an admission given an event.
+
+  /event/{eventId}/admission/{admissionId}:
+    get:
+      description: |
+        Get `Admission` object.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: admissionId
+          in: path
+          type: integer
+          description: Admission identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get an admission
+          schema:
+            title: admission
+            type: object
+            items:
+              $ref: '#/definitions/Admission'
+    put:
+      description: |
+        Update `admission` object.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: admissionId
+          in: path
+          type: integer
+          description: Admission identifier
+          required: true
+      responses:
+        200:
+          description:  |
+            Update an existing admission.
+          schema:
+            title: admission
+            type: object
+            items:
+              $ref: '#/definitions/Admission'
+    delete:
+      description: |
+        Delete an 'Admission'.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: admissionId
+          in: path
+          type: integer
+          description: Admission identifier
+          required: true
+      responses:
+        200:
+          description: Deletes an admission.
+
+  # Image REST endpoints
+  /event/{eventId}/image:
+    get:
+      description: |
+        List all 'Images' given an event. (Slider Images)
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+      responses:
+        200:
+          description:  List all images from an event
+          schema:
+            title: images
+            type: array
+            items:
+              $ref: '#/definitions/Image'
+    post:
+      description: |
+        Create an 'Image' object.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: image
+          in: body
+          description: The image JSON you want to post
+          schema:
+            $ref: '#/definitions/Image'
+          required: true
+      responses:
+        200:
+          description: Create an image given for a event.
+
+  /event/{eventId}/image/{imageId}:
+    get:
+      description: |
+        Get `Image` object.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: imageId
+          in: path
+          type: integer
+          description: Image identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get an image
+          schema:
+            title: image
+            type: object
+            items:
+              $ref: '#/definitions/Image'
+    put:
+      description: |
+        Update `image` object from event.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: imageId
+          in: path
+          type: integer
+          description: Image identifier
+          required: true
+      responses:
+        200:
+          description:  |
+            Update an existing image from an event.
+          schema:
+            title: image
+            type: object
+            items:
+              $ref: '#/definitions/Image'
+    delete:
+      description: |
+        Delete an 'Image' from an Event.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Admission identifier
+          required: true
+        - name: imageId
+          in: path
+          type: integer
+          description: Image identifier
+          required: true
+      responses:
+        200:
+          description: Deletes an image.
+
+  # Participant REST endpoints
+  /event/{eventId}/participant:
+    get:
+      description: |
+        List all 'Participants' given an event
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+      responses:
+        200:
+          description:  List all participants from an event
+          schema:
+            title: participants
+            type: array
+            items:
+              $ref: '#/definitions/Participant'
+    post:
+      description: |
+        Create an 'Participant' object.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: participant
+          in: body
+          description: The participant JSON you want to post
+          schema:
+            $ref: '#/definitions/Participant'
+          required: true
+      responses:
+        200:
+          description: Create a participant given an event.
+
+  /event/{eventId}/participant/{participantId}:
+    get:
+      description: |
+        Get `Participant` object.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: participantId
+          in: path
+          type: integer
+          description: Participant identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get an participant
+          schema:
+            title: participant
+            type: object
+            items:
+              $ref: '#/definitions/Admission'
+    put:
+      description: |
+        Updates `Participant` object.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: participantId
+          in: path
+          type: integer
+          description: Participant identifier
+          required: true
+      responses:
+        200:
+          description:  |
+            Update an existing participant.
+          schema:
+            title: participant
+            type: object
+            items:
+              $ref: '#/definitions/Participant'
+    delete:
+      description: |
+        Deletes an 'Participant'.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: participantId
+          in: path
+          type: integer
+          description: Participant identifier
+          required: true
+      responses:
+        200:
+          description: Deletes a participant.
+
+  # Named Guest REST endpoints
+  /event/{eventId}/named_guest:
+    get:
+      description: |
+        List all 'Named Guest' given an event
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+      responses:
+        200:
+          description:  List all named guest from an event
+          schema:
+            title: named_guests
+            type: array
+            items:
+              $ref: '#/definitions/NamedGuest'
+    post:
+      description: |
+        Create a 'Named Guest' object.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: named_guest
+          in: body
+          description: The named guest JSON you want to post
+          schema:
+            $ref: '#/definitions/NamedGuest'
+          required: true
+      responses:
+        200:
+          description: Create a named guest given an event.
+
+  /event/{eventId}/named_guest/{namedGuestId}:
+    get:
+      description: |
+        Get `Named Guest` object.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: namedGuestId
+          in: path
+          type: integer
+          description: Named guest identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get an named guest
+          schema:
+            title: named_guest
+            type: object
+            items:
+              $ref: '#/definitions/NamedGuest'
+    put:
+      description: |
+        Updates `Named Guest` object.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: namedGuestId
+          in: path
+          type: integer
+          description: Named guest identifier
+          required: true
+      responses:
+        200:
+          description:  |
+            Update an existing participant.
+          schema:
+            title: named_guest
+            type: object
+            items:
+              $ref: '#/definitions/NamedGuest'
+    delete:
+      description: |
+        Deletes an 'Named Guest'.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: namedGuestId
+          in: path
+          type: integer
+          description: Named guest identifier
+          required: true
+      responses:
+        200:
+          description: Deletes a named guest.
+
+  # Auction REST endpoints
+  /event/{eventId}/auction:
+    get:
+      description: |
+        List all 'Auctions' given an event
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+      responses:
+        200:
+          description:  List all auctions from an event
+          schema:
+            title: auctions
+            type: array
+            items:
+              $ref: '#/definitions/Auction'
+    post:
+      description: |
+        Create an 'Auction' object.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: auction
+          in: body
+          description: The Auction JSON you want to post
+          schema:
+            $ref: '#/definitions/Auction'
+          required: true
+      responses:
+        200:
+          description: Create an auction for an event.
+
+  /event/{eventId}/auction/{auctionId}:
+    get:
+      description: |
+        Get 'Auction'
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: auctionId
+          in: path
+          type: integer
+          description: Auction identifier
+          required: true
+      responses:
+        200:
+          description:  Get an auction
+          schema:
+            title: auction
+            type: object
+            items:
+              $ref: '#/definitions/Auction'
+    put:
+      description: |
+        Update a 'Question topic' object from an event.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: auctionId
+          in: path
+          type: integer
+          description: Auction identifier
+          required: true
+        - name: auction
+          in: body
+          description: The Auction JSON you want to update
+          schema:
+            $ref: '#/definitions/Auction'
+          required: true
+      responses:
+        200:
+          description: Update a auction for an event.
+    delete:
+      description: |
+        Delete an 'Auction' object from an event.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: auctionId
+          in: path
+          type: integer
+          description: Auction identifier
+          required: true
+      responses:
+        200:
+          description: Delete an auction from an event.
+
+  # Bid API endpoints
+  /auction/{auctionId}/bid:
+    get:
+      description: |
+        Get all `Bid` objects from an Auction.
+      parameters:
+        - name: auctionId
+          in: path
+          type: integer
+          description: Auction identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get all bids from Auction
+          schema:
+            title: bids
+            type: array
+            items:
+              $ref: '#/definitions/Bid'
+    post:
+      description: |
+        Create a  `Bid` object for an Auction.
+      parameters:
+        - name: auctionId
+          in: path
+          type: integer
+          description: Auction identifier
+          required: true
+        - name: user_id
+          in: query
+          type: integer
+          description: User who bids
+        - name: bid
+          in: body
+          description: The Bid JSON you want to create
+          schema:
+            $ref: '#/definitions/Bid'
+          required: true
+      responses:
+        200:
+          description: Create a Bid for an Auction belonging to an event.
+
+  /auction/{auctionId}/bid/{bidId}:
+    get:
+      description: |
+        Get a `Bid` object from an Auction.
+      parameters:
+        - name: auctionId
+          in: path
+          type: integer
+          description: Auction identifier
+          required: true
+        - name: bidId
+          in: path
+          type: integer
+          description: Bid identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get a Bid from Auction belonging to am Event
+          schema:
+            title: bid
+            type: object
+            items:
+              $ref: '#/definitions/Bid'
+    put:
+      description: |
+        Update a `Bid` object from an Auction.
+      parameters:
+        - name: auctionId
+          in: path
+          type: integer
+          description: Auction identifier
+          required: true
+        - name: bidId
+          in: path
+          type: integer
+          description: Bid identifier
+          required: true
+        - name: bid
+          in: body
+          description: The Bid JSON you want to update
+          schema:
+            $ref: '#/definitions/Bid'
+          required: true
+      responses:
+        200:
+          description:  |
+            Update an existing bid.
+          schema:
+            title: Question
+            type: object
+            items:
+              $ref: '#/definitions/Bid'
+    delete:
+      description: |
+        Delete a `Bid` object from an Auction.
+      parameters:
+        - name: auctionId
+          in: path
+          type: integer
+          description: Auction identifier
+          required: true
+        - name: bidId
+          in: path
+          type: integer
+          description: Bid identifier
+          required: true
+      responses:
+        200:
+          description: Deletes a bid.
+
+  # Question topic REST endpoints
+  /event/{eventId}/question_topic:
+    get:
+      description: |
+        List all 'Question topics' given an event
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+      responses:
+        200:
+          description:  List all question topics from an event
+          schema:
+            title: question_topics
+            type: array
+            items:
+              $ref: '#/definitions/QuestionTopic'
+    post:
+      description: |
+        Create a 'Question topic' object.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: question_topic
+          in: body
+          description: The Question topic JSON you want to post
+          schema:
+            $ref: '#/definitions/QuestionTopic'
+          required: true
+      responses:
+        200:
+          description: Create a question topic for an event.
+
+  /event/{eventId}/question_topic/{questionTopicId}:
+    put:
+      description: |
+        Update a 'Question topic' object from an event.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: questionTopicId
+          in: path
+          type: integer
+          description: Question topic identifier
+          required: true
+        - name: question_topic
+          in: body
+          description: The Question topic JSON you want to update
+          schema:
+            $ref: '#/definitions/QuestionTopic'
+          required: true
+      responses:
+        200:
+          description: Update a question topic for an event.
+    delete:
+      description: |
+        Delete a 'Question topic' object from an event.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: questionTopicId
+          in: path
+          type: integer
+          description: Question topic identifier
+          required: true
+      responses:
+        200:
+          description: Delete a question topic for an event.
+
+  # Question API endpoints
+  /question_topic/{questionTopicId}/question:
+    get:
+      description: |
+        Get all `Questions` object from a Question Topic.
+      parameters:
+        - name: questionTopicId
+          in: path
+          type: integer
+          description: Question topic identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get all questions from Question topic
+          schema:
+            title: questions
+            type: array
+            items:
+              $ref: '#/definitions/Question'
+    post:
+      description: |
+        Create a 'Question' object for a Question Topic belonging to an Event.
+      parameters:
+        - name: questionTopicId
+          in: path
+          type: integer
+          description: Question topic identifier
+          required: true
+        - name: question
+          in: body
+          description: The Question JSON you want to create
+          schema:
+            $ref: '#/definitions/Question'
+          required: true
+      responses:
+        200:
+          description: Create a question for a Question topic belonging to an event.
+
+  /question_topic/{questionTopicId}/question/{questionId}:
+    get:
+      description: |
+        Get all `Questions` object from a Question Topic.
+      parameters:
+        - name: questionTopicId
+          in: path
+          type: integer
+          description: Question topic identifier
+          required: true
+        - name: questionId
+          in: path
+          type: integer
+          description: Question identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get a questions from Question topic belonging to am Event
+          schema:
+            title: question
+            type: object
+            items:
+              $ref: '#/definitions/Question'
+    put:
+      description: |
+        Update a 'Question' object for a Question Topic.
+      parameters:
+        - name: questionTopicId
+          in: path
+          type: integer
+          description: Question topic identifier
+          required: true
+        - name: questionId
+          in: path
+          type: integer
+          description: Question identifier
+          required: true
+        - name: question
+          in: body
+          description: The Question JSON you want to update
+          schema:
+            $ref: '#/definitions/Question'
+          required: true
+      responses:
+        200:
+          description:  |
+            Update an existing question.
+          schema:
+            title: question
+            type: object
+            items:
+              $ref: '#/definitions/Question'
+    delete:
+      description: |
+        Delete a 'Question' from a Question topic.
+      parameters:
+        - name: questionTopicId
+          in: path
+          type: integer
+          description: Question topic identifier
+          required: true
+        - name: questionId
+          in: path
+          type: integer
+          description: Question identifier
+          required: true
+      responses:
+        200:
+          description: Deletes a question.
+
+  # Quiz REST endpoints
+  /event/{eventId}/quiz:
+    get:
+      description: |
+        List all 'Quizs' given an event
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+      responses:
+        200:
+          description:  List all Quizs from an event
+          schema:
+            title: quizs
+            type: array
+            items:
+              $ref: '#/definitions/Quiz'
+    post:
+      description: |
+        Create a 'Quiz' object.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: question_topic
+          in: body
+          description: The Quiz JSON you want to post
+          schema:
+            $ref: '#/definitions/Quiz'
+          required: true
+      responses:
+        200:
+          description: Create a Quiz for an event.
+
+  /event/{eventId}/quiz/{quizId}:
+    put:
+      description: |
+        Update a 'Quiz' object from an event.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: quizId
+          in: path
+          type: integer
+          description: Quiz identifier
+          required: true
+        - name: quiz
+          in: body
+          description: The Quiz topic JSON you want to update
+          schema:
+            $ref: '#/definitions/Quiz'
+          required: true
+      responses:
+        200:
+          description: Update a Quiz for an event.
+    delete:
+      description: |
+        Delete a 'Quiz' object from an event.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: quizId
+          in: path
+          type: integer
+          description: Quiz identifier
+          required: true
+      responses:
+        200:
+          description: Delete a Quiz for an event.
+
+  # Quiz entry API endpoints
+  /quiz/{quizId}/quiz_entry:
+    get:
+      description: |
+        Get all `Quiz entries` from a Quiz.
+      parameters:
+        - name: quizId
+          in: path
+          type: integer
+          description: Quiz identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get all quiz entries from a Quiz
+          schema:
+            title: quiz_entries
+            type: array
+            items:
+              $ref: '#/definitions/QuizEntry'
+    post:
+      description: |
+        Create a 'Quiz entry' object for a Quiz.
+      parameters:
+        - name: quizId
+          in: path
+          type: integer
+          description: Quiz identifier
+          required: true
+        - name: quiz_entry
+          in: body
+          description: The Quiz entry JSON you want to create
+          schema:
+            $ref: '#/definitions/QuizEntry'
+          required: true
+      responses:
+        200:
+          description: Create a Quiz entry for a Quiz.
+
+  /quiz/{quizId}/quiz_entry/{quizEntryId}:
+    get:
+      description: |
+        Get `Quiz Entry` object from a Quiz.
+      parameters:
+        - name: quizId
+          in: path
+          type: integer
+          description: Quiz identifier
+          required: true
+        - name: quizEntryId
+          in: path
+          type: integer
+          description: Quiz entry identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get a Quiz entry from Quiz
+          schema:
+            title: quiz_entry
+            type: object
+            items:
+              $ref: '#/definitions/QuizEntry'
+    put:
+      description: |
+        Update a `Quiz Entry` object from a Quiz.
+      parameters:
+        - name: quizId
+          in: path
+          type: integer
+          description: Quiz identifier
+          required: true
+        - name: quizEntryId
+          in: path
+          type: integer
+          description: Quiz entry identifier
+          required: true
+        - name: quiz_entry
+          in: body
+          description: The Quiz entry JSON you want to update
+          schema:
+            $ref: '#/definitions/QuizEntry'
+          required: true
+      responses:
+        200:
+          description:  |
+            Update an existing quiz entry.
+          schema:
+            title: Question
+            type: object
+            items:
+              $ref: '#/definitions/QuizEntry'
+    delete:
+      description: |
+        Delete a `Quiz Entry` object from a Quiz.
+      parameters:
+        - name: quizId
+          in: path
+          type: integer
+          description: Quiz identifier
+          required: true
+        - name: quizEntryId
+          in: path
+          type: integer
+          description: Quiz entry identifier
+          required: true
+      responses:
+        200:
+          description: Deletes a quiz entry.
+
+  # Poll REST endpoints
+  /event/{eventId}/poll:
+    get:
+      description: |
+        List all 'Polls' given an event
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+      responses:
+        200:
+          description:  List all polls from an event
+          schema:
+            title: polls
+            type: array
+            items:
+              $ref: '#/definitions/Poll'
+    post:
+      description: |
+        Create a 'Poll' object.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: poll
+          in: body
+          description: The poll JSON you want to post
+          schema:
+            $ref: '#/definitions/Poll'
+          required: true
+      responses:
+        200:
+          description: Create a poll.
+
+  /event/{eventId}/poll/{pollId}:
+    get:
+      description: |
+        Get `Poll` object.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: pollId
+          in: path
+          type: integer
+          description: Poll identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get a poll
+          schema:
+            title: Polls
+            type: object
+            items:
+              $ref: '#/definitions/Poll'
+    put:
+      description: |
+        Update a 'Poll' object.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: pollId
+          in: path
+          type: integer
+          description: Poll identifier
+          required: true
+        - name: poll
+          in: body
+          description: The poll JSON you want to post
+          schema:
+            $ref: '#/definitions/Poll'
+          required: true
+      responses:
+        200:
+          description: Update a poll.
+    delete:
+      description: |
+        Delete a 'Poll'.
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: pollId
+          in: path
+          type: integer
+          description: Poll identifier
+          required: true
+      responses:
+        200:
+          description: Deletes a poll.
+
+  /poll/{pollId}/poll_entry:
+    get:
+      description: |
+        List all 'Polls entries' given a Poll.
+      parameters:
+        - name: pollId
+          in: path
+          type: integer
+          description: Poll identifier
+          required: true
+      responses:
+        200:
+          description: List all poll entries from a poll
+          schema:
+            title: poll_entries
+            type: array
+            items:
+              $ref: '#/definitions/PollEntry'
+    post:
+      description: |
+        Create a 'Poll Entry' object given a Poll.
+      parameters:
+        - name: pollId
+          in: path
+          type: integer
+          description: Poll identifier
+          required: true
+        - name: poll_entry
+          in: body
+          description: The poll entry JSON you want to post
+          schema:
+            $ref: '#/definitions/PollEntry'
+          required: true
+      responses:
+        200:
+          description: Create a poll entry.
+
+  /poll/{pollId}/poll_entry/{pollEntryId}:
+    get:
+      description: |
+        Get a `Poll Entry` object from a Poll.
+      parameters:
+        - name: pollId
+          in: path
+          type: integer
+          description: Poll identifier
+          required: true
+        - name: pollEntryId
+          in: path
+          type: integer
+          description: Poll Entry identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get a poll Entry from a Poll
+          schema:
+            title: PollEntry
+            type: object
+            items:
+              $ref: '#/definitions/PollEntry'
+    put:
+      description: |
+        Updates a `Poll Entry` object from a Poll.
+      parameters:
+        - name: pollId
+          in: path
+          type: integer
+          description: Poll identifier
+          required: true
+        - name: pollEntryId
+          in: path
+          type: integer
+          description: Poll Entry identifier
+          required: true
+        - name: poll_entry
+          in: body
+          description: The PollEntry JSON you want to update
+          schema:
+            $ref: '#/definitions/PollEntry'
+          required: true
+      responses:
+        200:
+          description:  |
+            Update an existing poll entry.
+          schema:
+            title: question
+            type: object
+            items:
+              $ref: '#/definitions/PollEntry'
+    delete:
+      description: |
+        Deletes a `Poll Entry` object from a Poll.
+      parameters:
+        - name: pollId
+          in: path
+          type: integer
+          description: Poll identifier
+          required: true
+        - name: pollEntryId
+          in: path
+          type: integer
+          description: Poll Entry identifier
+          required: true
+      responses:
+        200:
+          description: Deletes a poll entry.
+
+  # Payment REST endpoints
+  /payment:
+    get:
+      description: |
+        List all 'Payments'
+      responses:
+        200:
+          description:  List all payments
+          schema:
+            title: payments
+            type: array
+            items:
+              $ref: '#/definitions/Payment'
+    post:
+      description: |
+        Create a 'Payment' object.
+      parameters:
+        - name: user_id
+          in: query
+          type: integer
+          description: User who makes the payment
+          required: true
+        - name: payment
+          in: body
+          description: The payment JSON you want to post
+          schema:
+            $ref: '#/definitions/Payment'
+          required: true
+      responses:
+        200:
+          description: Create a payment.
+
+  /payment/{paymentId}:
+    get:
+      description: |
+        Get `Payment` object.
+      parameters:
+        - name: paymentId
+          in: path
+          type: integer
+          description: Payment identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get a payment
+          schema:
+            title: payment
+            type: object
+            items:
+              $ref: '#/definitions/Payment'
+
+  /payment/{paymentId}/donation:
+    get:
+      description: |
+        List all 'Donations' given a Payment.
+      parameters:
+        - name: paymentId
+          in: path
+          type: integer
+          description: Payment identifier
+          required: true
+      responses:
+        200:
+          description:  List all donations from a payment
+          schema:
+            title: donations
+            type: array
+            items:
+              $ref: '#/definitions/Donation'
+    post:
+      description: |
+        Create a 'Donation' given a Payment.
+      parameters:
+        - name: paymentId
+          in: path
+          type: integer
+          description: Payment identifier
+          required: true
+        - name: principal_id
+          in: query
+          type: integer
+          description: Princiapl who makes the donation
+          required: true
+        - name: donation
+          in: body
+          description: The donation entry JSON you want to post
+          schema:
+            $ref: '#/definitions/Donation'
+          required: true
+      responses:
+        200:
+          description: Create a donation.
+
+  /payment/{paymentId}/donation/{donationId}:
+    get:
+      description: |
+        Get a `Donation` object from a Payment.
+      parameters:
+        - name: paymentId
+          in: path
+          type: integer
+          description: Payment identifier
+          required: true
+        - name: donationId
+          in: path
+          type: integer
+          description: Donation identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get a donation from a payment
+          schema:
+            title: donation
+            type: object
+            items:
+              $ref: '#/definitions/Donation'
+
+  /donation:
+    get:
+      description: |
+        List all 'Donations'.
+      responses:
+        200:
+          description:  List all donations
+          schema:
+            title: donations
+            type: array
+            items:
+              $ref: '#/definitions/Donation'
+    post:
+      description: |
+        Create a 'Donation'.
+      parameters:
+        - name: donation
+          in: body
+          description: The donation entry JSON you want to post
+          schema:
+            $ref: '#/definitions/Donation'
+          required: true
+      responses:
+        200:
+          description: Create a donation.
+
+  /donation/{donationId}:
+    get:
+      description: |
+        Get a `Donation` object.
+      parameters:
+        - name: donationId
+          in: path
+          type: integer
+          description: Donation identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get a donation
+          schema:
+            title: donation
+            type: object
+            items:
+              $ref: '#/definitions/Donation'
+
+  # Principal REST endpoints
+  /principal:
+    get:
+      description: |
+        List all 'Principals'
+      responses:
+        200:
+          description:  List all principals
+          schema:
+            title: principals
+            type: array
+            items:
+              $ref: '#/definitions/Principal'
+    post:
+      description: |
+        Create a 'Principal' object.
+      parameters:
+        - name: principal
+          in: body
+          description: The principal JSON you want to post
+          schema:
+            $ref: '#/definitions/Principal'
+          required: true
+      responses:
+        200:
+          description: Create a principal.
+
+  /principal/{principalId}:
+    get:
+      description: |
+        Get `Principal` object.
+      parameters:
+        - name: principalId
+          in: path
+          type: integer
+          description: Principal identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get a principal
+          schema:
+            title: pricipal
+            type: object
+            items:
+              $ref: '#/definitions/Principal'
+    put:
+      description: |
+        Update `Principal` object.
+      parameters:
+        - name: principalId
+          in: path
+          type: integer
+          description: Principal identifier
+          required: true
+      responses:
+        200:
+          description:  |
+            Update an existing principal.
+          schema:
+            title: principal
+            type: object
+            items:
+              $ref: '#/definitions/Principal'
+    delete:
+      description: |
+        Delete a 'Principal'.
+      parameters:
+        - name: principalId
+          in: path
+          type: integer
+          description: Principal identifier
+          required: true
+      responses:
+        200:
+          description: Deletes a principal.
+
+  # User REST endpoints
+  /user:
+    get:
+      description: |
+        List all 'Users'
+      responses:
+        200:
+          description:  List all users
+          schema:
+            title: users
+            type: array
+            items:
+              $ref: '#/definitions/User'
+    post:
+      description: |
+        Create a 'User' object.
+      parameters:
+        - name: user
+          in: body
+          description: The user JSON you want to post
+          schema:
+            $ref: '#/definitions/User'
+          required: true
+      responses:
+        200:
+          description: Create a user.
+
+  /user/{userId}:
+    get:
+      description: |
+        Get `User` object.
+      parameters:
+        - name: userId
+          in: path
+          type: integer
+          description: User identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get a user
+          schema:
+            title: user
+            type: object
+            items:
+              $ref: '#/definitions/User'
+    put:
+      description: |
+        Update `user` object.
+      parameters:
+        - name: userId
+          in: path
+          type: integer
+          description: User identifier
+          required: true
+      responses:
+        200:
+          description:  |
+            Update an existing user.
+          schema:
+            title: Users
+            type: object
+            items:
+              $ref: '#/definitions/User'
+    delete:
+      description: |
+        Delete a 'User'.
+      parameters:
+        - name: userId
+          in: path
+          type: integer
+          description: User identifier
+          required: true
+      responses:
+        200:
+          description: Deletes a user.
+
+  # Role REST endpoint
+  /role:
+    get:
+      description: |
+        List all 'Roles'
+      responses:
+        200:
+          description:  List all roles
+          schema:
+            title: roles
+            type: array
+            items:
+              $ref: '#/definitions/Role'
+
+  # Event Location REST endpoints
+  /event_location:
+    get:
+      description: |
+        List all 'Event Location'
+      responses:
+        200:
+          description:  List all Event Locations
+          schema:
+            title: event_locations
+            type: array
+            items:
+              $ref: '#/definitions/EventLocation'
+    post:
+      description: |
+        Create a 'Event Location' object.
+      parameters:
+        - name: principal_id
+          in: query
+          description: Principal associated with event location
+          required: true
+          type: integer
+        - name: event_location
+          in: body
+          description: The event location JSON you want to post
+          schema:
+            $ref: '#/definitions/EventLocation'
+          required: true
+      responses:
+        200:
+          description: Create a event location.
+
+  /event_location/{eventLocationId}:
+    get:
+      description: |
+        Get `Event Location` object.
+      parameters:
+        - name: eventLocationId
+          in: path
+          type: integer
+          description: Event location identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get a event location
+          schema:
+            title: event_location
+            type: object
+            items:
+              $ref: '#/definitions/EventLocation'
+    put:
+      description: |
+        Update `Event Location` object.
+      parameters:
+        - name: eventLocationId
+          in: path
+          type: integer
+          description: Event location identifier
+          required: true
+        - name: event_location
+          in: body
+          description: The event location JSON you want to post
+          schema:
+            $ref: '#/definitions/EventLocation'
+          required: true
+      responses:
+        200:
+          description:  |
+            Update an existing event location.
+          schema:
+            title: event_location
+            type: object
+            items:
+              $ref: '#/definitions/EventLocation'
+    delete:
+      description: |
+        Delete a 'Event Location'.
+      parameters:
+        - name: eventLocationId
+          in: path
+          type: integer
+          description: Event location identifier
+          required: true
+      responses:
+        200:
+          description: Deletes a event location.
+
+################################################################################
+#                                 Definitions                                #
+################################################################################
+definitions:
+
+  Event:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      principal_id:
+        type: integer
+        format: int32
+      user_account_id:
+        type: integer
+        format: int32
+      event_type_id:
+        type: integer
+        format: int32
+      title:
+        type: string
+      notes:
+        type: string
+      location:
+        type: string
+      preview_img:
+        type: string
+      created_at:
+        type: integer
+        format: int64
+      updated_at:
+        type: integer
+        format: int64
+      deleted_at:
+        type: integer
+        format: int64
+      event_background:
+        type: string
+      login_required:
+        type: boolean
+      latitude:
+        type: number
+        format: double
+      longitude:
+        type: number
+        format: double
+      date:
+        type: integer
+        format: int64
+
+  Admission:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      event_id:
+        type: integer
+        format: int32
+      title:
+        type: string
+      subtitle:
+        type: string
+      price:
+        type: number
+        format: float
+      description:
+        type: string
+      icon:
+        type: string
+
+  Image:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      event_id:
+        type: integer
+        format: int32
+      title:
+        type: string
+      type:
+        type: string
+      img:
+        type: string
+
+  Participant:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      event_id:
+        type: integer
+        format: int32
+      name:
+        type: string
+      type:
+        type: string
+      avatar:
+        type: string
+
+  NamedGuest:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      event_id:
+        type: integer
+        format: int32
+      name:
+        type: string
+      main_media_type_id:
+        type: integer
+        format: int64
+      main_media:
+        type: string
+      media_start_time:
+        type: integer
+        format: int64
+      media_end_time:
+        type: integer
+        format: int64
+      description:
+        type: string
+      main_media_file:
+        type: string
+
+  Auction:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      event_id:
+        type: integer
+        format: int32
+      name:
+        type: string
+      title:
+        type: string
+      opened_at:
+        type: integer
+        format: int64
+      closed_at:
+        type: integer
+        format: int64
+      description:
+        type: string
+
+  Bid:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      auction_id:
+        type: integer
+        format: int32
+      user_id:
+        type: integer
+        format: int32
+      amount:
+        type: number
+        format: float
+      type:
+        type: integer
+        format: int32
+
+  QuestionTopic:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      event_id:
+        type: integer
+        format: int32
+      topic:
+        type: string
+      description:
+        type: string
+
+  Question:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      question_topic_id:
+        type: integer
+        format: int32
+      message:
+        type: string
+
+  Quiz:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      event_id:
+        type: integer
+        format: int32
+      name:
+        type: string
+      description:
+        type: string
+
+  QuizEntry:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      quiz_id:
+        type: integer
+        format: int32
+      answer_one:
+        type: string
+      answer_two:
+        type: string
+      answer_three:
+        type: string
+      answer_four:
+        type: string
+      right_solution:
+        type: integer
+        format: int32
+
+  Poll:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      event_id:
+        type: integer
+        format: int32
+      name:
+        type: string
+      description:
+        type: string
+
+  PollEntry:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      poll_id:
+        type: integer
+        format: int32
+      title:
+        type: string
+      count:
+        type: integer
+        format: int32
+      description:
+        type: string
+      icon:
+        type: string
+
+  Payment:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      user_id:
+        type: integer
+        format: int32
+      amount:
+        type: number
+        format: float
+      token:
+        type: string
+      description:
+        type: string
+
+  Donation:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      payment_id:
+        type: integer
+        format: int32
+      principal_id:
+        type: integer
+        format: int32
+      fisrtname:
+        type: string
+      lastname:
+        type: string
+      street:
+        type: string
+      city:
+        type: string
+      state:
+        type: string
+      zip:
+        type: string
+      country:
+        type: string
+      phone:
+        type: string
+      email:
+        type: string
+      job_state:
+        type: string
+      employer:
+        type: string
+      occupation:
+        type: string
+      birthday:
+        type: integer
+        format: int64
+      recurring:
+        type: boolean
+      recurring_end:
+        type: integer
+        format: int64
+      soource:
+        type: string
+
+  Principal:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      name:
+        type: string
+      domain:
+        type: string
+      description:
+        type: string
+      design:
+        type: string
+      primary_color:
+        type: string
+      secondary_color:
+        type: string
+      tags:
+        type: string
+      design_notes:
+        type: string
+      logo:
+        type: string
+      background:
+        type: string
+
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      role_id:
+        type: integer
+        format: int32
+      principal_id:
+        type: integer
+        format: int32
+      username:
+        type: string
+      email:
+        type: string
+      salt:
+        type: string
+      password:
+        type: string
+      created_at:
+        type: integer
+        format: int64
+      updated_at:
+        type: integer
+        format: int64
+      language:
+        type: string
+      last_login_at:
+        type: integer
+        format: int64
+      last_logout_at:
+        type: integer
+        format: int64
+      last_activity_at:
+        type: integer
+        format: int64
+      deleted_at:
+        type: integer
+        format: int64
+      avatar:
+        type: string
+      timezone:
+        type: string
+
+  Role:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      name:
+        type: string
+
+  EventLocation:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      principal_id:
+        type: integer
+        format: int32
+      title:
+        type: string
+      remark:
+        type: string
+      street:
+        type: string
+      zip:
+        type: string
+      city:
+        type: string
+      opening_hours:
+        type: string
+
+
+

@@ -31,12 +31,14 @@ export function configure() {
         secretOrKey: config.sessionSecret
     };
     const strategy = new JwtStrategy(jwtOptions, (payload: any, done: PassportJwt.VerifiedCallback) => {
-        let user: UserAccount;
-
-        uDB.getUser(null, payload.id).then(function(data) {
-            user = data[0];
-            delete user.password;
-            done(null, user);
+        uDB.getUser(null, payload.id).then(function(user) {
+            // user account must be activated!
+            if (user.activation_date) {
+                delete user.password;
+                done(null, user);
+            } else {
+                done(null, false);
+            }
         }).catch(function(err) {
             done(null, false);
         });
@@ -55,19 +57,47 @@ export function login(req: ICustomRequest, res: express.Response, next: express.
         const user: UserAccount = data[0];
 
         if (!user) {
-            res.status(401).json({ message: 'user not found' });
+            res.status(403).json({ message: 'user not found' });
             return;
         }
-
         // check password
         const hashedPass = hash(req.body.password);
          if (hashedPass === user.password) {
-            req.user = user;
-            setTokenCookie(req, res);
+             if (user.activation_date) {
+                req.user = user;
+                setTokenCookie(req, res);
+             } else {
+                res.status(401).json({ message: 'account not activated' });
+             }
         } else {
             res.status(401).json({ message: 'user or password incorrect' });
         }
-    }).catch(function() {
+    }).catch(function(err) {
+        res.status(401).json({ message: 'user not found.' });
+        return;
+    });
+}
+
+export function activateUser(req: express.Request, res: express.Response, next: express.NextFunction) {
+    const userId: number = req.body.userId;
+    const activationToken: string = req.body.activationToken;
+    if (!userId || !activationToken) {
+        res.status(401).json({ message: 'user not found.' });
+        return;
+    }
+    uDB.getUser(null, userId).then((user: UserAccount) => {
+        if (user != null && user.activation_token === activationToken) {
+            user.activation_date = new Date();
+            uDB.updateUserById(userId, user).then(() => {
+                console.log(`User ${user[0].email} activated!`);
+                res.json(user);
+            }).catch((err) => {
+                res.status(401).json({ message: 'user not found.' });
+            });
+        } else {
+            res.status(401).json({ message: 'user not found.' });
+        }
+    }).catch(function(err) {
         res.status(401).json({ message: 'user not found.' });
         return;
     });

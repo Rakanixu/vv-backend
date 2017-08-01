@@ -24,7 +24,7 @@ function getEventLocation(req: ICustomRequest, res: express.Response, next: expr
 }
 
 function updateEventLocation(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventLocationController.updateEventLocation(req.user.principal_id ,req.params.eventLocationId, req.body));
+  resolve(req, res, EventLocationController.updateEventLocation(req.user.principal_id, req.params.eventLocationId, req.body));
 }
 
 function deleteEventLocation(req: ICustomRequest, res: express.Response, next: express.NextFunction) {

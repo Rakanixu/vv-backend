@@ -19,7 +19,9 @@ const COLUMNS = [
   'updated_at',
   'last_activity_at',
   'email',
-  'username'
+  'username',
+  'activation_token',
+  'activation_date'
 ];
 
 export class UserAccountDB {
@@ -42,7 +44,10 @@ export class UserAccountDB {
     if (principalId !== null) {
       query = query.where('principal_id', principalId);
     }
-    return query;
+    const users: UserAccount[] = await query;
+    if (users && users.length > 0) {
+      return users[0];
+    }
   }
 
   public async getUserByEmail(email: string) {
@@ -52,6 +57,13 @@ export class UserAccountDB {
   public async updateUser(principalId: number, userId: number, userAccount: UserAccount) {
     return this.knex(USER_ACCOUNT)
       .where('principal_id', principalId)
+      .where('id', userId)
+      .update(userAccount)
+      .returning(COLUMNS);
+  }
+
+  public async updateUserById(userId: number, userAccount: UserAccount) {
+    return this.knex(USER_ACCOUNT)
       .where('id', userId)
       .update(userAccount)
       .returning(COLUMNS);

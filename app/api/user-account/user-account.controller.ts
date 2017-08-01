@@ -1,6 +1,8 @@
 import { UserAccountDB } from './user-account.db';
 import { UserAccount } from './user-account.model';
-import { hash } from '../../utils/auth';
+import { hash, generateRandomString } from '../../utils/auth';
+import {sendEmailWithTemplate} from '../../mail';
+import { config } from '../../config';
 
 const userAccountDB = new UserAccountDB();
 
@@ -10,8 +12,21 @@ export async function getUsers(principalId: number) {
 
 export async function createUser(userId: number, userAccount: UserAccount) {
   userAccount.password = hash(userAccount.password);
+  userAccount.activation_token = generateRandomString(64);
 
-  return userAccountDB.createUser(userId, userAccount);
+  const user: UserAccount = await userAccountDB.createUser(userId, userAccount);
+  if (user) {
+    const vars: any = {
+      userId: user.id,
+      activationToken: userAccount.activation_token
+    };
+    console.log(`User account created. Sending an email to ${userAccount.email}`);
+    sendEmailWithTemplate(config.sparkpost.templates.userActivation, vars, [userAccount.email]).catch((reason: any) => {
+      console.error('There was an error sending the activation email: ' + reason);
+    });
+  }
+
+  return user;
 }
 
 export async function getUser(principalId: number, userId: number) {

@@ -15,4 +15,6 @@ export interface UserAccount {
     deleted_at?: number;
     avatar?: string;
     timezone?: string;
+    activation_token?: string;
+    activation_date?: Date;
 }
