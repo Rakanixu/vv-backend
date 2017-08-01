@@ -22,7 +22,7 @@ export function configure(srv: Server) {
 }
 
 export function isAuth(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (((req.url === '/user' || req.url === '/principal') && req.method === 'POST') || req.method === 'OPTIONS') {
+    if (((req.url === '/health') || (req.url === '/user' || req.url === '/principal') && req.method === 'POST') || req.method === 'OPTIONS') {
         next();
     } else {
         localAuth.auth()(req, res, next);
