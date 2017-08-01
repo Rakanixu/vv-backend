@@ -21,8 +21,6 @@ export function configure(srv: Server) {
     srv.app.use(passport.initialize());
 }
 
-
-
 export function isAuth(req: express.Request, res: express.Response, next: express.NextFunction) {
     if (((req.url === '/user' || req.url === '/principal') && req.method === 'POST') || req.method === 'OPTIONS') {
         next();

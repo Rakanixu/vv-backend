@@ -15,11 +15,11 @@ module.exports = {
   staging: {
     client: 'postgresql',
     connection: {
-      host: 'localhost',
+      host: 'db',
       port: 5432,
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
+      database: 'postgres',
+      user: 'alantujs',
+      password: 'thepassword1234'
     },
     pool: {
       min: 2,
