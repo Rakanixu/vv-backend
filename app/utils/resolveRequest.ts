@@ -5,8 +5,10 @@ export function resolve(req: ICustomRequest, res: express.Response, promise: Pro
   promise.then((output) => {
     handleResponse(req, res, output);
   }).catch((err) => {
+    console.error(`Error: ${err}`);
     handleError(res, err);
   }).catch((err) => {
+    console.error(`Error: ${err}`);
     res.status(400).json();
   });
 }
@@ -22,7 +24,7 @@ function handleError(res: express.Response, err: any) {
 function sendError(res: express.Response, errorMessage?: any, statusCode?: number) {
   console.log(errorMessage + '  ' + statusCode);
   res.status(statusCode || 400).json({
-      errorCode: status,
+      errorCode: statusCode,
       message: errorMessage
   });
 }
@@ -45,7 +47,7 @@ function handleResponse(req: ICustomRequest, res: express.Response, output?: any
       break;
     case 'POST':
       // created
-      if (output.length > 0) {
+      if (typeof output !== 'string' && output.length > 0) {
         output = output[0];
       }
       break;

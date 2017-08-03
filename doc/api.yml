@@ -109,6 +109,73 @@ paths:
         200:
           description: Deletes an event.
 
+  /event/{eventId}/start:
+    post:
+      description: |
+        Starts an event. Generate and assign a room id in Tribecast for
+        users to join
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Event information, including Tribecast roomId
+          schema:
+            title: event
+            type: object
+            items:
+              $ref: '#/definitions/Event'
+
+  /event/{eventId}/stop:
+    post:
+      description: |
+        Stops an event
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Event information
+          schema:
+            title: event
+            type: object
+            items:
+              $ref: '#/definitions/Event'
+
+  /event/{eventId}/generateEventToken:
+    post:
+      description: |
+        Generates a Tribecast token needed to join the room and do video
+        streams publish/subscribe operations
+      parameters:
+        - name: eventId
+          in: path
+          type: integer
+          description: Event identifier
+          required: true
+        - name: tokenType
+          in: body
+          description: Type of the token publisher, subscriber, moderator
+          schema:
+            type: string
+      responses:
+        200:
+          description: |
+            Event information
+          schema:
+            title: event
+            type: object
+            items:
+              $ref: '#/definitions/Event'
+
   # Admission REST endpoints
   /event/{eventId}/admission:
     get:
@@ -1756,6 +1823,16 @@ definitions:
 
   Event:
     type: object
+    required:
+      - principal_id
+      - user_account_id
+      - event_type_id
+      - title
+      - notes
+      - location
+      - date
+      - preview_img
+      - event_background
     properties:
       id:
         type: integer
@@ -1802,6 +1879,13 @@ definitions:
 
   Admission:
     type: object
+    required:
+      - event_id
+      - title
+      - subtitle
+      - price
+      - description
+      - icon
     properties:
       id:
         type: integer
@@ -1823,6 +1907,11 @@ definitions:
 
   Image:
     type: object
+    required:
+      - event_id
+      - title
+      - type
+      - img
     properties:
       id:
         type: integer
@@ -1839,6 +1928,10 @@ definitions:
 
   Participant:
     type: object
+    required:
+      - event_id
+      - name
+      - type
     properties:
       id:
         type: integer
@@ -1882,6 +1975,11 @@ definitions:
 
   Auction:
     type: object
+    required:
+      - event_id
+      - name
+      - title
+      - description
     properties:
       id:
         type: integer
@@ -2081,6 +2179,17 @@ definitions:
 
   Principal:
     type: object
+    required:
+      - name
+      - domain
+      - description
+      - design
+      - primary_color
+      - secondary_color
+      - tags
+      - design_notes
+      - logo
+      - background
     properties:
       id:
         type: integer
@@ -2108,6 +2217,11 @@ definitions:
 
   User:
     type: object
+    required:
+      - username
+      - email
+      - password
+      - avatar
     properties:
       id:
         type: integer
@@ -2153,6 +2267,8 @@ definitions:
 
   Role:
     type: object
+    required:
+      - name
     properties:
       id:
         type: integer
@@ -2162,6 +2278,11 @@ definitions:
 
   EventLocation:
     type: object
+    required:
+      - principal_id
+      - title
+      - remark
+      - city
     properties:
       id:
         type: integer
@@ -2181,6 +2302,3 @@ definitions:
         type: string
       opening_hours:
         type: string
-
-
-

@@ -21,6 +21,9 @@ routes.post('/', createEvent);
 routes.get('/:eventId', getEvent);
 routes.put('/:eventId', updateEvent);
 routes.delete('/:eventId', deleteEvent);
+routes.post('/:eventId/start', startEvent);
+routes.post('/:eventId/stop', stopEvent);
+routes.post('/:eventId/token', getEventToken);
 
 function getEvents(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, EventController.getEvents(req.user.principal_id));
@@ -46,3 +49,14 @@ function deleteEvent(req: ICustomRequest, res: express.Response, next: express.N
   resolve(req, res, EventController.deleteEvent(req.user.principal_id, req.params.eventId));
 }
 
+function startEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  resolve(req, res, EventController.startEvent(req.user.principal_id, req.params.eventId));
+}
+
+function stopEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  resolve(req, res, EventController.stopEvent(req.user.principal_id, req.params.eventId));
+}
+
+function getEventToken(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  resolve(req, res, EventController.generateEventToken(req.user, req.params.eventId, req.body));
+}

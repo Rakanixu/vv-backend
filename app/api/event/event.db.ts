@@ -24,9 +24,11 @@ const COLUMNS = [
   'chat_with_user_image',
   'pose_question',
   'chat_shown_status_bar',
-  'stage_moment_webcam'
+  'stage_moment_webcam',
+  'tribecast_room_id',
+  'started_at',
+  'ended_at'
 ];
-
 
 export class EventDB {
   private knex: Knex;

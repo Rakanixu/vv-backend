@@ -20,6 +20,13 @@ interface Config {
         userActivation: string;
       }
     };
+    tribecast: {
+      apiUrl: string;
+      apiKey: string;
+      secret: string;
+      tokensDuration: number;
+      useBroadcast: boolean;
+    };
 }
 
 export let config: Config = {
@@ -58,6 +65,13 @@ export let config: Config = {
     templates: {
       userActivation: 'my-first-email'
     }
+  },
+  tribecast: {
+    apiUrl: process.env.TRIBECAST_API_URL || '',
+    apiKey: process.env.TRIBECAST_API_KEY || 'AK-Y3VzdG9tZXJJZD0zJm5vbmNlPTAuNTQ5OTc3OTAzNTI1ODIzNyZzaWduPTEwNjczZmQ0NDNjOWEyYjQ4MzMwZThlNWE1MjZkNjFiMjUxMDk5ZjQ=',
+    secret: process.env.TRIBECAST_SECRET || 't80qX5WP9T.F2Jdsp1$2_2wD6DJ6xuOL',
+    tokensDuration: 8640,
+    useBroadcast: false
   }
 };
 
