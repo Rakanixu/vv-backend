@@ -150,7 +150,7 @@ paths:
             items:
               $ref: '#/definitions/Event'
 
-  /event/{eventId}/generateEventToken:
+  /event/{eventId}/token:
     post:
       description: |
         Generates a Tribecast token needed to join the room and do video
