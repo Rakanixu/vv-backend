@@ -70,7 +70,7 @@ export let config: Config = {
     apiUrl: process.env.TRIBECAST_API_URL || '',
     apiKey: process.env.TRIBECAST_API_KEY || 'AK-Y3VzdG9tZXJJZD0zJm5vbmNlPTAuNTQ5OTc3OTAzNTI1ODIzNyZzaWduPTEwNjczZmQ0NDNjOWEyYjQ4MzMwZThlNWE1MjZkNjFiMjUxMDk5ZjQ=',
     secret: process.env.TRIBECAST_SECRET || 't80qX5WP9T.F2Jdsp1$2_2wD6DJ6xuOL',
-    tokensDuration: 8640,
+    tokensDuration: 8640 * 1000,
     useBroadcast: false
   }
 };
