@@ -24,3 +24,7 @@ export interface Event {
   started_at: string;
   ended_at: string;
 }
+
+export interface EventTokenRequest {
+  type: 'publisher' | 'subscriber';
+}

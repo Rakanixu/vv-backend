@@ -1,6 +1,6 @@
 import { EB } from 'tribecast-integration-nodejs';
 import { EventDB } from './event.db';
-import { Event } from './event.model';
+import { Event, EventTokenRequest } from './event.model';
 import { UserAccount } from '../user-account/user-account.model';
 import { config } from '../../config';
 
@@ -64,7 +64,7 @@ export async function stopEvent(principalId: number, eventId: number) {
   return eventDB.updateEvent(principalId, eventId, event);
 }
 
-export async function generateEventToken(user: UserAccount, eventId: number, type: string) {
+export async function generateEventToken(user: UserAccount, eventId: number, tokenReq: EventTokenRequest) {
   if (!config.tribecast) {
     throw new Error('Session couldnt be started. Config not ready.');
   }
@@ -78,10 +78,11 @@ export async function generateEventToken(user: UserAccount, eventId: number, typ
   if (!event.tribecast_room_id) {
     throw new Error('Event is not started');
   }
-
-  if (!type) {
-    type = 'subscriber';
+  let type: string = 'subscriber';
+  if (tokenReq && tokenReq.type) {
+    type = tokenReq.type;
   }
+  console.log('Generating token for user type ' + JSON.stringify(type));
   const token: string = EB.generateToken(event.tribecast_room_id, config.tribecast.apiKey,
     (new Date()).getTime() + config.tribecast.tokensDuration, type,
     config.tribecast.secret);

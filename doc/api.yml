@@ -165,7 +165,7 @@ paths:
           in: body
           description: Type of the token publisher, subscriber, moderator
           schema:
-            type: string
+            $ref: '#/definitions/TokenRequest'
       responses:
         200:
           description: |
@@ -2301,4 +2301,12 @@ definitions:
       city:
         type: string
       opening_hours:
+        type: string
+
+  TokenRequest:
+    type: object
+    required:
+      - type
+    properties:
+      type:
         type: string
