@@ -9,6 +9,9 @@ module.exports = {
       database: 'postgres',
       user:     'alantujs',
       password: 'thepassword1234'
+    },
+    seeds: {
+      directory: './seeds/scripts'
     }
   },
 
