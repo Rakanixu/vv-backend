@@ -4,7 +4,7 @@ let cfg: any;
 
 if (environment === 'production') {
 
-  const dbHost = process.env.DB_HOST || 'localhost';
+  const dbHost = process.env.DB_HOST || 'postgres';
   const dbName = process.env.DB_NAME || 'postgres';
   const dbPort = parseInt(process.env.DB_PORT || '5432', 10);
   const dbUser = process.env.DB_USER || 'postgres';

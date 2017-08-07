@@ -53,7 +53,7 @@ export let config: Config = {
   chatPathEndpoint: '/chat',
 
   // mongo  url
-  mongoUrl: process.env.MONGO_URL || 'mongodb://localhost:27017/alantu',
+  mongoUrl: process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/alantu',
 
   // secret used for generating secure tokens
   sessionSecret: 'sda4tgghsc&32fg!!fdd',

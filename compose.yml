@@ -1,0 +1,32 @@
+version: '2'
+services:
+  postgres:
+   image: postgres
+   hostname: "postgres"
+   networks:
+     - alantujs
+   ports:
+     - "5432:5432"
+
+  mongo:
+   image: mongo
+   hostname: "mongo"
+   networks:
+     - alantujs
+   ports:
+     - "27017:27017"
+
+  alantuback:
+   image: alantuback
+   hostname: "alantuback"
+   networks:
+     - alantujs
+   ports:
+     - "9000:9000"
+     - "443:443"
+     - "80:80"
+
+networks:
+  alantujs:
+    # Not using outside this images so far
+    external: false
