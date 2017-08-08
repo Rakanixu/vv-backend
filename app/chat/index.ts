@@ -16,6 +16,7 @@ export function join(io: any, socket: any, chatUser: ChatModel.ChatUser) {
     socket.join(chatUser.event_id);
 
     socket[USER_ID] = chatUser.user_id;
+    socket.user_id = chatUser.user_id;
     peopleOnRooms[chatUser.user_id] = new ChatModel.User(chatUser.user_id, chatUser.user_name, chatUser.event_id, socket.id);
 
     const userJoining: ChatModel.UserAction = {
@@ -71,6 +72,7 @@ export function broadcastMessage(io: any, socket: any, msg: ChatModel.BroadcastM
 
 export function disconnect(io: any, socket: any) {
   console.log('Client disconnected', socket.id);
+  console.log(socket[USER_ID], socket.user_id);
 
   if (peopleOnRooms[socket[USER_ID]]) {
     const userLeaving: ChatModel.UserAction = {
