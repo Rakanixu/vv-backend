@@ -32,7 +32,6 @@ export function configure() {
     };
     const strategy = new JwtStrategy(jwtOptions, (payload: any, done: PassportJwt.VerifiedCallback) => {
         uDB.getUser(null, payload.id).then(function(user) {
-            console.log('user', user);
             // user account must be activated!
             if (user.activation_date) {
                 delete user.password;
