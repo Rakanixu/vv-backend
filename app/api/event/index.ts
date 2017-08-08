@@ -6,6 +6,7 @@ import { resolve } from '../../utils/resolveRequest';
 import { manageFiles } from '../../utils/upload.helpers';
 import { storage } from '../../utils/upload.helpers';
 import { config } from '../../config/index';
+import { isAuth } from '../../auth';
 
 const uploader = multer({ storage: storage });
 const images = [
@@ -17,13 +18,13 @@ export const routes = express.Router();
 export const upload = uploader.fields(images);
 
 routes.get('/', getEvents);
-routes.post('/', createEvent);
+routes.post('/', isAuth, createEvent);
 routes.get('/:eventId', getEvent);
-routes.put('/:eventId', updateEvent);
-routes.delete('/:eventId', deleteEvent);
-routes.post('/:eventId/start', startEvent);
-routes.post('/:eventId/stop', stopEvent);
-routes.post('/:eventId/token', getEventToken);
+routes.put('/:eventId', isAuth, updateEvent);
+routes.delete('/:eventId', isAuth, deleteEvent);
+routes.post('/:eventId/start', isAuth, startEvent);
+routes.post('/:eventId/stop', isAuth, stopEvent);
+routes.post('/:eventId/token', isAuth, getEventToken);
 
 function getEvents(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, EventController.getEvents(req.user.principal_id));

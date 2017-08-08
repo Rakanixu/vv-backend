@@ -6,6 +6,7 @@ import { resolve } from '../../utils/resolveRequest';
 import { manageFiles } from '../../utils/upload.helpers';
 import { storage } from '../../utils/upload.helpers';
 import { config } from '../../config/index';
+import { isAuth } from '../../auth';
 
 const uploader = multer({ storage: storage });
 const images = [
@@ -15,12 +16,12 @@ const images = [
 export const routes = express.Router();
 export const upload = uploader.fields(images);
 
-routes.get('/', getUsers);
+routes.get('/', isAuth, getUsers);
 routes.post('/', createUser);
-routes.get('/me', getMe);
-routes.get('/:userId', getUser);
-routes.put('/:userId', updateUser);
-routes.delete('/:userId', deleteUser);
+routes.get('/me',  isAuth, getMe);
+routes.get('/:userId',  isAuth, getUser);
+routes.put('/:userId',  isAuth, updateUser);
+routes.delete('/:userId',  isAuth, deleteUser);
 
 function getUsers(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, UserAccountController.getUsers(req.user.principal_id));

@@ -2,16 +2,17 @@ import * as express from 'express';
 import * as QuestionController from './question.controller';
 import { ICustomRequest } from '../../utils/custom.types';
 import { resolve } from '../../utils/resolveRequest';
+import { isAuth } from '../../auth';
 
 export const routes = express.Router({
   mergeParams: true
 });
 
 routes.get('/', getQuestions);
-routes.post('/', createQuestion);
+routes.post('/', isAuth, createQuestion);
 routes.get('/:questionId', getQuestion);
-routes.put('/:questionId', updateQuestion);
-routes.delete('/:questionId', deleteQuestion);
+routes.put('/:questionId', isAuth, updateQuestion);
+routes.delete('/:questionId', isAuth, deleteQuestion);
 
 function getQuestions(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, QuestionController.getQuestions(req.params.questionTopicId));

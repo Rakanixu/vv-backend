@@ -2,16 +2,17 @@ import * as express from 'express';
 import * as AuctionController from './auction.controller';
 import { ICustomRequest } from '../../utils/custom.types';
 import { resolve } from '../../utils/resolveRequest';
+import { isAuth } from '../../auth';
 
 export const routes = express.Router({
   mergeParams: true
 });
 
-routes.get('/', getAuctions);
-routes.post('/', createAuction);
-routes.get('/:auctionId', getAuction);
-routes.put('/:auctionId', updateAuction);
-routes.delete('/:auctionId', deleteAuction);
+routes.get('/', isAuth, getAuctions);
+routes.post('/', isAuth, createAuction);
+routes.get('/:auctionId', isAuth, getAuction);
+routes.put('/:auctionId', isAuth, updateAuction);
+routes.delete('/:auctionId', isAuth, deleteAuction);
 
 function getAuctions(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, AuctionController.getAuctions(req.params.eventId));

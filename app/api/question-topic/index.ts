@@ -2,16 +2,17 @@ import * as express from 'express';
 import * as QuestionTopicController from './question-topic.controller';
 import { ICustomRequest } from '../../utils/custom.types';
 import { resolve } from '../../utils/resolveRequest';
+import { isAuth } from '../../auth';
 
 export const routes = express.Router({
   mergeParams: true
 });
 
 routes.get('/', getQuestionTopics);
-routes.post('/', createQuestionTopic);
+routes.post('/', isAuth, createQuestionTopic);
 routes.get('/:questionTopicId', getQuestionTopic);
-routes.put('/:questionTopicId', updateQuestionTopic);
-routes.delete('/:questionTopicId', deleteQuestionTopic);
+routes.put('/:questionTopicId', isAuth, updateQuestionTopic);
+routes.delete('/:questionTopicId', isAuth, deleteQuestionTopic);
 
 function getQuestionTopics(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, QuestionTopicController.getQuestionTopics(req.params.eventId));

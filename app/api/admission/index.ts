@@ -6,6 +6,7 @@ import { resolve } from '../../utils/resolveRequest';
 import { manageFiles } from '../../utils/upload.helpers';
 import { storage } from '../../utils/upload.helpers';
 import { config } from '../../config/index';
+import { isAuth } from '../../auth';
 
 const uploader = multer({ storage: storage });
 const images = [
@@ -16,10 +17,10 @@ export const routes = express.Router({ mergeParams: true });
 export const upload = uploader.fields(images);
 
 routes.get('/', getAdmissions);
-routes.post('/', createAdmission);
+routes.post('/', isAuth, createAdmission);
 routes.get('/:admissionId', getAdmission);
-routes.put('/:admissionId', updateAdmission);
-routes.delete('/:admissionId', deleteAdmission);
+routes.put('/:admissionId', isAuth, updateAdmission);
+routes.delete('/:admissionId', isAuth, deleteAdmission);
 
 function getAdmissions(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, AdmissionController.getAdmissions(req.params.eventId));

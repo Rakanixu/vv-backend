@@ -2,16 +2,17 @@ import * as express from 'express';
 import * as QuizEntryController from './quiz-entry.controller';
 import { ICustomRequest } from '../../utils/custom.types';
 import { resolve } from '../../utils/resolveRequest';
+import { isAuth } from '../../auth';
 
 export const routes = express.Router({
   mergeParams: true
 });
 
 routes.get('/', getQuizEntries);
-routes.post('/', createQuizEntry);
+routes.post('/', isAuth, createQuizEntry);
 routes.get('/:quizEntryId', getQuizEntry);
-routes.put('/:quizEntryId', updateQuizEntry);
-routes.delete('/:quizEntryId', deleteQuizEntry);
+routes.put('/:quizEntryId', isAuth, updateQuizEntry);
+routes.delete('/:quizEntryId', isAuth, deleteQuizEntry);
 
 function getQuizEntries(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, QuizEntryController.getQuizEntries(req.params.quizId));

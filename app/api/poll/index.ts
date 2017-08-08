@@ -2,16 +2,17 @@ import * as express from 'express';
 import * as PollController from './poll.controller';
 import { ICustomRequest } from '../../utils/custom.types';
 import { resolve } from '../../utils/resolveRequest';
+import { isAuth } from '../../auth';
 
 export const routes = express.Router({
   mergeParams: true
 });
 
 routes.get('/', getPolls);
-routes.post('/', createPoll);
+routes.post('/', isAuth, createPoll);
 routes.get('/:pollId', getPoll);
-routes.put('/:pollId', updatePoll);
-routes.delete('/:pollId', deletePoll);
+routes.put('/:pollId', isAuth, updatePoll);
+routes.delete('/:pollId', isAuth, deletePoll);
 
 function getPolls(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, PollController.getPolls(req.params.eventId));

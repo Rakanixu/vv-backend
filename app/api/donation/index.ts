@@ -2,22 +2,23 @@ import * as express from 'express';
 import * as DonationController from './donation.controller';
 import { resolve } from '../../utils/resolveRequest';
 import { ICustomRequest } from '../../utils/custom.types';
+import { isAuth } from '../../auth';
 
 export const routes = express.Router();
 export const routesByPayment = express.Router({ mergeParams: true });
 export const routesByPrincipal = express.Router({ mergeParams: true });
 
-routes.get('/', getDonations);
-routes.post('/', createDonation);
-routes.get('/:donationId', getDonation);
+routes.get('/', isAuth, getDonations);
+routes.post('/', isAuth, createDonation);
+routes.get('/:donationId', isAuth, getDonation);
 
-routesByPayment.get('/', getDonationsByPayment);
-routesByPayment.post('/', createDonationByPayment);
-routesByPayment.get('/:donationId', getDonationByPayment);
+routesByPayment.get('/', isAuth, getDonationsByPayment);
+routesByPayment.post('/', isAuth, createDonationByPayment);
+routesByPayment.get('/:donationId', isAuth, getDonationByPayment);
 
-routesByPrincipal.get('/', getDonationsByPrincipal);
-routesByPrincipal.post('/', createDonationByPrincipal);
-routesByPrincipal.get('/:donationId', getDonationByPrincipal);
+routesByPrincipal.get('/', isAuth, getDonationsByPrincipal);
+routesByPrincipal.post('/', isAuth, createDonationByPrincipal);
+routesByPrincipal.get('/:donationId', isAuth, getDonationByPrincipal);
 
 function getDonations(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, DonationController.getDonations());
