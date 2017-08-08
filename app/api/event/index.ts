@@ -17,14 +17,15 @@ const images = [
 export const routes = express.Router();
 export const upload = uploader.fields(images);
 
-routes.get('/', getEvents);
+routes.get('/', isAuth, getEvents);
 routes.post('/', isAuth, createEvent);
-routes.get('/:eventId', getEvent);
+routes.get('/:eventId', isAuth, getEvent);
 routes.put('/:eventId', isAuth, updateEvent);
 routes.delete('/:eventId', isAuth, deleteEvent);
 routes.post('/:eventId/start', isAuth, startEvent);
 routes.post('/:eventId/stop', isAuth, stopEvent);
 routes.post('/:eventId/token', isAuth, getEventToken);
+
 
 function getEvents(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, EventController.getEvents(req.user.principal_id));
