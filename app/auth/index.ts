@@ -12,6 +12,9 @@ import * as localAuth from './local';
 export function configure(srv: Server) {
     console.log('Auth module setup');
     srv.app.post('/login', localAuth.login);
+    srv.app.options('/login', function(req: ICustomRequest, res: express.Response) {
+        res.json();
+    });
     srv.app.post('/activate', localAuth.activateUser);
     srv.app.get('/secret', isAuth, function (req: ICustomRequest, res: express.Response) {
         res.json({ message: 'Success! You can not see this without a token'});
