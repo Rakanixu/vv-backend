@@ -3,3 +3,4 @@ dist/
 .dockerignore
 npm-debug.log
 db_dev.yml
+.DS_Store

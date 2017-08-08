@@ -6,6 +6,7 @@ import { resolve } from '../../utils/resolveRequest';
 import { manageFiles } from '../../utils/upload.helpers';
 import { storage } from '../../utils/upload.helpers';
 import { config } from '../../config/index';
+import { isAuth } from '../../auth';
 
 const uploader = multer({ storage: storage });
 const images = [
@@ -16,10 +17,10 @@ export const routes = express.Router({ mergeParams: true });
 export const upload = uploader.fields(images);
 
 routes.get('/', getPollEntries);
-routes.post('/', createPollEntry);
+routes.post('/', isAuth, createPollEntry);
 routes.get('/:pollEntryId', getPollEntry);
-routes.put('/:pollEntryId', updatePollEntry);
-routes.delete('/:pollEntryId', deletePollEntry);
+routes.put('/:pollEntryId', isAuth, updatePollEntry);
+routes.delete('/:pollEntryId', isAuth, deletePollEntry);
 
 function getPollEntries(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, PollEntryController.getPollEntries(req.params.pollId));

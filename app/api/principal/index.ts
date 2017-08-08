@@ -6,6 +6,7 @@ import { resolve } from '../../utils/resolveRequest';
 import { manageFiles } from '../../utils/upload.helpers';
 import { storage } from '../../utils/upload.helpers';
 import { config } from '../../config/index';
+import { isAuth } from '../../auth';
 
 const uploader = multer({ storage: storage });
 const images = [
@@ -17,13 +18,13 @@ export const routes = express.Router();
 export const upload = uploader.fields(images);
 
 
-routes.get('/', getPrincipals);
+routes.get('/', isAuth, getPrincipals);
 routes.post('/', createPrincipal);
-routes.get('/:principalId', getPrincipal);
-routes.put('/:principalId', updatePrincipal);
-routes.delete('/:principalId', deletePrincipal);
-routes.get('/:principalId/event', getEventsByPrincipal);
-routes.get('/:principalId/user', getUsersByPrincipal);
+routes.get('/:principalId', isAuth, getPrincipal);
+routes.put('/:principalId', isAuth, updatePrincipal);
+routes.delete('/:principalId', isAuth, deletePrincipal);
+routes.get('/:principalId/event', isAuth, getEventsByPrincipal);
+routes.get('/:principalId/user', isAuth, getUsersByPrincipal);
 
 function getPrincipals(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, PrincipalController.getPrincipals());

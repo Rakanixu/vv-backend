@@ -6,6 +6,7 @@ import { ICustomRequest } from '../../utils/custom.types';
 import { storage } from '../../utils/upload.helpers';
 import { manageFiles } from '../../utils/upload.helpers';
 import { config } from '../../config/index';
+import { isAuth } from '../../auth';
 
 const uploader = multer({ storage: storage });
 const images = [
@@ -16,10 +17,10 @@ export const routes = express.Router();
 export const upload = uploader.fields(images);
 
 routes.get('/', getMedias);
-routes.post('/', createMedia);
+routes.post('/', isAuth, createMedia);
 routes.get('/:mediaId', getMedia);
-routes.put('/:mediaId', updateMedia);
-routes.delete('/:mediaId', deleteMedia);
+routes.put('/:mediaId', isAuth, updateMedia);
+routes.delete('/:mediaId', isAuth, deleteMedia);
 
 function getMedias(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, MediaController.getMedias(req.user.principal_id));

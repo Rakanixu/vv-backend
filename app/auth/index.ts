@@ -13,16 +13,16 @@ export function configure(srv: Server) {
     console.log('Auth module setup');
     srv.app.post('/login', localAuth.login);
     srv.app.post('/activate', localAuth.activateUser);
-    srv.app.use(config.apiPathPrefix, isAuth);
     srv.app.get('/secret', isAuth, function (req: ICustomRequest, res: express.Response) {
         res.json({ message: 'Success! You can not see this without a token'});
     });
     localAuth.configure();
     srv.app.use(passport.initialize());
+    // srv.app.use(passport.session());
 }
 
 export function isAuth(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (((req.url === '/health') || (req.url === '/user' || req.url === '/principal') && req.method === 'POST') || req.method === 'OPTIONS') {
+    if (req.method === 'OPTIONS') {
         next();
     } else {
         localAuth.auth()(req, res, next);

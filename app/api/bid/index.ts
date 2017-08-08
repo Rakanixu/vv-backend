@@ -2,16 +2,17 @@ import * as express from 'express';
 import * as BidController from './bid.controller';
 import { ICustomRequest } from '../../utils/custom.types';
 import { resolve } from '../../utils/resolveRequest';
+import { isAuth } from '../../auth';
 
 export const routes = express.Router({
   mergeParams: true
 });
 
-routes.get('/', getBids);
-routes.post('/', createBid);
-routes.get('/:bidId', getBid);
-routes.put('/:bidId', updateBid);
-routes.delete('/:bidId', deleteBid);
+routes.get('/', isAuth, getBids);
+routes.post('/', isAuth, createBid);
+routes.get('/:bidId', isAuth, getBid);
+routes.put('/:bidId', isAuth, updateBid);
+routes.delete('/:bidId', isAuth, deleteBid);
 
 function getBids(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, BidController.getBids(req.params.auctionId));

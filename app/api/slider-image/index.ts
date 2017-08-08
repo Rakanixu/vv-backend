@@ -6,6 +6,7 @@ import { resolve } from '../../utils/resolveRequest';
 import { manageFiles } from '../../utils/upload.helpers';
 import { storage } from '../../utils/upload.helpers';
 import { config } from '../../config/index';
+import { isAuth } from '../../auth';
 
 const uploader = multer({ storage: storage });
 const images = [
@@ -16,10 +17,10 @@ export const routes = express.Router({ mergeParams: true });
 export const upload = uploader.fields(images);
 
 routes.get('/', getSliderImages);
-routes.post('/', createSliderImage);
+routes.post('/', isAuth, createSliderImage);
 routes.get('/:sliderImageId', getSliderImage);
-routes.put('/:sliderImageId', updateSliderImage);
-routes.delete('/:sliderImageId', deleteSliderImage);
+routes.put('/:sliderImageId', isAuth, updateSliderImage);
+routes.delete('/:sliderImageId', isAuth, deleteSliderImage);
 
 function getSliderImages(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, SliderImageController.getSliderImages(req.params.eventId));

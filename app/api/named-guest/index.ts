@@ -5,6 +5,7 @@ import { resolve } from '../../utils/resolveRequest';
 import { ICustomRequest } from '../../utils/custom.types';
 import { storage } from '../../utils/upload.helpers';
 import { manageFiles } from '../../utils/upload.helpers';
+import { isAuth } from '../../auth';
 
 const uploader = multer({ storage: storage });
 const images = [
@@ -15,10 +16,10 @@ export const routes = express.Router({ mergeParams: true });
 export const upload = uploader.fields(images);
 
 routes.get('/', getNamedGuests);
-routes.post('/', createNamedGuest);
+routes.post('/', isAuth, createNamedGuest);
 routes.get('/:namedGuestId', getNamedGuest);
-routes.put('/:namedGuestId', updateNamedGuest);
-routes.delete('/:namedGuestId', deleteNamedGuest);
+routes.put('/:namedGuestId', isAuth, updateNamedGuest);
+routes.delete('/:namedGuestId', isAuth, deleteNamedGuest);
 
 function getNamedGuests(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, NamedGuestController.getNamedGuests(req.params.eventId));

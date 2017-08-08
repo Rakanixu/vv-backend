@@ -2,14 +2,15 @@ import * as express from 'express';
 import * as PaymentController from './payment.controller';
 import { ICustomRequest } from '../../utils/custom.types';
 import { resolve } from '../../utils/resolveRequest';
+import { isAuth } from '../../auth';
 
 export const routes = express.Router();
 
-routes.get('/', getPayments);
-routes.post('/', createPayment);
-routes.get('/:paymentId', getPayment);
-routes.put('/:paymentId', updatePayment);
-routes.delete('/:paymentId', deletePayment);
+routes.get('/', isAuth, getPayments);
+routes.post('/', isAuth, createPayment);
+routes.get('/:paymentId', isAuth, getPayment);
+routes.put('/:paymentId', isAuth, updatePayment);
+routes.delete('/:paymentId', isAuth, deletePayment);
 
 function getPayments(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, PaymentController.getPayments());

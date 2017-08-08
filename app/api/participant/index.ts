@@ -6,6 +6,7 @@ import { resolve } from '../../utils/resolveRequest';
 import { manageFiles } from '../../utils/upload.helpers';
 import { storage } from '../../utils/upload.helpers';
 import { config } from '../../config/index';
+import { isAuth } from '../../auth';
 
 const uploader = multer({ storage: storage });
 const images = [
@@ -16,10 +17,10 @@ export const routes = express.Router({ mergeParams: true });
 export const upload = uploader.fields(images);
 
 routes.get('/', getParticipants);
-routes.post('/', createParticipant);
+routes.post('/', isAuth, createParticipant);
 routes.get('/:participantId', getParticipant);
-routes.put('/:participantId', updateParticipant);
-routes.delete('/:participantId', deleteParticipant);
+routes.put('/:participantId', isAuth, updateParticipant);
+routes.delete('/:participantId', isAuth, deleteParticipant);
 
 function getParticipants(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, ParticipantController.getParticipants(req.params.eventId));
