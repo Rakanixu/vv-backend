@@ -17,7 +17,7 @@ paths:
           - name: join_room
             description: Message JSON to join a chat room.
             schema:
-              $ref: '#/definitions/JoinRoom'
+              $ref: '#/definitions/ChatUser'
             required: true  
         response:
           schema:
@@ -34,7 +34,7 @@ paths:
           - name: leave_room
             description: Message JSON to leave a chat room.
             schema:
-              $ref: '#/definitions/LeaveRoom'
+              $ref: '#/definitions/ChatUser'
             required: true  
         response:
           schema:
@@ -51,7 +51,7 @@ paths:
           - name: user_state
             description: Message JSON holding the user info and the action performed (join or leave).
             schema:
-              $ref: '#/definitions/UserState'
+              $ref: '#/definitions/UserAction'
             required: true        
       unicast_message:
         description: | 
@@ -72,7 +72,7 @@ paths:
               $ref: '#/definitions/BroadcastMessage'
             required: true  
           
-  JoinRoom:
+  ChatUser:
     type: object
     properties:
       user_id:
@@ -83,23 +83,16 @@ paths:
         format: int32
       user_name:
         type: string
-      
-  LeaveRoom:
-    type: object
+
+  UserAction:
+    type: object      
     properties:
       user_id:
         type: integer
         format: int32
       event_id:
         type: integer
-        format: int32
-
-  UserState:
-    type: object      
-    properties:
-      user_id:
-        type: integer
-        format: int32
+        format: int32        
       user_name:
         type: string
       action:

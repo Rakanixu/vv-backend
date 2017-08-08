@@ -1,12 +1,14 @@
-export interface JoinRoom {
+export interface ChatUser {
   user_id: number;
   event_id: number;
   user_name: string;
 }
 
-export interface LeaveRoom {
+export interface UserAction {
   user_id: number;
   event_id: number;
+  user_name: string;
+  action: string;
 }
 
 export interface UnicastMessage {
@@ -30,11 +32,13 @@ export interface Acknowledge {
 
 export class User {
   public id: number;
+  public userName: string;
   public eventId: number;
   public socketId: number;
 
-  constructor(id: number, eventId: number, socketId: number) {
+  constructor(id: number, userName: string, eventId: number, socketId: number) {
     this.id = id;
+    this.userName = userName;
     this.eventId = eventId;
     this.socketId = socketId;
   }
