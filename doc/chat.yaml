@@ -1,0 +1,145 @@
+swagger: '2.0'
+
+info:
+  version: "0.0.1"
+  title: Chat API
+
+# Describe your paths here
+paths:
+
+  /chat:
+    # Web socker events: join, leave, unicast_message, broadcast_message
+    events:
+      join:
+        description: | 
+          Join a chat room. Every single event should host a chat room.
+        parameters:
+          - name: join_room
+            description: Message JSON to join a chat room.
+            schema:
+              $ref: '#/definitions/JoinRoom'
+            required: true  
+        response:
+          schema:
+            title: aknowledge
+            type: object
+            properties:
+            definitions:
+            item:
+              $ref: '#/definitions/Acknowledge'
+      leave:
+        description: | 
+          Leave a chat room. Every single event should host a chat room.
+        parameters:
+          - name: leave_room
+            description: Message JSON to leave a chat room.
+            schema:
+              $ref: '#/definitions/LeaveRoom'
+            required: true  
+        response:
+          schema:
+            title: aknowledge
+            type: object
+            properties:
+            definitions:
+            item:
+              $ref: '#/definitions/Acknowledge'
+      event_user:
+        description: | 
+          Sends a message to every user in the same room. It notifies when a new user joins the room, or when a existing user leaves the room.
+        parameters:
+          - name: user_state
+            description: Message JSON holding the user info and the action performed (join or leave).
+            schema:
+              $ref: '#/definitions/UserState'
+            required: true        
+      unicast_message:
+        description: | 
+          Send a direct message to another user in the same room. Sender must be aware of receiver user_account_id.
+        parameters:
+          - name: unicast_message
+            description: Message JSON holding a message for a unique user.
+            schema:
+              $ref: '#/definitions/UnicastMessage'
+            required: true  
+      broadcast_message:
+        description: | 
+          Send a message to all users in the same room.
+        parameters:
+          - name: broadcast_message
+            description: Message JSON holding a message for all users within a room.
+            schema:
+              $ref: '#/definitions/BroadcastMessage'
+            required: true  
+          
+  JoinRoom:
+    type: object
+    properties:
+      user_id:
+        type: integer
+        format: int32
+      event_id:
+        type: integer
+        format: int32
+      user_name:
+        type: string
+      
+  LeaveRoom:
+    type: object
+    properties:
+      user_id:
+        type: integer
+        format: int32
+      event_id:
+        type: integer
+        format: int32
+
+  UserState:
+    type: object      
+    properties:
+      user_id:
+        type: integer
+        format: int32
+      user_name:
+        type: string
+      action:
+        type: string
+
+  UnicastMessage:
+    type: object
+    properties:
+      user_id:
+        type: integer
+        format: int32
+      event_id:
+        type: integer
+        format: int32
+      user_name:
+        type: string        
+      to_user_account_id:
+        type: integer
+        format: int32
+      message:
+        type: string    
+
+  BroadcastMessage:
+    type: object
+    properties:
+      user_id:
+        type: integer
+        format: int32
+      event_id:
+        type: integer
+        format: int32
+      user_name:
+        type: string 
+      message:
+        type: string       
+        
+  Acknowledge:
+    type: object
+    properties:
+      succesful:
+        type: boolean
+        
+      
