@@ -15,9 +15,7 @@ export function join(io: any, socket: any, chatUser: ChatModel.ChatUser) {
 
     socket.join(chatUser.event_id);
 
-    socket[USER_ID] = chatUser.user_id;
-    socket.user_id = chatUser.user_id;
-    peopleOnRooms[chatUser.user_id] = new ChatModel.User(chatUser.user_id, chatUser.user_name, chatUser.event_id, socket.id);
+    peopleOnRooms[socket.id] = new ChatModel.User(chatUser.user_id, chatUser.user_name, chatUser.event_id, socket.id);
 
     const userJoining: ChatModel.UserAction = {
       user_id: chatUser.user_id,
@@ -48,15 +46,22 @@ export function leave(io: any, socket: any, chatUser: ChatModel.ChatUser) {
   socket.emit('aknowledge', ackOK);
 
   // remove user from pool
-  delete peopleOnRooms[chatUser.user_id];
+  delete peopleOnRooms[socket.id];
 }
 
 export function unicastMessage(io: any, socket: any, msg: ChatModel.UnicastMessage) {
   console.log('unicastMessage', msg);
 
+  let to;
+  for (const i in peopleOnRooms) {
+    if (peopleOnRooms[i].id === msg.to_user_account_id) {
+      to = peopleOnRooms[i].socketId;
+    }
+  }
+
   // check receiver is still connected
-  if (peopleOnRooms[msg.to_user_account_id] && peopleOnRooms[msg.to_user_account_id].socketId) {
-    socket.to(peopleOnRooms[msg.to_user_account_id].socketId).emit('unicast_message', msg);
+  if (to) {
+    socket.to(to).emit('unicast_message', msg);
   }
 }
 
@@ -72,18 +77,17 @@ export function broadcastMessage(io: any, socket: any, msg: ChatModel.BroadcastM
 
 export function disconnect(io: any, socket: any) {
   console.log('Client disconnected', socket.id);
-  console.log(socket[USER_ID], socket.user_id);
 
-  if (peopleOnRooms[socket[USER_ID]]) {
+  if (peopleOnRooms[socket.id]) {
     const userLeaving: ChatModel.UserAction = {
-      user_id: peopleOnRooms[socket[USER_ID]].id,
-      event_id: peopleOnRooms[socket[USER_ID]].eventId,
-      user_name: peopleOnRooms[socket[USER_ID]].user_name,
+      user_id: peopleOnRooms[socket.id].id,
+      event_id: peopleOnRooms[socket.id].eventId,
+      user_name: peopleOnRooms[socket.id].userName,
       action: 'leave'
     };
 
-    socket.to(peopleOnRooms[socket[USER_ID]].event_id).emit('event_user', userLeaving);
+    socket.to(peopleOnRooms[socket.id].eventId).emit('event_user', userLeaving);
     // remove user from pool
-    delete peopleOnRooms[socket[USER_ID]];
+    delete peopleOnRooms[socket.id];
   }
 }
