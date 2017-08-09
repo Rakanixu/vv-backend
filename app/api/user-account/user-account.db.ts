@@ -35,6 +35,10 @@ export class UserAccountDB {
     return this.knex(USER_ACCOUNT).where('principal_id', principalId).select(COLUMNS);
   }
 
+  public async getUsersByIds(userIds: number[]) {
+    return this.knex(USER_ACCOUNT).whereIn('id', userIds).select(COLUMNS);
+  }
+
   public async createUser(userId: number, userAccount: UserAccount) {
     return this.knex(USER_ACCOUNT).insert(userAccount).returning(COLUMNS);
   }
