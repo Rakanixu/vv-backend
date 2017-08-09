@@ -16,10 +16,16 @@ const chatDB = new ChatDB();
 const userAccountDB = new UserAccountDB();
 const ackOK: ChatModel.Acknowledge = { succesful: true };
 const ackNOK: ChatModel.Acknowledge = { succesful: false };
-const redisClient = new RedisClient({ host: config.redisUrl, port: config.redisPort });
+let redisClient = new RedisClient({ host: config.redisUrl, port: config.redisPort });
 
 redisClient.on('error', function (err) {
     console.error('REDIS CLIENT ERROR: ' + err);
+    redisClient = new RedisClient({ host: config.redisUrl, port: config.redisPort });
+});
+
+redisClient.on('reconnecting', function (err) {
+    console.error('redis client reconnecting ');
+    redisClient = new RedisClient({ host: config.redisUrl, port: config.redisPort });
 });
 
 export function join(io: any, socket: any, chatUser: ChatModel.ChatUser) {
@@ -196,6 +202,7 @@ function onRedisError(err: any) {
 
 // fixme: we are pingin redis to avoid connect ECONNREFUSED in azurre instance
 function heartbeat() {
+
   redisClient.ping(function(err, result) {
     if (err) {
       console.error('Redis ping returned err: ' + err);
