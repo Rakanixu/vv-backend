@@ -10,6 +10,8 @@ interface Config {
     apiPathPrefix: string;
     chatPathEndpoint: string;
     mongoUrl: string;
+    redisUrl: string;
+    redisPort: number;
     sessionSecret: string;
     sessionTokenDuration: number;
     sessionCookieName: string;
@@ -54,6 +56,10 @@ export let config: Config = {
 
   // mongo  url
   mongoUrl: process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/alantu',
+
+  redisUrl: process.env.REDIS_URL || 'localhost',
+
+  redisPort: parseInt(process.env.REDIS_PORT || '6379', 10),
 
   // secret used for generating secure tokens
   sessionSecret: 'sda4tgghsc&32fg!!fdd',

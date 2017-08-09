@@ -1,12 +1,24 @@
 import * as IO from 'socket.io';
+import { RedisClient } from 'redis';
 import * as ChatModel from './chat.model';
 import { ChatDB } from './chat.db';
+import { config } from '../config/index';
 
 const USER_ID = 'user_id';
+const USER_KEYS = {
+    USER_ID: 'id',
+    USER_NAME: 'userName',
+    EVENT_ID: 'eventId',
+    SOCKET_ID: 'socketId'
+};
 const chatDB = new ChatDB();
 const ackOK: ChatModel.Acknowledge = { succesful: true };
 const ackNOK: ChatModel.Acknowledge = { succesful: false };
-const peopleOnRooms = {};
+const redisClient = new RedisClient({ host: config.redisUrl, port: config.redisPort });
+
+redisClient.on('error', function (err) {
+    console.error('REDIS CLIENT ERROR: ' + err);
+});
 
 export function join(io: any, socket: any, chatUser: ChatModel.ChatUser) {
   // check required data exists at least. may not be valid.
@@ -14,8 +26,7 @@ export function join(io: any, socket: any, chatUser: ChatModel.ChatUser) {
     console.log('join',  chatUser);
 
     socket.join(chatUser.event_id);
-
-    peopleOnRooms[socket.id] = new ChatModel.User(chatUser.user_id, chatUser.user_name, chatUser.event_id, socket.id);
+    storeUser(socket.id, new ChatModel.User(chatUser.user_id, chatUser.user_name, chatUser.event_id, socket.id));
 
     const userJoining: ChatModel.UserAction = {
       user_id: chatUser.user_id,
@@ -46,23 +57,21 @@ export function leave(io: any, socket: any, chatUser: ChatModel.ChatUser) {
   socket.emit('aknowledge', ackOK);
 
   // remove user from pool
-  delete peopleOnRooms[socket.id];
+  deleteUser(socket.id, chatUser.user_id);
 }
 
 export function unicastMessage(io: any, socket: any, msg: ChatModel.UnicastMessage) {
   console.log('unicastMessage', msg);
 
-  let to;
-  for (const i in peopleOnRooms) {
-    if (peopleOnRooms[i].id === msg.to_user_account_id) {
-      to = peopleOnRooms[i].socketId;
+  retrieveSocket(msg.to_user_account_id).then(function(socketId) {
+    // check receiver is still connected
+    if (socketId) {
+      socket.to(socketId).emit('unicast_message', msg);
     }
-  }
-
-  // check receiver is still connected
-  if (to) {
-    socket.to(to).emit('unicast_message', msg);
-  }
+  })
+  .catch(function(err) {
+    console.error('ERROR RETRIEVING SOCKET_ID FROM REDIS: ', err);
+  });
 }
 
 export function broadcastMessage(io: any, socket: any, msg: ChatModel.BroadcastMessage) {
@@ -78,16 +87,60 @@ export function broadcastMessage(io: any, socket: any, msg: ChatModel.BroadcastM
 export function disconnect(io: any, socket: any) {
   console.log('Client disconnected', socket.id);
 
-  if (peopleOnRooms[socket.id]) {
-    const userLeaving: ChatModel.UserAction = {
-      user_id: peopleOnRooms[socket.id].id,
-      event_id: peopleOnRooms[socket.id].eventId,
-      user_name: peopleOnRooms[socket.id].userName,
-      action: 'leave'
-    };
+  retrieveUser(socket.id).then(function(user: ChatModel.User) {
+    if (user) {
+      const userLeaving: ChatModel.UserAction = {
+        user_id: user.id,
+        event_id: user.eventId,
+        user_name: user.userName,
+        action: 'leave'
+      };
 
-    socket.to(peopleOnRooms[socket.id].eventId).emit('event_user', userLeaving);
-    // remove user from pool
-    delete peopleOnRooms[socket.id];
-  }
+      socket.to(user.eventId).emit('event_user', userLeaving);
+      // remove user from redis
+      deleteUser(socket.id, user.id);
+    }
+  })
+  .catch(function(err) {
+    console.error('ERROR RETRIEVING USER FROM REDIS: ', err);
+  });
+}
+
+function storeUser(socketId: any, user: ChatModel.User) {
+  redisClient.hset(socketId, USER_KEYS.USER_ID, user.id.toString());
+  redisClient.hset(socketId, USER_KEYS.USER_NAME, user.userName);
+  redisClient.hset(socketId, USER_KEYS.EVENT_ID, user.eventId.toString());
+  // store socketId on user_id key for unicast purpose
+  redisClient.hset(user.id.toString(), USER_KEYS.USER_ID, socketId);
+}
+
+async function retrieveUser(socketId: any) {
+  return new Promise(function(resolve, reject) {
+    redisClient.hgetall(socketId, function(err, user) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(user);
+      }
+    });
+  });
+}
+
+async function retrieveSocket(userId: number) {
+  return new Promise(function(resolve, reject) {
+    redisClient.hget(userId.toString(), USER_KEYS.USER_ID, function(err, socketId) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(socketId);
+      }
+    });
+  });
+}
+
+function deleteUser(socketId: any, userId: number) {
+  redisClient.hdel(socketId, USER_KEYS.USER_ID);
+  redisClient.hdel(socketId, USER_KEYS.USER_NAME);
+  redisClient.hdel(socketId, USER_KEYS.EVENT_ID);
+  redisClient.hdel(userId.toString(), USER_KEYS.USER_ID);
 }
