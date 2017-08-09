@@ -1,8 +1,11 @@
+import * as redis from 'socket.io-redis';
 import { config } from './config/index';
 import * as ChatEvents from './chat/index';
 
 export function setupChat(io: any) {
   console.log('Setting up chat events');
+
+  io.adapter(redis({ host: config.redisUrl, port: config.redisPort }));
 
   io
   .of(config.chatPathEndpoint)
