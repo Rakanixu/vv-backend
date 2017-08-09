@@ -193,3 +193,16 @@ function deleteUser(socketId: any, userId: number, eventId: number) {
 function onRedisError(err: any) {
   console.error('ERROR RETRIEVING DATA FROM REDIS: ', err);
 }
+
+// fixme: we are pingin redis to avoid connect ECONNREFUSED in azurre instance
+function heartbeat() {
+  redisClient.ping(function(err, result) {
+    if (err) {
+      console.error('Redis ping returned err: ' + err);
+    } else {
+      console.log('Redis ping returned: ' + result);
+    }
+  });
+}
+
+setInterval(heartbeat, 59 * 1000);
