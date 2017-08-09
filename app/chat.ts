@@ -14,6 +14,7 @@ export function setupChat(io: any) {
     socket.on('leave', ChatEvents.leave.bind(null, io, socket));
     socket.on('unicast_message', ChatEvents.unicastMessage.bind(null, io, socket));
     socket.on('broadcast_message', ChatEvents.broadcastMessage.bind(null, io, socket));
+    socket.on('users', ChatEvents.getRoomUsers.bind(null, io, socket));
     socket.on('disconnect', ChatEvents.disconnect.bind(null, io, socket));
   });
 }
