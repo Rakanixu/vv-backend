@@ -103,6 +103,31 @@ export function activateUser(req: express.Request, res: express.Response, next: 
     });
 }
 
+export function forgetPassword(req: express.Request, res: express.Response, next: express.NextFunction) {
+/*     const userId: number = req.body.userId;
+    const activationToken: string = req.body.forgetPasswordToken;
+    if (!userId || !activationToken) {
+        res.status(401).json({ message: 'user not found.' });
+        return;
+    }
+    uDB.getUser(null, userId).then((user: UserAccount) => {
+        if (user != null && user.activation_token === activationToken) {
+            user.activation_date = new Date();
+            uDB.updateUserById(userId, user).then(() => {
+                console.log(`User ${user[0].email} activated!`);
+                res.json(user);
+            }).catch((err) => {
+                res.status(401).json({ message: 'user not found.' });
+            });
+        } else {
+            res.status(401).json({ message: 'user not found.' });
+        }
+    }).catch(function(err) {
+        res.status(401).json({ message: 'user not found.' });
+        return;
+    }); */
+}
+
 /** Implements authentication. */
 export function auth(): express.Handler {
     return passport.authenticate('jwt', { session: false });
