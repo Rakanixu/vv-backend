@@ -30,14 +30,17 @@ export async function sendEmailWithTemplate(templateId: string, vars: any, recip
             address: addr
         };
     });
-    return client.transmissions.send({
-    options: {
-      sandbox: config.sparkpost.sandbox
-    },
-    content: {
-        template_id: templateId
-    },
-    substitution_data: vars,
-    recipients: sendTo
-  });
+
+    const payload = {
+        options: {
+            sandbox: config.sparkpost.sandbox
+        },
+        content: {
+            template_id: templateId
+        },
+        substitution_data: vars,
+        recipients: sendTo
+    };
+
+    return client.transmissions.send(payload);
 }
