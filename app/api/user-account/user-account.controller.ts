@@ -1,7 +1,7 @@
 import { UserAccountDB } from './user-account.db';
 import { UserAccount } from './user-account.model';
 import { hash, generateRandomString } from '../../utils/auth';
-import {sendEmailWithTemplate} from '../../mail';
+import { sendEmailWithTemplate } from '../../mail';
 import { config } from '../../config';
 
 const userAccountDB = new UserAccountDB();

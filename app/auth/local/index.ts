@@ -3,10 +3,12 @@ import * as passport from 'passport';
 import { ICustomRequest } from '../../utils/custom.types';
 import { UserAccount } from '../../api/user-account/user-account.model';
 import { UserAccountDB } from '../../api/user-account/user-account.db';
-import { hash } from '../../utils/auth';
+import { hash, generateRandomString } from '../../utils/auth';
 import * as jwt from 'jsonwebtoken';
 import { config } from '../../config';
+import { sendEmailWithTemplate } from '../../mail';
 import * as PassportJwt from 'passport-jwt';
+import * as moment from 'moment';
 
 const ExtractJwt = PassportJwt.ExtractJwt;
 const JwtStrategy = PassportJwt.Strategy;
@@ -85,13 +87,16 @@ export function activateUser(req: express.Request, res: express.Response, next: 
         res.status(401).json({ message: 'user not found.' });
         return;
     }
+
     uDB.getUser(null, userId).then((user: UserAccount) => {
         if (user != null && user.activation_token === activationToken) {
-            user.activation_date = new Date();
+            user.activation_date = moment().utc().format();
+            user.activation_token = null;
             uDB.updateUserById(userId, user).then(() => {
-                console.log(`User ${user[0].email} activated!`);
+                console.log(`User ${user.email} activated!`);
                 res.json(user);
             }).catch((err) => {
+                console.log(err);
                 res.status(401).json({ message: 'user not found.' });
             });
         } else {
@@ -104,28 +109,42 @@ export function activateUser(req: express.Request, res: express.Response, next: 
 }
 
 export function forgetPassword(req: express.Request, res: express.Response, next: express.NextFunction) {
-/*     const userId: number = req.body.userId;
-    const activationToken: string = req.body.forgetPasswordToken;
-    if (!userId || !activationToken) {
+    const email: string = req.body.email;
+    if (!email) {
         res.status(401).json({ message: 'user not found.' });
         return;
     }
-    uDB.getUser(null, userId).then((user: UserAccount) => {
-        if (user != null && user.activation_token === activationToken) {
-            user.activation_date = new Date();
-            uDB.updateUserById(userId, user).then(() => {
-                console.log(`User ${user[0].email} activated!`);
-                res.json(user);
-            }).catch((err) => {
+    uDB.getUserByEmail(email).then((users: UserAccount[]) => {
+        if (users.length) {
+            const user: UserAccount = users[0];
+            user.forget_password_token = generateRandomString(64);
+            const vars: any = {
+                userId: user.id,
+                forgetPasswordToken: user.forget_password_token
+            };
+
+            sendEmailWithTemplate(config.sparkpost.templates.forgetPassword, vars, [user.email])
+            .then(() => {
+                uDB.updateUserById(user.id, user).then(() => {
+                    res.json({ message: 'forget password mail sent' });
+                }).catch((err) => {
+                    console.log(err);
+                    res.status(401).json({ message: 'user not found.' });
+                });
+            })
+            .catch((reason: any) => {
+                console.error('There was an error sending the forget password email: ' + reason);
                 res.status(401).json({ message: 'user not found.' });
+                return;
             });
         } else {
             res.status(401).json({ message: 'user not found.' });
+            return;
         }
     }).catch(function(err) {
         res.status(401).json({ message: 'user not found.' });
         return;
-    }); */
+    });
 }
 
 /** Implements authentication. */

@@ -21,6 +21,7 @@ interface Config {
       templates: {
         test: string;
         userActivation: string;
+        forgetPassword: string;
       }
     };
     tribecast: {
@@ -71,7 +72,8 @@ export let config: Config = {
     sandbox: false,
     templates: {
       test: 'my-first-email',
-      userActivation: 'activate-user'
+      userActivation: 'activate-user',
+      forgetPassword: 'forget-password'
     }
   },
   tribecast: {

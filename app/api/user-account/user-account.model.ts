@@ -16,5 +16,6 @@ export interface UserAccount {
     avatar?: string;
     timezone?: string;
     activation_token?: string;
-    activation_date?: Date;
+    activation_date?: string;
+    forget_password_token?: string;
 }

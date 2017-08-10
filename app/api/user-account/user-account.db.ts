@@ -21,7 +21,8 @@ const COLUMNS = [
   'email',
   'username',
   'activation_token',
-  'activation_date'
+  'activation_date',
+  'forget_password_token'
 ];
 
 export class UserAccountDB {
