@@ -30,12 +30,6 @@ paths:
       leave:
         description: | 
           Leave a chat room. Every single event should host a chat room.
-        parameters:
-          - name: leave_room
-            description: Message JSON to leave a chat room.
-            schema:
-              $ref: '#/definitions/ChatUser'
-            required: true  
         response:
           schema:
             title: aknowledge
@@ -118,14 +112,6 @@ paths:
   BroadcastMessage:
     type: object
     properties:
-      user_id:
-        type: integer
-        format: int32
-      event_id:
-        type: integer
-        format: int32
-      user_name:
-        type: string 
       message:
         type: string       
         

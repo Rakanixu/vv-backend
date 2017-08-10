@@ -87,21 +87,35 @@ export function unicastMessage(io: any, socket: any, msg: ChatModel.UnicastMessa
     }
   })
   .catch(function(err) {
-    console.error('ERROR RETRIEVING SOCKET_ID FROM REDIS: ', err);
+    socket.emit('aknowledge', ackNOK);
   });
 }
 
-export function broadcastMessage(io: any, socket: any, msg: ChatModel.BroadcastMessage) {
-  // check room exists
-  if (msg.event_id) {
-    console.log('broadcastMessage', msg);
+export function broadcastMessage(io: any, socket: any, msg: ChatModel.Message) {
+  retrieveUser(socket.id).then(function(user: ChatModel.User) {
+    // check room exists
+    if (user && user.eventId) {
+      console.log('broadcastMessage', msg);
 
-    chatDB.insertDocument(msg, ChatModel.Collections.broadcastMessage);
-    socket.to(msg.event_id).emit('broadcast_message', msg);
-  }
+      const bMsg: ChatModel.BroadcastMessage = {
+        user_id: user.id,
+        event_id: user.eventId,
+        user_name: user.userName,
+        message: msg.message,
+      };
+
+      chatDB.insertDocument(bMsg, ChatModel.Collections.broadcastMessage);
+      socket.to(user.eventId).emit('broadcast_message', bMsg);
+    } else {
+      socket.emit('aknowledge', ackNOK);
+    }
+  })
+  .catch(function(err) {
+    socket.emit('aknowledge', ackNOK);
+  });
 }
 
-export function getRoomUsers(io: any, socket: any, msg: ChatModel.BroadcastMessage) {
+export function getRoomUsers(io: any, socket: any) {
   const usersId: number[] = [];
 
   retrieveUser(socket.id).then(function(user: ChatModel.User) {
