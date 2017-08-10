@@ -50,22 +50,31 @@ export function join(io: any, socket: any, chatUser: ChatModel.ChatUser) {
   }
 }
 
-export function leave(io: any, socket: any, chatUser: ChatModel.ChatUser) {
-  console.log('leave', chatUser);
+export function leave(io: any, socket: any) {
+  console.log('leave', socket.id);
 
-  const userLeaving: ChatModel.UserAction = {
-    user_id: chatUser.user_id,
-    event_id: chatUser.event_id,
-    user_name: chatUser.user_name,
-    action: 'leave'
-  };
+  retrieveUser(socket.id).then(function(user: ChatModel.User) {
+    if (user) {
+      const userLeaving: ChatModel.UserAction = {
+        user_id: user.id,
+        event_id: user.eventId,
+        user_name: user.userName,
+        action: 'leave'
+      };
 
-  socket.leave(chatUser.event_id);
-  socket.to(chatUser.event_id).emit('event_user', userLeaving);
-  socket.emit('aknowledge', ackOK);
+      socket.leave(user.eventId);
+      socket.to(user.eventId).emit('event_user', userLeaving);
+      socket.emit('aknowledge', ackOK);
 
-  // remove user from pool
-  deleteUser(socket.id, chatUser.user_id, chatUser.event_id);
+      // remove user from pool
+      deleteUser(socket.id, user.id, user.eventId);
+    } else {
+      socket.emit('aknowledge', ackNOK);
+    }
+  })
+  .catch(function() {
+    socket.emit('aknowledge', ackNOK);
+  });
 }
 
 export function unicastMessage(io: any, socket: any, msg: ChatModel.UnicastMessage) {
