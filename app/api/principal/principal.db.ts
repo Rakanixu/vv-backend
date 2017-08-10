@@ -46,10 +46,18 @@ export class PrincipalDB {
   }
 
   public async getEventsByPrincipal(principalId: number) {
-    return this.knex('event').count().where('principal_id', '=', principalId);
+    return this.knex('event').where('principal_id', '=', principalId).returning(COLUMNS);
   }
 
   public async getUsersByPrincipal(principalId: number) {
+    return this.knex('user_account').where('principal_id', '=', principalId).returning(COLUMNS);
+  }
+
+  public async getEventsCountByPrincipal(principalId: number) {
+    return this.knex('event').count().where('principal_id', '=', principalId);
+  }
+
+  public async getUsersCountByPrincipal(principalId: number) {
     return this.knex('user_account').count().where('principal_id', '=', principalId);
   }
 }
