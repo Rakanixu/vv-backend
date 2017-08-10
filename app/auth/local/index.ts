@@ -147,6 +147,40 @@ export function forgetPassword(req: express.Request, res: express.Response, next
     });
 }
 
+export function changePassword(req: express.Request, res: express.Response, next: express.NextFunction) {
+    const forgetPasswordToken: string = req.body.forget_password_token;
+    const userId: number = req.body.user_id;
+    const password: string = req.body.password;
+    const confirmPassword: string = req.body.confirm_password;
+
+    if (!forgetPasswordToken || !userId || !password || !confirmPassword) {
+        res.status(401).json({ message: 'invalid data.' });
+        return;
+    }
+
+    uDB.getUser(null, userId).then((user: UserAccount) => {
+        if (user != null && 
+            user.forget_password_token === forgetPasswordToken &&
+            password === confirmPassword) {
+            user.password = hash(password);
+            user.forget_password_token = null;
+
+            uDB.updateUserById(userId, user).then(() => {
+                delete user.password;
+                res.json(user);
+            }).catch((err) => {
+                console.log(err);
+                res.status(401).json({ message: 'invalid data.' });
+            });
+        } else {
+            res.status(401).json({ message: 'invalid data.' });
+        }
+    }).catch(function(err) {
+        res.status(401).json({ message: 'invalid data.' });
+        return;
+    });
+}
+
 /** Implements authentication. */
 export function auth(): express.Handler {
     return passport.authenticate('jwt', { session: false });

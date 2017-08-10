@@ -17,6 +17,7 @@ export function configure(srv: Server) {
     });
     srv.app.post('/activate', localAuth.activateUser);
     srv.app.post('/forget_password', localAuth.forgetPassword);
+    srv.app.post('/change_password', localAuth.changePassword);
     srv.app.get('/secret', isAuth, function (req: ICustomRequest, res: express.Response) {
         res.json({ message: 'Success! You can not see this without a token'});
     });
