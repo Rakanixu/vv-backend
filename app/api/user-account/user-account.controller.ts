@@ -1,7 +1,7 @@
 import { UserAccountDB } from './user-account.db';
 import { UserAccount } from './user-account.model';
 import { hash, generateRandomString } from '../../utils/auth';
-import {sendEmailWithTemplate} from '../../mail';
+import { sendEmailWithTemplate } from '../../mail';
 import { config } from '../../config';
 
 const userAccountDB = new UserAccountDB();
@@ -17,7 +17,7 @@ export async function createUser(userId: number, userAccount: UserAccount) {
   const user: UserAccount = await userAccountDB.createUser(userId, userAccount);
   if (user) {
     const vars: any = {
-      userId: user.id,
+      userId: user[0].id,
       activationToken: userAccount.activation_token
     };
     console.log(`User account created. Sending an email to ${userAccount.email}`);

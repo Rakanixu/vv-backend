@@ -19,7 +19,9 @@ interface Config {
       apiKey: string;
       sandbox: boolean;
       templates: {
+        test: string;
         userActivation: string;
+        forgetPassword: string;
       }
     };
     tribecast: {
@@ -67,9 +69,11 @@ export let config: Config = {
   sessionCookieName: 'jwt_token',
   sparkpost: {
     apiKey: process.env.SPARKPOST_API_KEY || 'b99c452431f9bdaf9c16f468875bf82fbc2a3451',
-    sandbox: true,
+    sandbox: false,
     templates: {
-      userActivation: 'my-first-email'
+      test: 'my-first-email',
+      userActivation: 'activate-user',
+      forgetPassword: 'forget-password'
     }
   },
   tribecast: {

@@ -57,6 +57,41 @@ paths:
             items:
               $ref: '#/definitions/User'
 
+  /forget_password:
+    post:
+      description:
+        Sends a mail with user's ID and forgetPasswordToken
+      parameters:
+        - name: ForgetPasswordRequest
+          in: body
+          description: User's registered email address
+          schema:
+            $ref: '#/definitions/ForgetPasswordRequest'
+          required: true
+      responses:
+        200:
+          description: Forget password mail sent
+          
+  /change_password:
+    post:
+      description:
+        Updates user's password
+      parameters:
+        - name: ChangePasswordRequest
+          in: body
+          description: ForgetPasswordToken and new password
+          schema:
+            $ref: '#/definitions/ChangePasswordRequest'
+          required: true
+      responses:
+        200:
+          description: User's password updated.      
+          schema:
+            title: event
+            type: object
+            items:
+              $ref: '#/definitions/User' 
+
 ################################################################################
 #                                 Definitions                                #
 ################################################################################
@@ -83,6 +118,25 @@ definitions:
         type: integer
       activationToken:
         type: string
+
+  ForgetPasswordRequest:
+    type: object      
+    properties:
+      email:
+        type: string
+
+  ChangePasswordRequest:
+    type: object      
+    properties:
+      user_id:
+        type: integer
+        format: int32
+      forget_password_token:
+        type: string
+      password:
+        type: string
+      confirm_password:
+        type: string  
 
   User:
     type: object
