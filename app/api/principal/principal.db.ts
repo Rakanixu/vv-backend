@@ -7,6 +7,7 @@ const COLUMNS = [
   'id',
   'background',
   'domain',
+  'subdomain',
   'design',
   'name',
   'description',
@@ -35,6 +36,10 @@ export class PrincipalDB {
 
   public async getPrincipal(principalId: number) {
     return this.knex(PRINCIPAL).where('id', principalId).select(COLUMNS);
+  }
+
+  public async getPrincipalByDomain(domain: string) {
+    return this.knex(PRINCIPAL).where('domain', domain).select(COLUMNS);
   }
 
   public async updatePrincipal(principalId: number, principal: Principal) {

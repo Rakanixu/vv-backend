@@ -7,4 +7,5 @@ export interface ICustomRequest extends express.Request {
     user: UserAccount;
     principal: Principal;
     eventLocation: EventLocation;
+    principalId: number;
 }
