@@ -19,6 +19,10 @@ export interface UnicastMessage {
   message: string;
 }
 
+export interface Message {
+  message: string;
+}
+
 export interface BroadcastMessage {
   user_id: number;
   event_id: number;
