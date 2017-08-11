@@ -19,7 +19,8 @@ exports.data = [
             // password: 'root'
             'password': '99adc231b045331e514a516b4b7680f588e3823213abe901738bc3ad67b2f6fcb3c64efb93d18002588d3ccc1a49efbae1ce20cb43df36b38651f11fa75678e8',
             'role_id': 2,
-            'avatar': 'https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAAbcAAAAJDM1MWE0OTQ5LTc3OTQtNGM4Yi05OTYzLWMyNGY5NjY0OWM0Mg.png'
+            'avatar': 'https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAAbcAAAAJDM1MWE0OTQ5LTc3OTQtNGM4Yi05OTYzLWMyNGY5NjY0OWM0Mg.png',
+            'activation_date': '2017-08-11'
         },
 
         events: [{
@@ -45,7 +46,8 @@ exports.data = [
             // password: 'root'
             'password': '99adc231b045331e514a516b4b7680f588e3823213abe901738bc3ad67b2f6fcb3c64efb93d18002588d3ccc1a49efbae1ce20cb43df36b38651f11fa75678e8',
             'role_id': 3,
-            'avatar': 'https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAAbcAAAAJDM1MWE0OTQ5LTc3OTQtNGM4Yi05OTYzLWMyNGY5NjY0OWM0Mg.png'
+            'avatar': 'https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAAbcAAAAJDM1MWE0OTQ5LTc3OTQtNGM4Yi05OTYzLWMyNGY5NjY0OWM0Mg.png',
+            'activation_date': '2017-08-11'
         }
     }, {
         type: 'guest_user',
@@ -55,7 +57,8 @@ exports.data = [
             // password: 'root'
             'password': '99adc231b045331e514a516b4b7680f588e3823213abe901738bc3ad67b2f6fcb3c64efb93d18002588d3ccc1a49efbae1ce20cb43df36b38651f11fa75678e8',
             'role_id': 3,
-            'avatar': 'https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAAbcAAAAJDM1MWE0OTQ5LTc3OTQtNGM4Yi05OTYzLWMyNGY5NjY0OWM0Mg.png'
+            'avatar': 'https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAAbcAAAAJDM1MWE0OTQ5LTc3OTQtNGM4Yi05OTYzLWMyNGY5NjY0OWM0Mg.png',
+            'activation_date': '2017-08-11'
         }
     }, {
         type: 'guest_user',
@@ -65,7 +68,8 @@ exports.data = [
             // password: 'root'
             'password': '99adc231b045331e514a516b4b7680f588e3823213abe901738bc3ad67b2f6fcb3c64efb93d18002588d3ccc1a49efbae1ce20cb43df36b38651f11fa75678e8',
             'role_id': 3,
-            'avatar': 'https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAAbcAAAAJDM1MWE0OTQ5LTc3OTQtNGM4Yi05OTYzLWMyNGY5NjY0OWM0Mg.png'
+            'avatar': 'https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAAbcAAAAJDM1MWE0OTQ5LTc3OTQtNGM4Yi05OTYzLWMyNGY5NjY0OWM0Mg.png',
+            'activation_date': '2017-08-11'
         }
     }
 ]
