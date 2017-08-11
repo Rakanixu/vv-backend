@@ -14,6 +14,11 @@ export async function createUser(userId: number, userAccount: UserAccount) {
   userAccount.password = hash(userAccount.password);
   userAccount.activation_token = generateRandomString(64);
 
+  const existingUser: UserAccount[] = await userAccountDB.getUserByEmail(userAccount.email);
+  if (existingUser.length) {
+     throw new Error('User already exists');
+  }
+
   const user: UserAccount = await userAccountDB.createUser(userId, userAccount);
   if (user) {
     const vars: any = {
