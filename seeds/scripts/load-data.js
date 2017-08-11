@@ -1,3 +1,5 @@
+'use strict';
+
 var data = require('../sample-data/data').data;
 exports.seed = function (knex, Promise) {
 
