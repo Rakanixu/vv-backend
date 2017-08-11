@@ -12,12 +12,13 @@ import * as localAuth from './local';
 export function configure(srv: Server) {
     console.log('Auth module setup');
     srv.app.post('/login', localAuth.login);
-    srv.app.options('/login', function(req: ICustomRequest, res: express.Response) {
-        res.json();
-    });
+    srv.app.options('/login', http200);
     srv.app.post('/activate', localAuth.activateUser);
+    srv.app.options('/activate', http200);
     srv.app.post('/forget_password', localAuth.forgetPassword);
+    srv.app.options('/forget_password', http200);
     srv.app.post('/change_password', localAuth.changePassword);
+    srv.app.options('/change_password', http200);
     srv.app.get('/secret', isAuth, function (req: ICustomRequest, res: express.Response) {
         res.json({ message: 'Success! You can not see this without a token'});
     });
@@ -48,4 +49,8 @@ export async function isAllowed(req: ICustomRequest, res: express.Response, next
 
 export function noAuth(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
     next();
+}
+
+function http200(req: ICustomRequest, res: express.Response) {
+    res.json();
 }
