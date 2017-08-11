@@ -12,7 +12,7 @@ export async function principalIdFromSubdomain(req: ICustomRequest, res: express
     req.principalId = principals[0].id;
     console.log(req.hostname, req.principalId);
   } else {
-    req.principalId = 0;
+    req.principalId = -1;
   }
 
   next();
