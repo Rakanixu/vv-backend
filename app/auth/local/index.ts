@@ -159,7 +159,7 @@ export function changePassword(req: express.Request, res: express.Response, next
     }
 
     uDB.getUser(null, userId).then((user: UserAccount) => {
-        if (user != null && 
+        if (user != null &&
             user.forget_password_token === forgetPasswordToken &&
             password === confirmPassword) {
             user.password = hash(password);
