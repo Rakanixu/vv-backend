@@ -2,6 +2,7 @@ export interface Principal {
     id?: number;
     name: string;
     domain: string;
+    subdomain: string;
     description: string;
     design: string;
     primary_color: string;
