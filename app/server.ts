@@ -36,17 +36,13 @@ export class Server {
         this.app.use(methodOverride());
         this.app.use(express.static(__dirname + '/static'));
         this.app.use((req: ICustomRequest, res: express.Response, next: Function) => {
-            console.log('ORIGIN', req.header('Origin'));
-            if (req.header('Origin') === undefined) {
-                // origin header not set by browser, let's accept everything
-                // at least google chrome will fail if not specific value for Access-Control-Allow-Origin is set
-                // chrome always sets its origin
-                res.header('Access-Control-Allow-Origin', '*');
+            if (req.header('Origin') && req.header('Origin').toLowerCase().indexOf('40.68.174.239') > -1) {
+                res.header('Access-Control-Allow-Origin', req.header('Origin').toLowerCase());
             } else {
-                if (cors.origins.indexOf(req.header('Origin').toLowerCase()) > -1) {
-                    res.header('Access-Control-Allow-Origin', req.header('Origin').toLowerCase());
-                }
+                res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
             }
+
+            res.header('Access-Control-Allow-Origin', req.header('Origin').toLowerCase());
 
             res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,OPTIONS,DELETE');
             res.header('Access-Control-Allow-Credentials', 'true');

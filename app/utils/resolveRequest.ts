@@ -70,7 +70,6 @@ function handleResponse(req: ICustomRequest, res: express.Response, output?: any
       break;
   }
 
-  res.statusCode = statusCode;
-  res.send(output);
+  res.status(statusCode).json(output);
 }
 
