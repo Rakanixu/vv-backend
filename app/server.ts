@@ -51,7 +51,12 @@ export class Server {
             res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,OPTIONS,DELETE');
             res.header('Access-Control-Allow-Credentials', 'true');
             res.header('Access-Control-Allow-Headers', 'Origin, Credentials, X-Requested-With, Content-Type, Accept, Authorization');
-            next();
+
+            if (req.method === 'OPTIONS') {
+                res.end();
+            } else {
+                next();
+            }
         });
 
         const env = process.env.NODE_ENV || 'development';
