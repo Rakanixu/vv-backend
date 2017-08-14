@@ -9,7 +9,7 @@ import * as routes from './routes';
 import * as auth from './auth';
 
 const cors = {
-    origins: ['http://40.68.174.239', '40.68.174.239', '40.68.174.239:9000', 'http://164.132.162.186', '164.132.162.186', '164.132.162.186:9000', 'localhost:9000', 'localhost:3000']
+    origins: ['http://40.68.174.239', 'https://40.68.174.239', 'http://40.68.174.239:9000', 'http://164.132.162.186', 'https://164.132.162.186', 'http://164.132.162.186:9000', 'http://localhost:9000', 'http://localhost:3000']
 };
 
 export class Server {
@@ -36,8 +36,8 @@ export class Server {
         this.app.use(methodOverride());
         this.app.use(express.static(__dirname + '/static'));
         this.app.use((req: ICustomRequest, res: express.Response, next: Function) => {
-            if (cors.origins.indexOf(req.header('host').toLowerCase()) > -1) {
-                res.header('Access-Control-Allow-Origin', req.header('host').toLowerCase());
+            if (cors.origins.indexOf(req.header('Origin').toLowerCase()) > -1) {
+                res.header('Access-Control-Allow-Origin', req.header('Origin').toLowerCase());
             }
 
             res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,OPTIONS,DELETE');
