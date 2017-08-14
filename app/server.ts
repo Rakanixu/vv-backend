@@ -56,6 +56,7 @@ export class Server {
                 res.end();
             } else {
                 next();
+                res.end();
             }
         });
 
