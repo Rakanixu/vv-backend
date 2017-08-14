@@ -22,6 +22,7 @@ import * as chat from './api/chat';
 import * as pollEntry from './api/poll-entry';
 import * as sliderImage from './api/slider-image';
 import { config } from './config';
+import { ICustomRequest } from './utils/custom.types';
 import { principalIdFromSubdomain } from './utils/principal.subdomain';
 
 const RESOURCES = {
@@ -79,7 +80,9 @@ export function setupRoutes(app: express.Express) {
     router.use(RESOURCES.QUESTION, question.routes);
     router.use(RESOURCES.QUIZ_ENTRY, quizEntry.routes);
 
-    app.use(config.apiPathPrefix, principalIdFromSubdomain, router);
+    app.use(config.apiPathPrefix, principalIdFromSubdomain, router, function(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+        res.end();
+    });
     app.use('/', (req, res) => {
         res.statusCode = 404;
         res.send('Unknown url');
