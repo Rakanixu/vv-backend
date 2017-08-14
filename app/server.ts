@@ -9,16 +9,7 @@ import * as routes from './routes';
 import * as auth from './auth';
 
 const cors = {
-    origins: [
-        'http://40.68.174.239', 
-        '40.68.174.239', 
-        '40.68.174.239:9000', 
-        'http://164.132.162.186', 
-        '164.132.162.186', 
-        '164.132.162.186:9000', 
-        'localhost:9000',
-        'localhost:3000'
-    ]
+    origins: ['http://40.68.174.239', '40.68.174.239', '40.68.174.239:9000', 'http://164.132.162.186', '164.132.162.186', '164.132.162.186:9000', 'localhost:9000', 'localhost:3000']
 };
 
 export class Server {
