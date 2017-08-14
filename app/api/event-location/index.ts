@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as EventLocationController from './event-location.controller';
 import { ICustomRequest } from '../../utils/custom.types';
+import { getPrincipalId } from '../../utils/principal.subdomain';
 import { resolve } from '../../utils/resolveRequest';
 import { isAuth } from '../../auth';
 
@@ -13,21 +14,21 @@ routes.put('/:eventLocationId', isAuth, updateEventLocation);
 routes.delete('/:eventLocationId', isAuth, deleteEventLocation);
 
 function getEventLocations(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventLocationController.getEventLocations(req.user.principal_id));
+  resolve(req, res, EventLocationController.getEventLocations(getPrincipalId(req)));
 }
 
 function createEventLocation(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventLocationController.createEventLocation(req.user.principal_id, req.body));
+  resolve(req, res, EventLocationController.createEventLocation(getPrincipalId(req), req.body));
 }
 
 function getEventLocation(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventLocationController.getEventLocation(req.user.principal_id, req.params.eventLocationId));
+  resolve(req, res, EventLocationController.getEventLocation(getPrincipalId(req), req.params.eventLocationId));
 }
 
 function updateEventLocation(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventLocationController.updateEventLocation(req.user.principal_id, req.params.eventLocationId, req.body));
+  resolve(req, res, EventLocationController.updateEventLocation(getPrincipalId(req), req.params.eventLocationId, req.body));
 }
 
 function deleteEventLocation(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventLocationController.deleteEventLocation(req.user.principal_id, req.params.eventLocationId));
+  resolve(req, res, EventLocationController.deleteEventLocation(getPrincipalId(req), req.params.eventLocationId));
 }

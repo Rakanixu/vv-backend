@@ -5,6 +5,7 @@ import { ICustomRequest } from '../../utils/custom.types';
 import { resolve } from '../../utils/resolveRequest';
 import { manageFiles } from '../../utils/upload.helpers';
 import { storage } from '../../utils/upload.helpers';
+import { getPrincipalId } from '../../utils/principal.subdomain';
 import { config } from '../../config/index';
 import { isAuth } from '../../auth';
 
@@ -28,37 +29,37 @@ routes.post('/:eventId/token', isAuth, getEventToken);
 
 
 function getEvents(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.getEvents(req.user.principal_id));
+  resolve(req, res, EventController.getEvents(getPrincipalId(req)));
 }
 
 function createEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   req.body = manageFiles(req, ['preview_img', 'event_background']);
 
-  resolve(req, res, EventController.createEvent(req.user.principal_id, req.body));
+  resolve(req, res, EventController.createEvent(getPrincipalId(req), req.body));
 }
 
 function getEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.getEvent(req.user.principal_id, req.params.eventId));
+  resolve(req, res, EventController.getEvent(getPrincipalId(req), req.params.eventId));
 }
 
 function updateEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   req.body = manageFiles(req, ['preview_img', 'event_background']);
 
-  resolve(req, res, EventController.updateEvent(req.user.principal_id, req.params.eventId, req.body));
+  resolve(req, res, EventController.updateEvent(getPrincipalId(req), req.params.eventId, req.body));
 }
 
 function deleteEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.deleteEvent(req.user.principal_id, req.params.eventId));
+  resolve(req, res, EventController.deleteEvent(getPrincipalId(req), req.params.eventId));
 }
 
 function startEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.startEvent(req.user.principal_id, req.params.eventId));
+  resolve(req, res, EventController.startEvent(getPrincipalId(req), req.params.eventId));
 }
 
 function stopEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.stopEvent(req.user.principal_id, req.params.eventId));
+  resolve(req, res, EventController.stopEvent(getPrincipalId(req), req.params.eventId));
 }
 
 function getEventToken(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.generateEventToken(req.user, req.params.eventId, req.body));
+  resolve(req, res, EventController.generateEventToken(getPrincipalId(req), req.params.eventId, req.body));
 }
