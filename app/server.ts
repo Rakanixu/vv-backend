@@ -36,8 +36,15 @@ export class Server {
         this.app.use(methodOverride());
         this.app.use(express.static(__dirname + '/static'));
         this.app.use((req: ICustomRequest, res: express.Response, next: Function) => {
-            if (cors.origins.indexOf(req.header('Origin').toLowerCase()) > -1) {
-                res.header('Access-Control-Allow-Origin', req.header('Origin').toLowerCase());
+            if (req.header('Origin') === undefined) {
+                // origin header not set by browser, let's accept everything
+                // at least google chrome will fail if not specific value for Access-Control-Allow-Origin is set
+                // chrome always sets its origin
+                res.header('Access-Control-Allow-Origin', '*');
+            } else {
+                if (cors.origins.indexOf(req.header('Origin').toLowerCase()) > -1) {
+                    res.header('Access-Control-Allow-Origin', req.header('Origin').toLowerCase());
+                }
             }
 
             res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,OPTIONS,DELETE');
