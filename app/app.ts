@@ -18,11 +18,16 @@ server.initialize() /* tslint:disable:no-floating-promises */
 .then(function(app: any) {
     app.set('port', config.securePort);
     const httpServer = http.createServer(app);
-    const httpsServer = https.createServer({
-        key: fs.readFileSync('/src/app/key.pem'),
-        cert: fs.readFileSync('/src/app/cert.pem'),
-        passphrase: '19956476'
-    }, app);
+    let httpsServer;
+    try {
+        httpsServer = https.createServer({
+            key: fs.readFileSync('/src/app/key.pem', 'utf8'),
+            cert: fs.readFileSync('/src/app/cert.pem', 'utf8'),
+            passphrase: '19956476'
+        }, app);
+    } catch (e) {
+        console.log('https.createServer', e);
+    }
     // instantiate socket.io
     this.io = IO(httpServer);
 
@@ -33,12 +38,17 @@ server.initialize() /* tslint:disable:no-floating-promises */
         console.log('Server listening on port %d', config.port);
     });
 
-    httpsServer.on('listening', () => {
-        console.log('Secure Server listening on port %d', config.securePort);
-    });
-
     httpServer.listen(config.port);
-    httpsServer.listen(config.securePort);
+
+    try {
+        httpsServer.on('listening', () => {
+            console.log('Secure Server listening on port %d', config.securePort);
+        });
+
+        httpsServer.listen(config.securePort);
+    } catch (e) {
+        console.log(e);
+    }
 }.bind(server))
 .catch(err => console.log('Error setting up server:', err));
 
