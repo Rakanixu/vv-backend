@@ -81,7 +81,7 @@ export function setupRoutes(app: express.Express) {
     router.use(RESOURCES.QUIZ_ENTRY, quizEntry.routes);
 
     app.use(config.apiPathPrefix, principalIdFromSubdomain, router, function(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-        res.end();
+        res.send();
     });
     app.use('/', (req, res) => {
         res.statusCode = 404;
