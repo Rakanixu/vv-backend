@@ -20,7 +20,8 @@ server.initialize() /* tslint:disable:no-floating-promises */
     const httpServer = http.createServer(app);
     const httpsServer = https.createServer({
         key: fs.readFileSync('/src/app/key.pem'),
-        cert: fs.readFileSync('/src/app/cert.pem')
+        cert: fs.readFileSync('/src/app/cert.pem'),
+        passphrase: '19956476'
     }, app);
     // instantiate socket.io
     this.io = IO(httpServer);
