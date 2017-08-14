@@ -3,11 +3,14 @@ import { ICustomRequest } from './custom.types';
 
 export function resolve(req: ICustomRequest, res: express.Response, promise: Promise<any>) {
   promise.then((output) => {
+    console.log('RESOLVE UTILS');
     handleResponse(req, res, output);
   }).catch((err) => {
+    console.log('ERROR 1');
     console.error(`Error: ${err}`);
     handleError(res, err);
   }).catch((err) => {
+    console.log('ERROR 2');
     console.error(`Error: ${err}`);
     res.status(400).json();
   });
