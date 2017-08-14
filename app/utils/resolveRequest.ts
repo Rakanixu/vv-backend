@@ -69,6 +69,7 @@ function handleResponse(req: ICustomRequest, res: express.Response, output?: any
       output = {};
       break;
   }
+  console.log('RESPONSE JSON', statusCode, output);
 
   res.status(statusCode).json(output);
 }
