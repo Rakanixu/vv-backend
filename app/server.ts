@@ -8,6 +8,10 @@ import { ICustomRequest } from './utils/custom.types';
 import * as routes from './routes';
 import * as auth from './auth';
 
+const cors = {
+    origins: ['http://40.68.174.239', '40.68.174.239', 'http://164.132.162.186', '164.132.162.186', 'localhost:9000']
+};
+
 export class Server {
     public app: express.Express;
     public io: any;
@@ -32,7 +36,10 @@ export class Server {
         this.app.use(methodOverride());
         this.app.use(express.static(__dirname + '/static'));
         this.app.use((req: ICustomRequest, res: express.Response, next: Function) => {
-            res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+            if (cors.origins.indexOf(req.header('host').toLowerCase()) > -1) {
+                res.header('Access-Control-Allow-Origin', req.header('host').toLowerCase());
+            }
+
             res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,OPTIONS,DELETE');
             res.header('Access-Control-Allow-Credentials', 'true');
             res.header('Access-Control-Allow-Headers', 'Origin, Credentials, X-Requested-With, Content-Type, Accept, Authorization');
