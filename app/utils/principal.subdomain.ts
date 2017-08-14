@@ -17,3 +17,17 @@ export async function principalIdFromSubdomain(req: ICustomRequest, res: express
 
   next();
 }
+
+export function getPrincipalId(req: ICustomRequest): number  {
+  let principalId: number = req.principalId;
+
+  if (!(principalId > 0)) {
+    try {
+      principalId = req.user.principal_id;
+    } catch (err) {
+      principalId = -1;
+    }
+  }
+
+  return principalId;
+}

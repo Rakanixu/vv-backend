@@ -64,12 +64,12 @@ export async function stopEvent(principalId: number, eventId: number) {
   return eventDB.updateEvent(principalId, eventId, event);
 }
 
-export async function generateEventToken(user: UserAccount, eventId: number, tokenReq: EventTokenRequest) {
+export async function generateEventToken(principalId: number, eventId: number, tokenReq: EventTokenRequest) {
   if (!config.tribecast) {
     throw new Error('Session couldnt be started. Config not ready.');
   }
 
-  const events: Event[] = await eventDB.getEvent(user.principal_id, eventId);
+  const events: Event[] = await eventDB.getEvent(principalId, eventId);
   if (!events || events.length === 0) {
     throw new Error('Event not found');
   }

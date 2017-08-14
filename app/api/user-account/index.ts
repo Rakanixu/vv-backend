@@ -5,6 +5,7 @@ import { ICustomRequest } from '../../utils/custom.types';
 import { resolve } from '../../utils/resolveRequest';
 import { manageFiles } from '../../utils/upload.helpers';
 import { storage } from '../../utils/upload.helpers';
+import { getPrincipalId } from '../../utils/principal.subdomain';
 import { config } from '../../config/index';
 import { isAuth } from '../../auth';
 
@@ -24,7 +25,7 @@ routes.put('/:userId',  isAuth, updateUser);
 routes.delete('/:userId',  isAuth, deleteUser);
 
 function getUsers(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, UserAccountController.getUsers(req.user.principal_id));
+  resolve(req, res, UserAccountController.getUsers(getPrincipalId(req)));
 }
 
 function createUser(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
@@ -38,15 +39,15 @@ function getMe(req: ICustomRequest, res: express.Response, next: express.NextFun
 }
 
 function getUser(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, UserAccountController.getUser(req.user.principal_id, req.params.userId));
+  resolve(req, res, UserAccountController.getUser(getPrincipalId(req), req.params.userId));
 }
 
 function updateUser(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   req.body = manageFiles(req, ['avatar']);
 
-  resolve(req, res, UserAccountController.updateUser(req.user.principal_id, req.params.userId, req.body));
+  resolve(req, res, UserAccountController.updateUser(getPrincipalId(req), req.params.userId, req.body));
 }
 
 function deleteUser(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, UserAccountController.deleteUser(req.user.principal_id, req.params.userId));
+  resolve(req, res, UserAccountController.deleteUser(getPrincipalId(req), req.params.userId));
 }
