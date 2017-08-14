@@ -14,7 +14,6 @@ routes.put('/:roleId', isAuth, updateRole);
 routes.delete('/:roleId', isAuth, deleteRole);
 
 function getRoles(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  console.log('HANDLER ROLES');
   resolve(req, res, RoleController.getRoles());
 }
 

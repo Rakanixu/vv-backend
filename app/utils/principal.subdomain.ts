@@ -18,8 +18,7 @@ export async function principalIdFromSubdomain(req: ICustomRequest, res: express
   next();
 }
 
-export function getPrincipalId(req: ICustomRequest): number  {
-  console.log('MIDDLEWARE principalID');
+export function getPrincipalId(req: ICustomRequest): number {
   let principalId: number = req.principalId;
 
   if (!(principalId > 0)) {

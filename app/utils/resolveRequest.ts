@@ -3,7 +3,6 @@ import { ICustomRequest } from './custom.types';
 
 export function resolve(req: ICustomRequest, res: express.Response, promise: Promise<any>) {
   promise.then((output) => {
-    console.log('RESOLVE UTILS');
     handleResponse(req, res, output);
   }).catch((err) => {
     console.log('ERROR 1');
@@ -72,7 +71,6 @@ function handleResponse(req: ICustomRequest, res: express.Response, output?: any
       output = {};
       break;
   }
-  console.log('RESPONSE JSON', statusCode, output);
 
   res.status(statusCode).json(output);
 }
