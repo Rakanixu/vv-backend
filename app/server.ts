@@ -27,6 +27,7 @@ export class Server {
     }
 
     private applyConfig() {
+        this.app.use(cors());
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(bodyParser.json({ limit: '10mb' }));
         this.app.use(cookieParser());
@@ -53,7 +54,5 @@ export class Server {
 
         // authentication configuration
         auth.configure(this);
-
-        this.app.use(cors());
     }
 }

@@ -80,7 +80,7 @@ export function setupRoutes(app: express.Express) {
     router.use(RESOURCES.QUESTION, question.routes);
     router.use(RESOURCES.QUIZ_ENTRY, quizEntry.routes);
 
-    app.use(config.apiPathPrefix, principalIdFromSubdomain, router);
+    app.use(config.apiPathPrefix, /* principalIdFromSubdomain, */ router);
     app.use('/', (req, res) => {
         res.statusCode = 404;
         res.send('Unknown url');
