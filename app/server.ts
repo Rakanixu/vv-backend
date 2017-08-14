@@ -32,20 +32,11 @@ export class Server {
         this.app.use(methodOverride());
         this.app.use(express.static(__dirname + '/static'));
         this.app.use((req: ICustomRequest, res: express.Response, next: Function) => {
-            if (req.header('Origin') !== undefined && req.header('Origin').toLowerCase().indexOf('40.68.174.239') > -1) {
-                res.header('Access-Control-Allow-Origin', req.header('Origin').toLowerCase());
-            } else {
-                res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-            }
+            res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
             res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,OPTIONS,DELETE');
             res.header('Access-Control-Allow-Credentials', 'true');
             res.header('Access-Control-Allow-Headers', 'Origin, Credentials, X-Requested-With, Content-Type, Accept, Authorization');
-
-            if (req.method === 'OPTIONS') {
-                res.end();
-            } else {
-                next();
-            }
+            next();
         });
 
         const env = process.env.NODE_ENV || 'development';
