@@ -1,5 +1,6 @@
 import { Server } from './server';
 import * as http from 'http';
+import * as https from 'https';
 import * as fs from 'fs';
 import * as IO from 'socket.io';
 import * as chat from './chat';
@@ -15,9 +16,12 @@ process.on('SIGINT', function () {
 const server = new Server();
 server.initialize() /* tslint:disable:no-floating-promises */
 .then(function(app: any) {
-    app.set('port', config.port);
+    app.set('port', config.securePort);
     const httpServer = http.createServer(app);
-
+    const httpsServer = https.createServer({
+        key: fs.readFileSync('/src/app/key.pem'),
+        cert: fs.readFileSync('/src/app/cert.pem')
+    }, app);
     // instantiate socket.io
     this.io = IO(httpServer);
 
@@ -28,7 +32,12 @@ server.initialize() /* tslint:disable:no-floating-promises */
         console.log('Server listening on port %d', config.port);
     });
 
+    httpsServer.on('listening', () => {
+        console.log('Secure Server listening on port %d', config.securePort);
+    });
+
     httpServer.listen(config.port);
+    httpsServer.listen(config.securePort);
 }.bind(server))
 .catch(err => console.log('Error setting up server:', err));
 
