@@ -36,6 +36,7 @@ export class Server {
         this.app.use(methodOverride());
         this.app.use(express.static(__dirname + '/static'));
         this.app.use((req: ICustomRequest, res: express.Response, next: Function) => {
+            console.log('ORIGIN', req.header('Origin'));
             if (req.header('Origin') === undefined) {
                 // origin header not set by browser, let's accept everything
                 // at least google chrome will fail if not specific value for Access-Control-Allow-Origin is set
