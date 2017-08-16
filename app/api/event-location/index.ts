@@ -7,9 +7,9 @@ import { isAuth } from '../../auth';
 
 export const routes = express.Router();
 
-routes.get('/', getEventLocations);
+routes.get('/', isAuth, getEventLocations);
 routes.post('/', isAuth, createEventLocation);
-routes.get('/:eventLocationId', getEventLocation);
+routes.get('/:eventLocationId', isAuth, getEventLocation);
 routes.put('/:eventLocationId', isAuth, updateEventLocation);
 routes.delete('/:eventLocationId', isAuth, deleteEventLocation);
 

@@ -8,9 +8,9 @@ export const routes = express.Router({
   mergeParams: true
 });
 
-routes.get('/', getQuizs);
+routes.get('/', isAuth, getQuizs);
 routes.post('/', isAuth, createQuiz);
-routes.get('/:quizId', getQuiz);
+routes.get('/:quizId', isAuth, getQuiz);
 routes.put('/:quizId', isAuth, updateQuiz);
 routes.delete('/:quizId', isAuth, deleteQuiz);
 
