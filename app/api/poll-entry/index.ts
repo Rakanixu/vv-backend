@@ -16,9 +16,9 @@ const images = [
 export const routes = express.Router({ mergeParams: true });
 export const upload = uploader.fields(images);
 
-routes.get('/', getPollEntries);
+routes.get('/', isAuth, getPollEntries);
 routes.post('/', isAuth, createPollEntry);
-routes.get('/:pollEntryId', getPollEntry);
+routes.get('/:pollEntryId', isAuth, getPollEntry);
 routes.put('/:pollEntryId', isAuth, updatePollEntry);
 routes.delete('/:pollEntryId', isAuth, deletePollEntry);
 

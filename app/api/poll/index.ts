@@ -8,9 +8,9 @@ export const routes = express.Router({
   mergeParams: true
 });
 
-routes.get('/', getPolls);
+routes.get('/', isAuth, getPolls);
 routes.post('/', isAuth, createPoll);
-routes.get('/:pollId', getPoll);
+routes.get('/:pollId', isAuth, getPoll);
 routes.put('/:pollId', isAuth, updatePoll);
 routes.delete('/:pollId', isAuth, deletePoll);
 

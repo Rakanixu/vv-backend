@@ -16,9 +16,9 @@ const images = [
 export const routes = express.Router({ mergeParams: true });
 export const upload = uploader.fields(images);
 
-routes.get('/', getParticipants);
+routes.get('/', isAuth, getParticipants);
 routes.post('/', isAuth, createParticipant);
-routes.get('/:participantId', getParticipant);
+routes.get('/:participantId', isAuth, getParticipant);
 routes.put('/:participantId', isAuth, updateParticipant);
 routes.delete('/:participantId', isAuth, deleteParticipant);
 

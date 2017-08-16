@@ -16,9 +16,9 @@ const images = [
 export const routes = express.Router({ mergeParams: true });
 export const upload = uploader.fields(images);
 
-routes.get('/', getAdmissions);
+routes.get('/', isAuth, getAdmissions);
 routes.post('/', isAuth, createAdmission);
-routes.get('/:admissionId', getAdmission);
+routes.get('/:admissionId', isAuth, getAdmission);
 routes.put('/:admissionId', isAuth, updateAdmission);
 routes.delete('/:admissionId', isAuth, deleteAdmission);
 

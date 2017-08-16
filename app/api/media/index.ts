@@ -17,9 +17,9 @@ const images = [
 export const routes = express.Router();
 export const upload = uploader.fields(images);
 
-routes.get('/', getMedias);
+routes.get('/', isAuth, getMedias);
 routes.post('/', isAuth, createMedia);
-routes.get('/:mediaId', getMedia);
+routes.get('/:mediaId', isAuth, getMedia);
 routes.put('/:mediaId', isAuth, updateMedia);
 routes.delete('/:mediaId', isAuth, deleteMedia);
 
