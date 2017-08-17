@@ -16,7 +16,8 @@ const COLUMNS = [
   'primary_color',
   'design_notes',
   'tags',
-  'created_at'
+  'created_at',
+  'enabled'
 ];
 
 export class PrincipalDB {
