@@ -59,6 +59,10 @@ export class PrincipalDB {
     return this.knex('user_account').where('principal_id', '=', principalId).returning(COLUMNS);
   }
 
+  public async getUsersByPrincipalAndRole(principalId: number, roleId: number) {
+    return this.knex('user_account').where('principal_id', '=', principalId).where('role_id', '=', roleId).returning(COLUMNS);
+  }
+
   public async getEventsCountByPrincipal(principalId: number) {
     return this.knex('event').count().where('principal_id', '=', principalId);
   }
