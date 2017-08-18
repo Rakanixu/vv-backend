@@ -12,4 +12,5 @@ export interface Principal {
     logo: string;
     background: string;
     created_at: number;
+    enabled: boolean;
 }

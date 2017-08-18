@@ -40,6 +40,11 @@ export async function getUsersByPrincipal(principalId: number) {
   return principalDB.getUsersByPrincipal(principalId);
 }
 
+// get users belonging to a principal and mathing a given role
+export async function getUsersByPrincipalAndRole(principalId: number, roleId: number) {
+  return principalDB.getUsersByPrincipalAndRole(principalId, roleId);
+}
+
 // count all events belonging to a principal
 export async function getEventsCountByPrincipal(principalId: number) {
   return principalDB.getEventsCountByPrincipal(principalId);

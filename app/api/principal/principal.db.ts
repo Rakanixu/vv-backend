@@ -16,7 +16,8 @@ const COLUMNS = [
   'primary_color',
   'design_notes',
   'tags',
-  'created_at'
+  'created_at',
+  'enabled'
 ];
 
 export class PrincipalDB {
@@ -56,6 +57,10 @@ export class PrincipalDB {
 
   public async getUsersByPrincipal(principalId: number) {
     return this.knex('user_account').where('principal_id', '=', principalId).returning(COLUMNS);
+  }
+
+  public async getUsersByPrincipalAndRole(principalId: number, roleId: number) {
+    return this.knex('user_account').where('principal_id', '=', principalId).where('role_id', '=', roleId).returning(COLUMNS);
   }
 
   public async getEventsCountByPrincipal(principalId: number) {

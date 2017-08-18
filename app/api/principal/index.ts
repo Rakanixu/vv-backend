@@ -25,6 +25,7 @@ routes.put('/:principalId', isAuth, updatePrincipal);
 routes.delete('/:principalId', isAuth, deletePrincipal);
 routes.get('/:principalId/event', getEventsByPrincipal);
 routes.get('/:principalId/user', isAuth, getUsersByPrincipal);
+routes.get('/:principalId/role/:roleId/user', isAuth, getUsersByPrincipalAndRole);
 routes.get('/:principalId/event_count', getEventsCountByPrincipal);
 routes.get('/:principalId/user_count', isAuth, getUsersCountByPrincipal);
 
@@ -58,6 +59,10 @@ function getEventsByPrincipal(req: ICustomRequest, res: express.Response, next: 
 
 function getUsersByPrincipal(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, PrincipalController.getUsersByPrincipal(req.params.principalId));
+}
+
+function getUsersByPrincipalAndRole(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  resolve(req, res, PrincipalController.getUsersByPrincipalAndRole(req.params.principalId, req.params.roleId));
 }
 
 function getEventsCountByPrincipal(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
