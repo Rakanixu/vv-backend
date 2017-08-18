@@ -1,4 +1,5 @@
 import * as Knex from 'knex';
+import * as _ from 'lodash';
 import { dbClient } from '../../database/index';
 import { Donation } from './donation.model';
 
@@ -25,9 +26,9 @@ const COLUMNS = [
   'source'
 ];
 
-  const PAYMENT_JOIN_COLUMNS = COLUMNS;
-  PAYMENT_JOIN_COLUMNS[0] = DONATION + '.id';
-  PAYMENT_JOIN_COLUMNS.push('payment.amount');
+const PAYMENT_JOIN_COLUMNS = _.clone(COLUMNS);
+PAYMENT_JOIN_COLUMNS[0] = DONATION + '.id';
+PAYMENT_JOIN_COLUMNS.push('payment.amount');
 
 export class DonationDB {
   private knex: Knex;

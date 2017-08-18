@@ -6,3 +6,4 @@ db_dev.yml
 .DS_Store
 doc/*.zip
 doc/*tar.gz
+app/secrets
