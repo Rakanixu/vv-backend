@@ -45,13 +45,13 @@ export class UserAccountDB {
   }
 
   public async getUser(principalId: number, userId: number) {
-    let query = this.knex(USER_ACCOUNT).where('id', userId).select(COLUMNS);
     if (principalId !== null) {
-      query = query.where('principal_id', principalId);
-    }
-    const users: UserAccount[] = await query;
-    if (users && users.length > 0) {
-      return users[0];
+      return this.knex(USER_ACCOUNT).where('principal_id', principalId).where('id', userId).select(COLUMNS);
+    } else {
+      const users: UserAccount[] = await this.knex(USER_ACCOUNT).where('id', userId).select(COLUMNS);
+      if (users && users.length > 0) {
+        return users[0];
+      }
     }
   }
 
