@@ -19,6 +19,8 @@ RUN npm install -g gulp
 
 ADD / /src/ 
 
+RUN mkdir -p /src/app/static
+
 RUN gulp build
 
 # -----------------------------------------
