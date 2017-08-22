@@ -27,18 +27,19 @@ export class Server {
     }
 
     private applyConfig() {
-        this.app.use(cors());
+        const corsOptions = {
+            origin: function (origin: any, callback: any) {
+                callback(null, true);
+            },
+            credentials: true
+        };
+
+        this.app.use(cors(corsOptions));
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(bodyParser.json({ limit: '10mb' }));
         this.app.use(cookieParser());
         this.app.use(methodOverride());
         this.app.use(express.static(__dirname + '/static'));
-        this.app.use((req: ICustomRequest, res: express.Response, next: Function) => {
-            res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,OPTIONS,DELETE');
-            res.header('Access-Control-Allow-Credentials', 'true');
-            res.header('Access-Control-Allow-Headers', 'Origin, Credentials, X-Requested-With, Content-Type, Accept, Authorization');
-            next();
-        });
 
         const env = process.env.NODE_ENV || 'development';
         if (env === 'development') {
