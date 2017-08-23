@@ -4,6 +4,9 @@ export interface Event {
   user_account_id?: number;
   event_type_id?: number;
   title: string;
+  subtitle: string;
+  speaker_media_type: number;
+  speaker_media: string;
   notes: string;
   location: string;
   preview_img: string;

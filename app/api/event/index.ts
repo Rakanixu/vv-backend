@@ -12,7 +12,8 @@ import { isAuth } from '../../auth';
 const uploader = multer({ storage: storage });
 const images = [
   { name: 'preview_img', maxCount: 1 },
-  { name: 'event_background', maxCount: 1 }
+  { name: 'event_background', maxCount: 1 },
+  { name: 'speaker_media', maxCount: 1 }
 ];
 
 export const routes = express.Router();
@@ -33,7 +34,7 @@ function getEvents(req: ICustomRequest, res: express.Response, next: express.Nex
 }
 
 function createEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  req.body = manageFiles(req, ['preview_img', 'event_background']);
+  req.body = manageFiles(req, ['preview_img', 'event_background', 'speaker_media']);
 
   resolve(req, res, EventController.createEvent(getPrincipalId(req), req.body));
 }
@@ -43,7 +44,7 @@ function getEvent(req: ICustomRequest, res: express.Response, next: express.Next
 }
 
 function updateEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  req.body = manageFiles(req, ['preview_img', 'event_background']);
+  req.body = manageFiles(req, ['preview_img', 'event_background', 'speaker_media']);
 
   resolve(req, res, EventController.updateEvent(getPrincipalId(req), req.params.eventId, req.body));
 }
