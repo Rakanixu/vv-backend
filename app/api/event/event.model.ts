@@ -23,6 +23,11 @@ export interface Event {
   pose_question: boolean;
   chat_shown_status_bar: boolean;
   stage_moment_webcam: boolean;
+  chat_highlight_price: number;
+  chat_with_user_image_price: number;
+  pose_question_price: number;
+  chat_shown_status_bar_price: number;
+  stage_moment_webcam_price: number;
   tribecast_room_id: string;
   started_at: string;
   ended_at: string;

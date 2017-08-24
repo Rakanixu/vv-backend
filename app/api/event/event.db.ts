@@ -28,6 +28,11 @@ const COLUMNS = [
   'pose_question',
   'chat_shown_status_bar',
   'stage_moment_webcam',
+  'chat_highlight_price',
+  'chat_with_user_image_price',
+  'pose_question_price',
+  'chat_shown_status_bar_price',
+  'stage_moment_webcam_price',
   'tribecast_room_id',
   'started_at',
   'ended_at'
