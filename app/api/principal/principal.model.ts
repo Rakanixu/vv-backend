@@ -11,6 +11,7 @@ export interface Principal {
     design_notes: string;
     logo: string;
     background: string;
+    default_image: string;
     created_at: number;
     enabled: boolean;
 }

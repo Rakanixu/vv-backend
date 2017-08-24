@@ -11,12 +11,12 @@ import { isAuth } from '../../auth';
 const uploader = multer({ storage: storage });
 const images = [
   { name: 'logo', maxCount: 1 },
-  { name: 'background', maxCount: 1 }
+  { name: 'background', maxCount: 1 },
+  { name: 'default_image', maxCount: 1 }
 ];
 
 export const routes = express.Router();
 export const upload = uploader.fields(images);
-
 
 routes.get('/', isAuth, getPrincipals);
 routes.post('/', createPrincipal);

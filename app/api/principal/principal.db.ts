@@ -12,6 +12,7 @@ const COLUMNS = [
   'name',
   'description',
   'logo',
+  'default_image',
   'secondary_color',
   'primary_color',
   'design_notes',
