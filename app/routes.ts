@@ -35,6 +35,7 @@ const RESOURCES = {
     DONATION_BY_PRINCIPAL: '/principal/:principalId/donation',
     PAYMENT: '/payment',
     DONATION_BY_PAYMENT: '/payment/:paymentId/donation',
+    EVENT_BY_PAYMENT: '/payment/:paymentId/event',
     DONATION: '/donation',
     EVENT: '/event',
     PARTICIPANT: '/event/:eventId/participant',
@@ -66,6 +67,7 @@ export function setupRoutes(app: express.Express) {
     router.use(RESOURCES.NAMED_GUEST, namedGuest.upload, namedGuest.routes);
     router.use(RESOURCES.PAYMENT, payment.routes);
     router.use(RESOURCES.DONATION_BY_PAYMENT, donation.routesByPayment);
+    router.use(RESOURCES.EVENT_BY_PAYMENT, payment.routesEvent);
     router.use(RESOURCES.DONATION_BY_PRINCIPAL, donation.routesByPrincipal);
     router.use(RESOURCES.DONATION, donation.routes);
     router.use(RESOURCES.PARTICIPANT, participant.upload, participant.routes);

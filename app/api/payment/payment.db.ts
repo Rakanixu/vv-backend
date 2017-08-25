@@ -1,4 +1,5 @@
 import * as Knex from 'knex';
+import * as _ from 'lodash';
 import { dbClient } from '../../database/index';
 import { Payment } from './payment.model';
 
@@ -11,6 +12,10 @@ const COLUMNS = [
   'token',
   'description'
 ];
+
+const PAYMENT_JOIN_COLUMNS = _.clone(COLUMNS);
+PAYMENT_JOIN_COLUMNS[0] = 'event.id';
+PAYMENT_JOIN_COLUMNS.push('event.title');
 
 export class PaymentDB {
   private knex: Knex;
@@ -37,5 +42,12 @@ export class PaymentDB {
 
   public async deletePayment(paymentId: number) {
     return this.knex.delete().from(PAYMENT).where('id', paymentId);
+  }
+
+  public async getEventTitleByPaymentId(paymentId: number) {
+    return this.knex(PAYMENT)
+    .select('event.*')
+    .innerJoin('event', 'payment.event_id', 'event.id')
+    .where('payment.id', paymentId);
   }
 }

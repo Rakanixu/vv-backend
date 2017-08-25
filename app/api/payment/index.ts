@@ -4,13 +4,16 @@ import { ICustomRequest } from '../../utils/custom.types';
 import { resolve } from '../../utils/resolveRequest';
 import { isAuth } from '../../auth';
 
-export const routes = express.Router();
+export const routes = express.Router({ mergeParams: true });
+export const routesEvent = express.Router({ mergeParams: true });
 
 routes.get('/', isAuth, getPayments);
 routes.post('/', isAuth, createPayment);
 routes.get('/:paymentId', isAuth, getPayment);
 routes.put('/:paymentId', isAuth, updatePayment);
 routes.delete('/:paymentId', isAuth, deletePayment);
+
+routesEvent.get('/', isAuth, getEventTitleByPaymentId);
 
 function getPayments(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, PaymentController.getPayments());
@@ -32,3 +35,6 @@ function deletePayment(req: ICustomRequest, res: express.Response, next: express
   resolve(req, res, PaymentController.deletePayment(req.params.paymentId));
 }
 
+function getEventTitleByPaymentId(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  resolve(req, res, PaymentController.getEventTitleByPaymentId(req.params.paymentId));
+}

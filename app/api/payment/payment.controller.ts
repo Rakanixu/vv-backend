@@ -24,3 +24,7 @@ export async function updatePayment(paymentId: number, payment: Payment) {
 export async function deletePayment(paymentId: number) {
   return paymentDB.deletePayment(paymentId);
 }
+
+export async function getEventTitleByPaymentId(paymentId: number) {
+  return paymentDB.getEventTitleByPaymentId(paymentId);
+}
