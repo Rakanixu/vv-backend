@@ -39,7 +39,9 @@ export async function getUser(principalId: number, userId: number) {
 }
 
 export async function updateUser(principalId: number, userId: number, userAccount: UserAccount) {
-  userAccount.password = hash(userAccount.password);
+  if (userAccount.password) {
+    userAccount.password = hash(userAccount.password);
+  }
 
   return userAccountDB.updateUser(principalId, userId, userAccount);
 }
