@@ -25,18 +25,11 @@ export function manageFiles(req: ICustomRequest, resourcesNames: string[]) {
         const path = file.path.split('static');
 
         req.body[name] = path[path.length - 1];
-      } else {
-        // todo: when uploading several files in a single request, and only some files are uploaded from the possible ones
-        // req.body[name] is the base64 image causing an error on DB due to be long
-        if (req.body[name].startsWith('data')) {
-          req.body[name] = '';
-          /* fs.writeFile('out.png', req.body[name], 'base64', function(err) {
-            console.log(err);
-          }); */
-        }
       }
     } else {
-      req.body[name] = '';
+      if (typeof req.body[name] !== 'string') {
+        req.body[name] = '';
+      }
     }
   }
 
