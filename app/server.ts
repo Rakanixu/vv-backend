@@ -12,6 +12,7 @@ import * as auth from './auth';
 export class Server {
     public app: express.Express;
     public io: any;
+    public iosecure: any;
 
     public initialize(): Promise<express.Application> {
         // create express instance

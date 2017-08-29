@@ -30,9 +30,15 @@ server.initialize() /* tslint:disable:no-floating-promises */
     }
     // instantiate socket.io
     this.io = IO(httpServer);
-
     // add socket events
     chat.setupChat(this.io);
+
+    try {
+        this.iosecure = IO(httpsServer);
+        chat.setupChat(this.iosecure);
+    } catch (e) {
+        console.log(e);
+    }
 
     httpServer.on('listening', () => {
         console.log('Server listening on port %d', config.port);
