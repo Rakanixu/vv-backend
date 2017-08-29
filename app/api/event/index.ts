@@ -24,6 +24,7 @@ routes.post('/', isAuth, createEvent);
 routes.get('/:eventId', isAuth, getEvent);
 routes.put('/:eventId', isAuth, updateEvent);
 routes.delete('/:eventId', isAuth, deleteEvent);
+routes.post('/:eventId/copy', isAuth, copyEvent);
 routes.post('/:eventId/start', isAuth, startEvent);
 routes.post('/:eventId/stop', isAuth, stopEvent);
 routes.post('/:eventId/token', isAuth, getEventToken);
@@ -51,6 +52,10 @@ function updateEvent(req: ICustomRequest, res: express.Response, next: express.N
 
 function deleteEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, EventController.deleteEvent(getPrincipalId(req), req.params.eventId));
+}
+
+function copyEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  resolve(req, res, EventController.copyEvent(getPrincipalId(req), req.params.eventId));
 }
 
 function startEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
