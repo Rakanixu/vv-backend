@@ -21,8 +21,8 @@ server.initialize() /* tslint:disable:no-floating-promises */
     let httpsServer;
     try {
         httpsServer = https.createServer({
-            key: fs.readFileSync('/src/app/key.pem', 'utf8'),
-            cert: fs.readFileSync('/src/app/cert.pem', 'utf8'),
+            key: fs.readFileSync('/src/certs/key.pem', 'utf8'),
+            cert: fs.readFileSync('/src/certs/cert.pem', 'utf8'),
             passphrase: '19956476'
         }, app);
     } catch (e) {
