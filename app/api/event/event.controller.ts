@@ -70,20 +70,28 @@ export async function copyEvent(principalId: number, eventId: number) {
   );
   await copy(
     originalEventId, copiedEventId, 'event_id',
+    namedGuestDB.getNamedGuests.bind(namedGuestDB), namedGuestDB.createNamedGuest.bind(namedGuestDB)
+  );
+  const quizIDs = await copy(
+    originalEventId, copiedEventId, 'event_id',
     quizDB.getQuizs.bind(quizDB), quizDB.createQuiz.bind(quizDB)
   );
-  /* await copy(
-    originalEventId, copiedEventId, 'quiz_id',
-    quizEntryDB.getQuizEntries.bind(quizEntryDB), quizEntryDB.createQuizEntry.bind(quizEntryDB)
-  ); */
-  await copy(
+  for (let i = 0; i < (<MapOriginalCopyIds[]>quizIDs).length; i++) {
+    await copy(
+      quizIDs[i].originalId, quizIDs[i].copyId, 'quiz_id',
+      quizEntryDB.getQuizEntries.bind(quizEntryDB), quizEntryDB.createQuizEntry.bind(quizEntryDB)
+    );
+  }
+  const pollIDs = await copy(
     originalEventId, copiedEventId, 'event_id',
     pollDB.getPolls.bind(pollDB), pollDB.createPoll.bind(pollDB)
   );
-  await copy(
-    originalEventId, copiedEventId, 'event_id',
-    namedGuestDB.getNamedGuests.bind(namedGuestDB), namedGuestDB.createNamedGuest.bind(namedGuestDB)
-  );
+  for (let i = 0; i < (<MapOriginalCopyIds[]>pollIDs).length; i++) {
+    await copy(
+      pollIDs[i].originalId, pollIDs[i].copyId, 'poll_id',
+      pollEntryDB.getPollEntries.bind(pollEntryDB), pollEntryDB.createPollEntry.bind(pollEntryDB)
+    );
+  }
 
   return new Promise((resolve: any, reject: any) => {
     resolve(event);
@@ -154,11 +162,30 @@ export async function generateEventToken(principalId: number, eventId: number, t
     return token;
 }
 
+interface MapOriginalCopyIds {
+  originalId: number;
+  copyId: number;
+}
+
 async function copy(originalId: number, copyId: number, fk: string,  getcb: any, setcb: any) {
   const list = await getcb(originalId);
+  const map: MapOriginalCopyIds[] = [];
+
   for (let i = 0; i < list.length; i++) {
+    const el: MapOriginalCopyIds = {
+      originalId: list[i].id,
+      copyId: undefined
+    };
     delete list[i].id;
     list[i][fk] = copyId;
-    await setcb(copyId, list[i]);
+    const newEl = await setcb(copyId, list[i]);
+    el.copyId = newEl[0].id;
+
+    map.push(el);
   }
+
+  return new Promise((resolve, reject) => {
+    resolve(map);
+  });
 }
+
