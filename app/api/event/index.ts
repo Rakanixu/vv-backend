@@ -17,6 +17,7 @@ const images = [
 ];
 
 export const routes = express.Router();
+export const templateRoutes = express.Router();
 export const upload = uploader.fields(images);
 
 routes.get('/', isAuth, getEvents);
@@ -29,6 +30,11 @@ routes.post('/:eventId/start', isAuth, startEvent);
 routes.post('/:eventId/stop', isAuth, stopEvent);
 routes.post('/:eventId/token', isAuth, getEventToken);
 
+templateRoutes.get('', isAuth, getTemplates);
+templateRoutes.post('/', isAuth, createTemplate);
+templateRoutes.get('/:eventId', isAuth, getTemplate);
+templateRoutes.put('/:eventId', isAuth, updateTemplate);
+templateRoutes.delete('/:eventId', isAuth, deleteTemplate);
 
 function getEvents(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, EventController.getEvents(getPrincipalId(req)));
@@ -68,4 +74,28 @@ function stopEvent(req: ICustomRequest, res: express.Response, next: express.Nex
 
 function getEventToken(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, EventController.generateEventToken(getPrincipalId(req), req.params.eventId, req.body));
+}
+
+function getTemplates(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  resolve(req, res, EventController.getTemplates(getPrincipalId(req)));
+}
+
+function createTemplate(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  req.body = manageFiles(req, ['preview_img', 'event_background', 'speaker_media']);
+
+  resolve(req, res, EventController.createTemplate(getPrincipalId(req), req.body));
+}
+
+function getTemplate(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  resolve(req, res, EventController.getTemplate(getPrincipalId(req), req.params.eventId));
+}
+
+function updateTemplate(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  req.body = manageFiles(req, ['preview_img', 'event_background', 'speaker_media']);
+
+  resolve(req, res, EventController.updateTemplate(getPrincipalId(req), req.params.eventId, req.body));
+}
+
+function deleteTemplate(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  resolve(req, res, EventController.deleteTemplate(getPrincipalId(req), req.params.eventId));
 }

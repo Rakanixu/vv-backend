@@ -162,6 +162,26 @@ export async function generateEventToken(principalId: number, eventId: number, t
     return token;
 }
 
+export async function getTemplates(principalId: number) {
+  return eventDB.getTemplates(principalId);
+}
+
+export async function createTemplate(principalId: number, event: Event) {
+  return eventDB.createTemplate(principalId, event);
+}
+
+export async function getTemplate(principalId: number, eventId: number) {
+  return eventDB.getTemplate(principalId, eventId);
+}
+
+export async function updateTemplate(principalId: number, eventId: number, event: Event) {
+  return eventDB.updateTemplate(principalId, eventId, event);
+}
+
+export async function deleteTemplate(principalId: number, eventId: number) {
+  return eventDB.deleteTemplate(principalId, eventId);
+}
+
 interface MapOriginalCopyIds {
   originalId: number;
   copyId: number;
