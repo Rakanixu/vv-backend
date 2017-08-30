@@ -46,7 +46,10 @@ export class EventDB {
   }
 
   public async getEvents(principalId: number) {
-    return this.knex(EVENT).select(COLUMNS).where('principal_id', principalId);
+    return this.knex(EVENT).select(COLUMNS)
+      .where('principal_id', principalId)
+      .whereNot('deleted', true)
+      .orWhere('deleted', null);
   }
 
   public async createEvent(principalId: number, event: Event) {
@@ -55,7 +58,11 @@ export class EventDB {
   }
 
   public async getEvent(principalId: number, eventId: number) {
-    return this.knex(EVENT).select(COLUMNS).where('principal_id', principalId).where('id', eventId);
+    return this.knex(EVENT).select(COLUMNS)
+      .where('principal_id', principalId)
+      .where('id', eventId)
+      .where('deleted', null)
+      .orWhere('deleted', false);
   }
 
   public async updateEvent(principalId: number, eventId: number, event: Event) {
@@ -63,6 +70,6 @@ export class EventDB {
   }
 
   public async deleteEvent(principalId: number, eventId: number) {
-    return this.knex.delete().from(EVENT).where('principal_id', principalId).where('id', eventId);
+    return this.knex(EVENT).update({ deleted: true }).where('principal_id', principalId).where('id', eventId);
   }
 }
