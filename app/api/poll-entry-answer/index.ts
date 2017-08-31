@@ -15,7 +15,7 @@ routes.put('/:pollEntryAnswerId', isAuth, updatePollEntryAnswer);
 routes.delete('/:pollEntryAnswerId', isAuth, deletePollEntryAnswer);
 
 function getPollEntryAnswers(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, PollEntryAnswerController.getPollEntryAnswers(req.params.pollId));
+  resolve(req, res, PollEntryAnswerController.getPollEntryAnswers(req.params.pollEntryId));
 }
 
 function createPollEntryAnswer(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
