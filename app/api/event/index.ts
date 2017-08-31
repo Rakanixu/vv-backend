@@ -35,6 +35,7 @@ templateRoutes.post('/', isAuth, createTemplate);
 templateRoutes.get('/:eventId', isAuth, getTemplate);
 templateRoutes.put('/:eventId', isAuth, updateTemplate);
 templateRoutes.delete('/:eventId', isAuth, deleteTemplate);
+templateRoutes.post('/:eventId/copy', isAuth, copyEventFromTemplate);
 
 function getEvents(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, EventController.getEvents(getPrincipalId(req)));
@@ -98,4 +99,8 @@ function updateTemplate(req: ICustomRequest, res: express.Response, next: expres
 
 function deleteTemplate(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   resolve(req, res, EventController.deleteTemplate(getPrincipalId(req), req.params.eventId));
+}
+
+function copyEventFromTemplate(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  resolve(req, res, EventController.copyEventFromTemplate(getPrincipalId(req), req.params.eventId));
 }

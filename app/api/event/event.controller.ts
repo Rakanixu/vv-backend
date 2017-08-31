@@ -187,6 +187,62 @@ export async function deleteTemplate(principalId: number, eventId: number) {
   return eventDB.deleteTemplate(principalId, eventId);
 }
 
+export async function copyEventFromTemplate(principalId: number, eventId: number) {
+  const eventList = await eventDB.getTemplate(principalId, eventId);
+  if (!eventList || !eventList.length) {
+    return new Error('Event not found');
+  }
+
+  let event: Event = eventList[0];
+  const originalEventId = event.id;
+  delete event.id;
+  event.created_at = moment().utc(new Date()).format();
+  event.is_template = false;
+  event = await eventDB.createEvent(principalId, event);
+  const copiedEventId = event[0].id;
+
+  await copy(
+    originalEventId, copiedEventId, 'event_id',
+    questionTopicDB.getQuestionTopics.bind(questionTopicDB), questionTopicDB.createQuestionTopic.bind(questionTopicDB)
+  );
+  await copy(
+    originalEventId, copiedEventId, 'event_id',
+    admissionDB.getAdmissions.bind(admissionDB), admissionDB.createAdmission.bind(admissionDB)
+  );
+  await copy(
+    originalEventId, copiedEventId, 'event_id',
+    sliderImage.getSliderImages.bind(sliderImage), sliderImage.createSliderImage.bind(sliderImage)
+  );
+  await copy(
+    originalEventId, copiedEventId, 'event_id',
+    namedGuestDB.getNamedGuests.bind(namedGuestDB), namedGuestDB.createNamedGuest.bind(namedGuestDB)
+  );
+  const quizIDs = await copy(
+    originalEventId, copiedEventId, 'event_id',
+    quizDB.getQuizs.bind(quizDB), quizDB.createQuiz.bind(quizDB)
+  );
+  for (let i = 0; i < (<MapOriginalCopyIds[]>quizIDs).length; i++) {
+    await copy(
+      quizIDs[i].originalId, quizIDs[i].copyId, 'quiz_id',
+      quizEntryDB.getQuizEntries.bind(quizEntryDB), quizEntryDB.createQuizEntry.bind(quizEntryDB)
+    );
+  }
+  const pollIDs = await copy(
+    originalEventId, copiedEventId, 'event_id',
+    pollDB.getPolls.bind(pollDB), pollDB.createPoll.bind(pollDB)
+  );
+  for (let i = 0; i < (<MapOriginalCopyIds[]>pollIDs).length; i++) {
+    await copy(
+      pollIDs[i].originalId, pollIDs[i].copyId, 'poll_id',
+      pollEntryDB.getPollEntries.bind(pollEntryDB), pollEntryDB.createPollEntry.bind(pollEntryDB)
+    );
+  }
+
+  return new Promise((resolve: any, reject: any) => {
+    resolve(event);
+  });
+}
+
 interface MapOriginalCopyIds {
   originalId: number;
   copyId: number;
