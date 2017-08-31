@@ -178,6 +178,8 @@ export async function getTemplate(principalId: number, eventId: number) {
 }
 
 export async function updateTemplate(principalId: number, eventId: number, event: Event) {
+  event.date = null;
+  event.deleted_at = null;
   return eventDB.updateTemplate(principalId, eventId, event);
 }
 
