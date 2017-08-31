@@ -31,6 +31,7 @@ export interface Event {
   tribecast_room_id: string;
   started_at: string;
   ended_at: string;
+  is_template: boolean;
 }
 
 export interface EventTokenRequest {

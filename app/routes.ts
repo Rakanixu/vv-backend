@@ -38,6 +38,7 @@ const RESOURCES = {
     EVENT_BY_PAYMENT: '/payment/:paymentId/event',
     DONATION: '/donation',
     EVENT: '/event',
+    TEMPLATE: '/template',
     PARTICIPANT: '/event/:eventId/participant',
     CHAT: '/event/:eventId/chat_message',
     AUCTION: '/event/:eventId/auction',
@@ -73,6 +74,7 @@ export function setupRoutes(app: express.Express) {
     router.use(RESOURCES.PARTICIPANT, participant.upload, participant.routes);
     router.use(RESOURCES.CHAT, chat.routes);
     router.use(RESOURCES.EVENT, event.upload, event.routes);
+    router.use(RESOURCES.TEMPLATE, event.upload, event.templateRoutes);
     router.use(RESOURCES.AUCTION, auction.routes);
     router.use(RESOURCES.BID, bid.routes);
     router.use(RESOURCES.QUIZ, quiz.routes);
