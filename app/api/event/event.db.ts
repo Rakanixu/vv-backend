@@ -2,6 +2,7 @@ import * as Knex from 'knex';
 import { dbClient } from '../../database/index';
 import { Event } from './event.model';
 
+const moment = require('moment');
 const EVENT = 'event';
 const COLUMNS = [
   'id',
@@ -91,7 +92,7 @@ export class EventDB {
   }
 
   public async deleteEvent(principalId: number, eventId: number) {
-    return this.knex(EVENT).update({ deleted: true })
+    return this.knex(EVENT).update({ deleted: true, deleted_at: moment().utc(new Date()).format() })
       .where('principal_id', principalId)
       .where('id', eventId)
       .andWhere(function() {
@@ -143,7 +144,7 @@ export class EventDB {
   }
 
   public async deleteTemplate(principalId: number, eventId: number) {
-    return this.knex(EVENT).update({ deleted: true })
+    return this.knex(EVENT).update({ deleted: true, deleted_at: moment().utc(new Date()).format() })
     .where('principal_id', principalId)
     .where('id', eventId)
     .andWhere(function() {

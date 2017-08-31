@@ -28,6 +28,7 @@ export async function getEvents(principalId: number) {
 }
 
 export async function createEvent(principalId: number, event: Event) {
+  event.deleted_at = null;
   return eventDB.createEvent(principalId, event);
 }
 
@@ -167,6 +168,8 @@ export async function getTemplates(principalId: number) {
 }
 
 export async function createTemplate(principalId: number, event: Event) {
+  event.date = null;
+  event.deleted_at = null;
   return eventDB.createTemplate(principalId, event);
 }
 
