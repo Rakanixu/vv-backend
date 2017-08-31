@@ -37,6 +37,7 @@ export async function getEvent(principalId: number, eventId: number) {
 }
 
 export async function updateEvent(principalId: number, eventId: number, event: Event) {
+  event.deleted_at = null;
   return eventDB.updateEvent(principalId, eventId, event);
 }
 
