@@ -6,6 +6,7 @@ import { Payment } from './payment.model';
 const PAYMENT = 'payment';
 const COLUMNS = [
   'id',
+  'payment_type_id',
   'user_account_id',
   'event_id',
   'amount',
