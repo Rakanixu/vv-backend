@@ -39,7 +39,7 @@ paths:
           type: integer
           description: Principal which owns event
           required: true
-        - name: user_id
+        - name: user_account_id
           in: query
           type: integer
           description: User who owns event
@@ -719,7 +719,7 @@ paths:
           type: integer
           description: Auction identifier
           required: true
-        - name: user_id
+        - name: user_account_id
           in: query
           type: integer
           description: User who bids
@@ -1504,6 +1504,115 @@ paths:
         200:
           description: Deletes a poll entry.
 
+  # Poll Entry Answer REST endpoints
+  /poll_entry/{pollEntryId}/poll_entry_answer:
+    get:
+      description: |
+        List all 'Polls entry answers' given a Poll entry.
+      parameters:
+        - name: pollEntryId
+          in: path
+          type: integer
+          description: poll_entry identifier
+          required: true
+      responses:
+        200:
+          description: List all poll entriy answers from a poll entry
+          schema:
+            title: poll_entry_answers
+            type: array
+            items:
+              $ref: '#/definitions/PollEntryAnswer'
+    post:
+      description: |
+        Create a 'Poll Entry Answer' for a Poll Entry.
+      parameters:
+        - name: pollEntryId
+          in: path
+          type: integer
+          description: poll_entry identifier
+          required: true
+        - name: poll_entry_answer
+          in: body
+          description: The poll entry answer JSON you want to post
+          schema:
+            $ref: '#/definitions/PollEntryAnswer'
+          required: true
+      responses:
+        200:
+          description: Create a poll entry answer.
+
+  /poll_entry/{pollEntryId}/poll_entry_answer/{pollEntryAnswerId}:
+    get:
+      description: |
+        Get a `Poll Entry Answer` object from a Poll Entry.
+      parameters:
+        - name: pollEntryId
+          in: path
+          type: integer
+          description: Poll Entry identifier
+          required: true
+        - name: pollEntryAnswerId
+          in: path
+          type: integer
+          description: Poll Entry Answer identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get a poll Entry Answer from a Poll Entry
+          schema:
+            title: PollEntryAnswer
+            type: object
+            items:
+              $ref: '#/definitions/PollEntryAnswer'
+    put:
+      description: |
+        Updates a `Poll Entry Answer` object from a Poll Entry.
+      parameters:
+        - name: pollEntryId
+          in: path
+          type: integer
+          description: Poll Entry identifier
+          required: true
+        - name: pollEntryAnswerId
+          in: path
+          type: integer
+          description: Poll Entry Answer identifier
+          required: true
+        - name: poll_entry_answer
+          in: body
+          description: The PollEntryAnswer JSON you want to update
+          schema:
+            $ref: '#/definitions/PollEntryAnswer'
+          required: true
+      responses:
+        200:
+          description:  |
+            Update an existing poll entry.
+          schema:
+            title: question
+            type: object
+            items:
+              $ref: '#/definitions/PollEntryAnswer'
+    delete:
+      description: |
+        Deletes a `Poll Entry Answer` object from a Poll Entry.
+      parameters:
+        - name: pollEntryId
+          in: path
+          type: integer
+          description: Poll Entry identifier
+          required: true
+        - name: pollEntryAnswerId
+          in: path
+          type: integer
+          description: Poll Entry Answer identifier
+          required: true
+      responses:
+        200:
+          description: Deletes a poll entry.
+
   # Payment REST endpoints
   /payment:
     get:
@@ -1521,7 +1630,7 @@ paths:
       description: |
         Create a 'Payment' object.
       parameters:
-        - name: user_id
+        - name: user_account_id
           in: query
           type: integer
           description: User who makes the payment
@@ -2118,7 +2227,7 @@ definitions:
       auction_id:
         type: integer
         format: int32
-      user_id:
+      user_account_id:
         type: integer
         format: int32
       amount:
@@ -2237,13 +2346,28 @@ definitions:
       icon:
         type: string
 
+  PollEntryAnswer:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      poll_entry_id:
+        type: integer
+        format: int32
+      user_account_id:
+        type: integer
+        format: int32
+      answer:
+        type: string  
+
   Payment:
     type: object
     properties:
       id:
         type: integer
         format: int32
-      user_id:
+      user_account_id:
         type: integer
         format: int32
       amount:

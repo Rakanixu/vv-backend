@@ -21,6 +21,7 @@ import * as question from './api/question';
 import * as poll from './api/poll';
 import * as chat from './api/chat';
 import * as pollEntry from './api/poll-entry';
+import * as pollEntryAnswer from './api/poll-entry-answer';
 import * as sliderImage from './api/slider-image';
 import { config } from './config';
 import { ICustomRequest } from './utils/custom.types';
@@ -47,6 +48,7 @@ const RESOURCES = {
     QUIZ: '/event/:eventId/quiz',
     POLL: '/event/:eventId/poll',
     POLL_ENTRY: '/poll/:pollId/poll_entry',
+    POLL_ENTRY_ANSWER: '/poll_entry/:pollEntryId/poll_entry_answer',
     ADMISSION: '/event/:eventId/admission',
     QUESTION_TOPIC: '/event/:eventId/question_topic',
     QUESTION: '/question_topic/:questionTopicId/question',
@@ -82,6 +84,7 @@ export function setupRoutes(app: express.Express) {
     router.use(RESOURCES.QUIZ, quiz.routes);
     router.use(RESOURCES.POLL, poll.routes);
     router.use(RESOURCES.POLL_ENTRY, pollEntry.upload, pollEntry.routes);
+    router.use(RESOURCES.POLL_ENTRY_ANSWER, pollEntryAnswer.routes);
     router.use(RESOURCES.QUESTION_TOPIC, questionTopic.routes);
     router.use(RESOURCES.QUESTION, question.routes);
     router.use(RESOURCES.QUIZ_ENTRY, quizEntry.routes);
