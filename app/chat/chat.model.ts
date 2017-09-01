@@ -48,7 +48,18 @@ export class User {
   }
 }
 
+export class UserEventData {
+  public user_action: UserAction;
+  public date: number;
+
+  constructor(userAction: UserAction) {
+    this.user_action = userAction;
+    this.date = new Date().getTime();
+  }
+}
+
 export const Collections = {
   broadcastMessage: 'broadcast_message',
-  unicastMessage: 'unicast_message'
+  unicastMessage: 'unicast_message',
+  userEventMetrics: 'user_event_metrics'
 };

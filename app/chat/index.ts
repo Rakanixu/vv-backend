@@ -44,6 +44,7 @@ export function join(io: any, socket: any, chatUser: ChatModel.ChatUser) {
     };
 
     socket.to(chatUser.event_id).emit('event_user', userJoining);
+    chatDB.insertDocument(new ChatModel.UserEventData(userJoining), ChatModel.Collections.userEventMetrics);
     socket.emit('aknowledge', ackOK);
   } else {
     socket.emit('aknowledge', ackNOK);
@@ -64,6 +65,7 @@ export function leave(io: any, socket: any) {
 
       socket.leave(user.eventId);
       socket.to(user.eventId).emit('event_user', userLeaving);
+      chatDB.insertDocument(new ChatModel.UserEventData(userLeaving), ChatModel.Collections.userEventMetrics);
       socket.emit('aknowledge', ackOK);
 
       // remove user from pool
@@ -156,6 +158,7 @@ export function disconnect(io: any, socket: any) {
       };
 
       socket.to(user.eventId).emit('event_user', userLeaving);
+      chatDB.insertDocument(new ChatModel.UserEventData(userLeaving), ChatModel.Collections.userEventMetrics);
       // remove user from redis
       deleteUser(socket.id, user.id, user.eventId);
     }
