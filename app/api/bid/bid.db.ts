@@ -5,7 +5,7 @@ import { Bid } from './bid.model';
 const BID = 'bid';
 const COLUMNS = [
   'id',
-  'useraccount_id',
+  'user_account_id',
   'auction_id',
   'amount',
   'type'
