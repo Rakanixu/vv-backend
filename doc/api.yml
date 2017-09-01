@@ -2094,7 +2094,47 @@ definitions:
       date:
         type: integer
         format: int64
-
+      chat_highlight:
+        type: boolean
+      chat_with_user_image:
+        type: boolean
+      pose_question:
+        type: boolean
+      chant_shown_status_bar:
+        type: boolean
+      stage_moment_webcam:
+        type: boolean
+      tribecast_room_id:
+        type: string
+      started_at:
+        type: integer
+        format: int64
+      ended_at:
+        type: integer
+        format: int64
+      subtitle:
+        type: string
+      speaker_media_type:
+        type: integer
+        format: int32
+      speaker_media:
+        type: string
+      chat_highlight_price:
+        type: number
+        format: float
+      chat_with_user_image_price:
+        type: number
+        format: float
+      pose_question_price:
+        type: number
+        format: float
+      chat_shown_status_bar_price:
+        type: number
+        format: float
+      stage_moment_webcam_price:
+        type: number
+        format: float
+            
   Admission:
     type: object
     required:
@@ -2367,9 +2407,15 @@ definitions:
       id:
         type: integer
         format: int32
+      payment_type_id:
+        type: integer
+        format: int32  
       user_account_id:
         type: integer
         format: int32
+      event_id:
+        type: integer
+        format: int32  
       amount:
         type: number
         format: float
@@ -2462,6 +2508,13 @@ definitions:
         type: string
       background:
         type: string
+      default_image:
+        type: string
+      created_at:
+        type: integer
+        format: int64
+      enabled: 
+        type: boolean      
 
   User:
     type: object
@@ -2512,6 +2565,13 @@ definitions:
         type: string
       timezone:
         type: string
+      activation_token:
+        type: string
+      activation_date:
+        type: integer
+        format: int64
+      forget_password_token:
+        type: string  
 
   Role:
     type: object
