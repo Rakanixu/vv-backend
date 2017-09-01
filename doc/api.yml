@@ -1184,6 +1184,115 @@ paths:
         200:
           description: Deletes a quiz entry.
 
+  # Quiz Entry Answer REST endpoints
+  /quiz_entry/{quizEntryId}/quiz_entry_answer:
+    get:
+      description: |
+        List all 'Quizs entry answers' given a Quiz entry.
+      parameters:
+        - name: quizEntryId
+          in: path
+          type: integer
+          description: quiz_entry identifier
+          required: true
+      responses:
+        200:
+          description: List all quiz entriy answers from a quiz entry
+          schema:
+            title: quiz_entry_answers
+            type: array
+            items:
+              $ref: '#/definitions/QuizEntryAnswer'
+    post:
+      description: |
+        Create a 'Quiz Entry Answer' for a Quiz Entry.
+      parameters:
+        - name: quizEntryId
+          in: path
+          type: integer
+          description: quiz_entry identifier
+          required: true
+        - name: quiz_entry_answer
+          in: body
+          description: The quiz entry answer JSON you want to post
+          schema:
+            $ref: '#/definitions/QuizEntryAnswer'
+          required: true
+      responses:
+        200:
+          description: Create a quiz entry answer.
+
+  /quiz_entry/{quizEntryId}/quiz_entry_answer/{quizEntryAnswerId}:
+    get:
+      description: |
+        Get a `Quiz Entry Answer` object from a Quiz Entry.
+      parameters:
+        - name: quizEntryId
+          in: path
+          type: integer
+          description: Quiz Entry identifier
+          required: true
+        - name: quizEntryAnswerId
+          in: path
+          type: integer
+          description: Quiz Entry Answer identifier
+          required: true
+      responses:
+        200:
+          description: |
+            Get a quiz Entry Answer from a Quiz Entry
+          schema:
+            title: QuizEntryAnswer
+            type: object
+            items:
+              $ref: '#/definitions/QuizEntryAnswer'
+    put:
+      description: |
+        Updates a `Quiz Entry Answer` object from a Quiz Entry.
+      parameters:
+        - name: quizEntryId
+          in: path
+          type: integer
+          description: Quiz Entry identifier
+          required: true
+        - name: quizEntryAnswerId
+          in: path
+          type: integer
+          description: Quiz Entry Answer identifier
+          required: true
+        - name: quiz_entry_answer
+          in: body
+          description: The QuizEntryAnswer JSON you want to update
+          schema:
+            $ref: '#/definitions/QuizEntryAnswer'
+          required: true
+      responses:
+        200:
+          description:  |
+            Update an existing quiz entry.
+          schema:
+            title: question
+            type: object
+            items:
+              $ref: '#/definitions/QuizEntryAnswer'
+    delete:
+      description: |
+        Deletes a `Quiz Entry Answer` object from a Quiz Entry.
+      parameters:
+        - name: quizEntryId
+          in: path
+          type: integer
+          description: Quiz Entry identifier
+          required: true
+        - name: quizEntryAnswerId
+          in: path
+          type: integer
+          description: Quiz Entry Answer identifier
+          required: true
+      responses:
+        200:
+          description: Deletes a quiz entry.
+
   # Poll REST endpoints
   /event/{eventId}/poll:
     get:
@@ -2079,6 +2188,21 @@ definitions:
       right_solution:
         type: integer
         format: int32
+
+  QuizEntryAnswer:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      quiz_entry_id:
+        type: integer
+        format: int32
+      user_account_id:
+        type: integer
+        format: int32
+      answer:
+        type: string    
 
   Poll:
     type: object
