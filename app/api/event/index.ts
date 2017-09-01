@@ -74,7 +74,7 @@ function stopEvent(req: ICustomRequest, res: express.Response, next: express.Nex
 }
 
 function getEventToken(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.generateEventToken(getPrincipalId(req), req.params.eventId, req.body));
+  resolve(req, res, EventController.generateEventToken(getPrincipalId(req), req.params.eventId, req.query.token_duration, req.body));
 }
 
 function getTemplates(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
