@@ -138,7 +138,7 @@ export async function stopEvent(principalId: number, eventId: number) {
   return eventDB.updateEvent(principalId, eventId, event);
 }
 
-export async function generateEventToken(principalId: number, eventId: number, tokenReq: EventTokenRequest) {
+export async function generateEventToken(principalId: number, eventId: number, tokenDuration: number, tokenReq: EventTokenRequest) {
   if (!config.tribecast) {
     throw new Error('Session couldnt be started. Config not ready.');
   }
@@ -157,8 +157,13 @@ export async function generateEventToken(principalId: number, eventId: number, t
     type = tokenReq.type;
   }
   console.log('Generating token for user type ' + JSON.stringify(type));
+  let duration: number = config.tribecast.tokensDuration;
+  if (tokenDuration) {
+    duration = tokenDuration * 60 * 1000;
+  }
+
   const token: string = EB.generateToken(event.tribecast_room_id, config.tribecast.apiKey,
-    (new Date()).getTime() + config.tribecast.tokensDuration, type,
+    (new Date()).getTime() + duration, type,
     config.tribecast.secret);
 
     return token;
