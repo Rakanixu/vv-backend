@@ -4,7 +4,7 @@ module.exports = {
   development: {
     client: 'postgresql',
     connection: {
-      host: 'localhost',
+      host: '40.118.97.238',
       port: 5432,
       database: 'postgres',
       user:     'alantujs',

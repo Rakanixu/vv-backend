@@ -39,9 +39,11 @@ export function configure() {
                 delete user.password;
                 done(null, user);
             } else {
+                console.log('Token generated for an user that is not activated. User: ' + user);
                 done(null, false);
             }
         }).catch(function(err) {
+            console.log('There was an error trying to access user logged in');
             done(null, false);
         });
     });
@@ -51,6 +53,7 @@ export function configure() {
 
 export function login(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
     if (!req.body.email || !req.body.password) {
+        console.log('Login error. Email or password not provided');
         res.status(401).json({ message: 'email or password not provided: ' + JSON.stringify(req.body) });
         return;
     }
@@ -69,13 +72,16 @@ export function login(req: ICustomRequest, res: express.Response, next: express.
                 req.user = user;
                 setTokenCookie(req, res);
              } else {
+                console.log('Login called for an user that is not activated');
                 res.status(401).json({ message: 'account not activated' });
              }
         } else {
-            res.status(401).json({ message: 'user or password incorrect' });
+            console.log('Password was incorrect');
+            res.status(403).json({ message: 'user or password incorrect' });
         }
     }).catch(function(err) {
-        res.status(401).json({ message: 'user not found.' });
+        console.log('User not found');
+        res.status(403).json({ message: 'user not found.' });
         return;
     });
 }
@@ -84,6 +90,7 @@ export function activateUser(req: express.Request, res: express.Response, next: 
     const userId: number = req.body.userId;
     const activationToken: string = req.body.activationToken;
     if (!userId || !activationToken) {
+        console.log('Activation - User to activate was not found');
         res.status(401).json({ message: 'user not found.' });
         return;
     }
@@ -100,9 +107,11 @@ export function activateUser(req: express.Request, res: express.Response, next: 
                 res.status(401).json({ message: 'user not found.' });
             });
         } else {
+            console.log('Activation - Trying to activate an user that was not found');
             res.status(401).json({ message: 'user not found.' });
         }
     }).catch(function(err) {
+        console.log('Activation - Error trying to get the user');
         res.status(401).json({ message: 'user not found.' });
         return;
     });
@@ -111,7 +120,8 @@ export function activateUser(req: express.Request, res: express.Response, next: 
 export function forgetPassword(req: express.Request, res: express.Response, next: express.NextFunction) {
     const email: string = req.body.email;
     if (!email) {
-        res.status(401).json({ message: 'user not found.' });
+        console.log('Forgot password - email not provided');
+        res.status(401).json({ message: 'email not provided.' });
         return;
     }
     uDB.getUserByEmail(email).then((users: UserAccount[]) => {
@@ -138,10 +148,12 @@ export function forgetPassword(req: express.Request, res: express.Response, next
                 return;
             });
         } else {
+            console.log('Forget password - Trying to activate an user that was not found');
             res.status(401).json({ message: 'user not found.' });
             return;
         }
     }).catch(function(err) {
+        console.log('Forget password - Error trying to get the user');
         res.status(401).json({ message: 'user not found.' });
         return;
     });
@@ -154,6 +166,7 @@ export function changePassword(req: express.Request, res: express.Response, next
     const confirmPassword: string = req.body.confirm_password;
 
     if (!forgetPasswordToken || !userId || !password || !confirmPassword) {
+        console.log('Couldnt change password. Data provided is not enough');
         res.status(401).json({ message: 'invalid data.' });
         return;
     }
@@ -173,9 +186,11 @@ export function changePassword(req: express.Request, res: express.Response, next
                 res.status(401).json({ message: 'invalid data.' });
             });
         } else {
+            console.log('changePassword - user not found');
             res.status(401).json({ message: 'invalid data.' });
         }
     }).catch(function(err) {
+        console.log('changePassword - Error trying to get the user');
         res.status(401).json({ message: 'invalid data.' });
         return;
     });
@@ -199,6 +214,7 @@ function signToken(id: string) {
  */
 export function setTokenCookie(req: ICustomRequest, res: express.Response): void {
     if (!req.user) {
+        console.log('Something was wrong setting user token');
         res.status(404).json({ message: 'Something went wrong, please try again.' });
         return;
     }
