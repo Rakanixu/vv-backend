@@ -25,6 +25,9 @@ export function getPrincipalId(req: ICustomRequest): number {
     try {
       principalId = req.user.principal_id;
     } catch (err) {
+      console.log(req.headers.host);
+      console.log(req.hostname);
+
       principalId = -1;
     }
   }

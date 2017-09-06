@@ -20,9 +20,9 @@ export const routes = express.Router();
 export const templateRoutes = express.Router();
 export const upload = uploader.fields(images);
 
-routes.get('/', getEvents);
+routes.get('/', isAuth, getEvents);
 routes.post('/', isAuth, createEvent);
-routes.get('/:eventId', getEvent);
+routes.get('/:eventId', isAuth, getEvent);
 routes.put('/:eventId', isAuth, updateEvent);
 routes.delete('/:eventId', isAuth, deleteEvent);
 routes.post('/:eventId/copy', isAuth, copyEvent);
