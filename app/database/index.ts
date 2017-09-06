@@ -19,7 +19,7 @@ if (environment === 'production') {
       user: dbUser,
       password: dbPass
     },
-    debug: true
+    debug: false
   };
 } else {
   cfg = require('../../../knexfile.js')[environment];
