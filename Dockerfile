@@ -33,5 +33,8 @@ ADD /entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
 COPY --from=compiler /src/dist/ /src/
+
+RUN mkdir -p /src/app/
 RUN mkdir -p /src/app/static
+
 ENTRYPOINT ["/entrypoint.sh"]
