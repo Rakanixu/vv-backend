@@ -18,9 +18,9 @@ const images = [
 export const routes = express.Router();
 export const upload = uploader.fields(images);
 
-routes.get('/', isAuth, getPrincipals);
+routes.get('/', getPrincipals);
 routes.post('/', createPrincipal);
-routes.get('/:principalId', isAuth, getPrincipal);
+routes.get('/:principalId', getPrincipal);
 routes.put('/:principalId', isAuth, updatePrincipal);
 routes.delete('/:principalId', isAuth, deletePrincipal);
 routes.get('/:principalId/event', getEventsByPrincipal);
