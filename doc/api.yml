@@ -1805,6 +1805,19 @@ paths:
         200:
           description: Create a principal.
 
+  /principal/me:
+    get:
+      description: |
+        Get principal dependings on domain which domain client app is being serve.
+      responses:
+        200:
+          description:  Principal
+          schema:
+            title: principals
+            type: array
+            items:
+              $ref: '#/definitions/Principal'
+
   /principal/{principalId}:
     get:
       description: |

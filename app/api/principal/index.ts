@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as multer from 'multer';
 import * as PrincipalController from './principal.controller';
 import { ICustomRequest } from '../../utils/custom.types';
+import { getPrincipalId } from '../../utils/principal.subdomain';
 import { resolve } from '../../utils/resolveRequest';
 import { manageFiles } from '../../utils/upload.helpers';
 import { storage } from '../../utils/upload.helpers';
@@ -20,6 +21,7 @@ export const upload = uploader.fields(images);
 
 routes.get('/', getPrincipals);
 routes.post('/', createPrincipal);
+routes.get('/me', getPrincipalByDomain);
 routes.get('/:principalId', getPrincipal);
 routes.put('/:principalId', isAuth, updatePrincipal);
 routes.delete('/:principalId', isAuth, deletePrincipal);
@@ -37,6 +39,11 @@ function createPrincipal(req: ICustomRequest, res: express.Response, next: expre
   req.body = manageFiles(req, ['logo', 'background']);
 
   resolve(req, res, PrincipalController.createPrincipal(req.body));
+}
+
+async function getPrincipalByDomain(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, PrincipalController.getPrincipal(principalId));
 }
 
 function getPrincipal(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
