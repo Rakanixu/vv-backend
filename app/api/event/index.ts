@@ -20,9 +20,9 @@ export const routes = express.Router();
 export const templateRoutes = express.Router();
 export const upload = uploader.fields(images);
 
-routes.get('/', isAuth, getEvents);
+routes.get('/', getEvents);
 routes.post('/', isAuth, createEvent);
-routes.get('/:eventId', isAuth, getEvent);
+routes.get('/:eventId', getEvent);
 routes.put('/:eventId', isAuth, updateEvent);
 routes.delete('/:eventId', isAuth, deleteEvent);
 routes.post('/:eventId/copy', isAuth, copyEvent);
@@ -37,70 +37,81 @@ templateRoutes.put('/:eventId', isAuth, updateTemplate);
 templateRoutes.delete('/:eventId', isAuth, deleteTemplate);
 templateRoutes.post('/:eventId/copy', isAuth, copyEventFromTemplate);
 
-function getEvents(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.getEvents(getPrincipalId(req)));
+async function getEvents(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, EventController.getEvents(principalId));
 }
 
-function createEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+async function createEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   req.body = manageFiles(req, ['preview_img', 'event_background', 'speaker_media']);
-
-  resolve(req, res, EventController.createEvent(getPrincipalId(req), req.body));
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, EventController.createEvent(principalId, req.body));
 }
 
-function getEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.getEvent(getPrincipalId(req), req.params.eventId));
+async function getEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, EventController.getEvent(principalId, req.params.eventId));
 }
 
-function updateEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+async function updateEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   req.body = manageFiles(req, ['preview_img', 'event_background', 'speaker_media']);
-
-  resolve(req, res, EventController.updateEvent(getPrincipalId(req), req.params.eventId, req.body));
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, EventController.updateEvent(principalId, req.params.eventId, req.body));
 }
 
-function deleteEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.deleteEvent(getPrincipalId(req), req.params.eventId));
+async function deleteEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, EventController.deleteEvent(principalId, req.params.eventId));
 }
 
-function copyEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.copyEvent(getPrincipalId(req), req.params.eventId));
+async function copyEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, EventController.copyEvent(principalId, req.params.eventId));
 }
 
-function startEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.startEvent(getPrincipalId(req), req.params.eventId));
+async function startEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, EventController.startEvent(principalId, req.params.eventId));
 }
 
-function stopEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.stopEvent(getPrincipalId(req), req.params.eventId));
+async function stopEvent(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, EventController.stopEvent(principalId, req.params.eventId));
 }
 
-function getEventToken(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.generateEventToken(getPrincipalId(req), req.params.eventId, req.query.token_duration, req.body));
+async function getEventToken(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, EventController.generateEventToken(principalId, req.params.eventId, req.query.token_duration, req.body));
 }
 
-function getTemplates(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.getTemplates(getPrincipalId(req)));
+async function getTemplates(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, EventController.getTemplates(principalId));
 }
 
-function createTemplate(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+async function createTemplate(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   req.body = manageFiles(req, ['preview_img', 'event_background', 'speaker_media']);
-
-  resolve(req, res, EventController.createTemplate(getPrincipalId(req), req.body));
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, EventController.createTemplate(principalId, req.body));
 }
 
-function getTemplate(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.getTemplate(getPrincipalId(req), req.params.eventId));
+async function getTemplate(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, EventController.getTemplate(principalId, req.params.eventId));
 }
 
-function updateTemplate(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+async function updateTemplate(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   req.body = manageFiles(req, ['preview_img', 'event_background', 'speaker_media']);
-
-  resolve(req, res, EventController.updateTemplate(getPrincipalId(req), req.params.eventId, req.body));
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, EventController.updateTemplate(principalId, req.params.eventId, req.body));
 }
 
-function deleteTemplate(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.deleteTemplate(getPrincipalId(req), req.params.eventId));
+async function deleteTemplate(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, EventController.deleteTemplate(principalId, req.params.eventId));
 }
 
-function copyEventFromTemplate(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventController.copyEventFromTemplate(getPrincipalId(req), req.params.eventId));
+async function copyEventFromTemplate(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, EventController.copyEventFromTemplate(principalId, req.params.eventId));
 }

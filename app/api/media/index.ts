@@ -23,26 +23,29 @@ routes.get('/:mediaId', isAuth, getMedia);
 routes.put('/:mediaId', isAuth, updateMedia);
 routes.delete('/:mediaId', isAuth, deleteMedia);
 
-function getMedias(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, MediaController.getMedias(getPrincipalId(req)));
+async function getMedias(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, MediaController.getMedias(principalId));
 }
 
-function createMedia(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+async function createMedia(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   req.body = manageFiles(req, ['url']);
-
-  resolve(req, res, MediaController.createMedia(getPrincipalId(req), req.body));
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, MediaController.createMedia(principalId, req.body));
 }
 
-function getMedia(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, MediaController.getMedia(getPrincipalId(req), req.params.mediaId));
+async function getMedia(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, MediaController.getMedia(principalId, req.params.mediaId));
 }
 
-function updateMedia(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+async function updateMedia(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   req.body = manageFiles(req, ['url']);
-
-  resolve(req, res, MediaController.updateMedia(getPrincipalId(req), req.params.mediaId, req.body));
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, MediaController.updateMedia(principalId, req.params.mediaId, req.body));
 }
 
-function deleteMedia(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, MediaController.deleteMedia(getPrincipalId(req), req.params.mediaId));
+async function deleteMedia(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, MediaController.deleteMedia(principalId, req.params.mediaId));
 }

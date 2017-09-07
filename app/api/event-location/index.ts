@@ -13,22 +13,27 @@ routes.get('/:eventLocationId', isAuth, getEventLocation);
 routes.put('/:eventLocationId', isAuth, updateEventLocation);
 routes.delete('/:eventLocationId', isAuth, deleteEventLocation);
 
-function getEventLocations(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventLocationController.getEventLocations(getPrincipalId(req)));
+async function getEventLocations(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, EventLocationController.getEventLocations(principalId));
 }
 
-function createEventLocation(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventLocationController.createEventLocation(getPrincipalId(req), req.body));
+async function createEventLocation(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, EventLocationController.createEventLocation(principalId, req.body));
 }
 
-function getEventLocation(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventLocationController.getEventLocation(getPrincipalId(req), req.params.eventLocationId));
+async function getEventLocation(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, EventLocationController.getEventLocation(principalId, req.params.eventLocationId));
 }
 
-function updateEventLocation(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventLocationController.updateEventLocation(getPrincipalId(req), req.params.eventLocationId, req.body));
+async function updateEventLocation(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, EventLocationController.updateEventLocation(principalId, req.params.eventLocationId, req.body));
 }
 
-function deleteEventLocation(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, EventLocationController.deleteEventLocation(getPrincipalId(req), req.params.eventLocationId));
+async function deleteEventLocation(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, EventLocationController.deleteEventLocation(principalId, req.params.eventLocationId));
 }

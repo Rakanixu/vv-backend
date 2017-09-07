@@ -24,8 +24,9 @@ routes.get('/:userId',  isAuth, getUser);
 routes.put('/:userId',  isAuth, updateUser);
 routes.delete('/:userId',  isAuth, deleteUser);
 
-function getUsers(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, UserAccountController.getUsers(getPrincipalId(req)));
+async function getUsers(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, UserAccountController.getUsers(principalId));
 }
 
 function createUser(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
@@ -38,16 +39,18 @@ function getMe(req: ICustomRequest, res: express.Response, next: express.NextFun
   res.status(200).json(req.user);
 }
 
-function getUser(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, UserAccountController.getUser(getPrincipalId(req), req.params.userId));
+async function getUser(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, UserAccountController.getUser(principalId, req.params.userId));
 }
 
-function updateUser(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+async function updateUser(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
   req.body = manageFiles(req, ['avatar']);
-
-  resolve(req, res, UserAccountController.updateUser(getPrincipalId(req), req.params.userId, req.body));
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, UserAccountController.updateUser(principalId, req.params.userId, req.body));
 }
 
-function deleteUser(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
-  resolve(req, res, UserAccountController.deleteUser(getPrincipalId(req), req.params.userId));
+async function deleteUser(req: ICustomRequest, res: express.Response, next: express.NextFunction) {
+  const principalId = await getPrincipalId(req);
+  resolve(req, res, UserAccountController.deleteUser(principalId, req.params.userId));
 }

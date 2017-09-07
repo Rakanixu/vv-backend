@@ -18,17 +18,20 @@ export async function principalIdFromSubdomain(req: ICustomRequest, res: express
   next();
 }
 
-export function getPrincipalId(req: ICustomRequest): number {
+export async function getPrincipalId(req: ICustomRequest) {
   let principalId: number = req.principalId;
 
   if (!(principalId > 0)) {
     try {
       principalId = req.user.principal_id;
     } catch (err) {
-      console.log(req.headers.host);
-      console.log(req.hostname);
-
-      principalId = -1;
+      console.log('HOST TO MATCH PRINCIPAL DOMAIN', req.hostname);
+      const principals: Principal[] = await principalDB.getPrincipalByDomain(req.hostname);
+      if (principals.length === 1) {
+        principalId = principals[0].id;
+      } else {
+        principalId = -1;
+      }
     }
   }
 
